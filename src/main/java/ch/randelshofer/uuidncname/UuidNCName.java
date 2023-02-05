@@ -27,7 +27,6 @@ public class UuidNCName {
     private static final byte OTHER_CLASS = -1;
     private static final byte[] CHAR_TO_BASE_64_MAP = new byte[128];
     private static final byte[] CHAR_TO_BASE_32_MAP = new byte[128];
-    private final static BigInteger FIFTY_EIGHT = BigInteger.valueOf(58);
 
     static {
         for (char ch = 0; ch < CHAR_TO_BASE_64_MAP.length; ch++) {
