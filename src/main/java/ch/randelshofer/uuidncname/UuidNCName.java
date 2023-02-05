@@ -125,6 +125,27 @@ public class UuidNCName {
         return new String(b, StandardCharsets.ISO_8859_1);
     }
 
+    public static String toBase58Fast(UUID uuid) {
+        byte[] b = new byte[23];
+        b[0] = BASE_32_UPPER_CASE[uuid.version()];
+        b[22] = BASE_32_UPPER_CASE[compressVariant(uuid)];
+
+        byte[] raw = new byte[15];
+        long msb = compressMsb(uuid);
+        long lsb = compressLsb(uuid);
+        FastBase58.encode(msb, lsb, b, 1);
+        /*
+        readLongBE.set(raw, 0, msb << 4);
+        readLongBE.set(raw, 7, msb << 60 | compressLsb(uuid));
+        byte[] encoded = Base58.encode(raw).getBytes(StandardCharsets.ISO_8859_1);
+        System.arraycopy(encoded, 0, b, 1, encoded.length);
+        for (int i = encoded.length; i < 21; i++) {
+            b[i + 1] = '_';
+        }
+        */
+        return new String(b, StandardCharsets.ISO_8859_1);
+    }
+
     public static String toBase58Lexical(UUID uuid) {
         byte[] b = new byte[23];
         b[0] = BASE_32_UPPER_CASE[uuid.version()];

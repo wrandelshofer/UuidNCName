@@ -21,6 +21,7 @@ class UuidNCNameTest {
                 dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32("21f7f8de-8051-5b89-8680-0195ef798b6a", "feh37rxuakg4jnaabsxxxtc3ki"))
         );
     }
+
     @TestFactory
     public List<DynamicTest> dynamicTests_base58() {
         return List.of(
@@ -32,6 +33,19 @@ class UuidNCNameTest {
                 dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58("21f7f8de-8051-5b89-8680-0195ef798b6a", "Fx7wEJfz9eb1TYzsrT7Zs_I"))
         );
     }
+
+    @TestFactory
+    public List<DynamicTest> dynamicTests_base58New() {
+        return List.of(
+                dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase58New("00000000-0000-0000-0000-000000000000", "A111111111111111111111A")),
+                dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58New("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszL")),
+                dynamicTest("000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase58New("000003e8-cbb9-21ea-b201-00045a86c8a1", "C1111KtP6Y9P3rRkvh2N1eL")),
+                dynamicTest("3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase58New("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nJ")),
+                dynamicTest("01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase58New("01867b2c-a0dd-459c-98d7-89e545538d6c", "E13UZ99RxxUJC1v4dWsYtbJ")),
+                dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58New("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eb1TYzsrT7ZsI"))
+        );
+    }
+
     @TestFactory
     public List<DynamicTest> dynamicTests_base58_lexical() {
         return List.of(
@@ -69,26 +83,40 @@ class UuidNCNameTest {
         assertEquals(expectedString,actualString);
         assertEquals(expectedUuid,actualUuid);
         assertEquals(expectedUuid,actualUuid2);
-        assertEquals(expectedUuid,actualUuid3);
+        assertEquals(expectedUuid, actualUuid3);
     }
+
     private void testBase58(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
         String actual = UuidNCName.toBase58(expectedUuid);
-        UUID actualUuid =   UuidNCName.fromBase58(expectedString);
-        UUID actualUuid2 =    UuidNCName.fromString(expectedString);
-        UUID actualUuid3 =    UuidNCName.fromString(canonicalString);
-        assertEquals(expectedString,actual);
-        assertEquals(expectedUuid,actualUuid);
-        assertEquals(expectedUuid,actualUuid2);
-        assertEquals(expectedUuid,actualUuid3);
+        UUID actualUuid = UuidNCName.fromBase58(expectedString);
+        UUID actualUuid2 = UuidNCName.fromString(expectedString);
+        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
+        assertEquals(expectedString, actual);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, actualUuid2);
+        assertEquals(expectedUuid, actualUuid3);
     }
+
+    private void testBase58New(String canonicalString, String expectedString) {
+        UUID expectedUuid = UUID.fromString(canonicalString);
+        String actual = UuidNCName.toBase58Fast(expectedUuid);
+        UUID actualUuid = UuidNCName.fromBase58(expectedString);
+        UUID actualUuid2 = UuidNCName.fromString(expectedString);
+        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
+        assertEquals(expectedString, actual);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, actualUuid2);
+        assertEquals(expectedUuid, actualUuid3);
+    }
+
     private void testBase58Lexical(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
         String actual = UuidNCName.toBase58Lexical(expectedUuid);
-        UUID actualUuid =     UuidNCName.fromBase58Lexical(expectedString);
-        UUID actualUuid2 =    UuidNCName.fromString(expectedString);
-        UUID actualUuid3 =    UuidNCName.fromString(canonicalString);
-        assertEquals(expectedString,actual);
+        UUID actualUuid = UuidNCName.fromBase58Lexical(expectedString);
+        UUID actualUuid2 = UuidNCName.fromString(expectedString);
+        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
+        assertEquals(expectedString, actual);
         assertEquals(expectedUuid,actualUuid);
         assertEquals(expectedUuid,actualUuid2);
         assertEquals(expectedUuid,actualUuid3);
