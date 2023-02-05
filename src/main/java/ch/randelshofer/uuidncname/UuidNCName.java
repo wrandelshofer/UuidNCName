@@ -229,6 +229,11 @@ public class UuidNCName {
             bytes = new byte[16];
             System.arraycopy(tmp, 0, bytes, bytes.length - tmp.length, tmp.length);
         }
+        for (int i = 0; i < bytes.length - 16; i++) {
+            if (bytes[i] != 0) {
+                throw new IllegalArgumentException("UUID string has " + (bytes.length * 8 + 8) + " bits instead of 128 bits.");
+            }
+        }
         return bytes;
     }
 
