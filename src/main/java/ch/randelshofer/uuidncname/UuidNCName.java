@@ -2,9 +2,9 @@ package ch.randelshofer.uuidncname;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
-import java.math.BigInteger;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class UuidNCName {
@@ -29,9 +29,7 @@ public class UuidNCName {
     private static final byte[] CHAR_TO_BASE_32_MAP = new byte[128];
 
     static {
-        for (char ch = 0; ch < CHAR_TO_BASE_64_MAP.length; ch++) {
-            CHAR_TO_BASE_64_MAP[ch] = OTHER_CLASS;
-        }
+        Arrays.fill(CHAR_TO_BASE_64_MAP, OTHER_CLASS);
         for (char ch = '0'; ch <= '9'; ch++) {
             CHAR_TO_BASE_64_MAP[ch] = (byte) (ch - '0' + 52);
         }
@@ -46,9 +44,7 @@ public class UuidNCName {
     }
 
     static {
-        for (char ch = 0; ch < CHAR_TO_BASE_32_MAP.length; ch++) {
-            CHAR_TO_BASE_32_MAP[ch] = OTHER_CLASS;
-        }
+        Arrays.fill(CHAR_TO_BASE_32_MAP, OTHER_CLASS);
         for (char ch = '2'; ch <= '7'; ch++) {
             CHAR_TO_BASE_32_MAP[ch] = (byte) (ch - '2' + 26);
         }
@@ -159,7 +155,7 @@ public class UuidNCName {
     }
 
     private static long compressLsb(UUID uuid) {
-        return Long.compress(uuid.getLeastSignificantBits(), 0x0fff_ffffffffffffL);
+        return uuid.getLeastSignificantBits() & 0x0fff_ffffffffffffL;
     }
 
     private static long decompressMsb(long bits, int version) {
