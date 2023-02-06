@@ -35,7 +35,7 @@ class UuidNCNameTest {
     }
 
     @TestFactory
-    public List<DynamicTest> dynamicTests_base58New() {
+    public List<DynamicTest> dynamicTests_base58Lexical() {
         return List.of(
                 dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase58New("00000000-0000-0000-0000-000000000000", "A111111111111111111111A")),
                 dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58New("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszL")),
