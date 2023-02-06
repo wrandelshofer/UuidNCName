@@ -11,7 +11,7 @@ UuidNCName supports the following formats:
 * uuid-ncname-58
 * uuid-ncname-58-lexical
 * uuid-ncname-64
-* canonical-format (only for reading)
+* uuid-canonical (only for reading)
 
 The format uuid-ncname-58-lexical is similar to uuid-ncname-58,
 instead of padding numbers to the right with '_' characters,
@@ -27,7 +27,7 @@ This has the following advantages:
 
 Example:
 
-| Version      | canonical-format                     | uuid-ncname-32             |
+| Version      | uuid-canonical                     | uuid-ncname-32             |
 |--------------|--------------------------------------|----------------------------|
 | 0, Nil       | 00000000-0000-0000-0000-000000000000 | aaaaaaaaaaaaaaaaaaaaaaaaaa |
 | 1, Timestamp | ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1 | bzjv6jsglv4pkfkyaarninsfbl |
@@ -36,7 +36,7 @@ Example:
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | eagdhwlfa3vm4rv4j4vcvhdlmj |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | feh37rxuakg4jnaabsxxxtc3ki |
 
-| Version      | canonical-format                     | uuid-ncname-58          |
+| Version      | uuid-canonical                     | uuid-ncname-58          |
 |--------------|--------------------------------------|-------------------------|
 | 0, Nil       | 00000000-0000-0000-0000-000000000000 | A111111111111111______A |
 | 1, Timestamp | ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1 | B6fTkmTD22KpWbDq1LuiszL |
@@ -45,7 +45,7 @@ Example:
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | E3UZ99RxxUJC1v4dWsYtb_J |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | Fx7wEJfz9eb1TYzsrT7Zs_I |
 
-| Version      | canonical-format                     | uuid-ncname-58-lexical  |
+| Version      | uuid-canonical                     | uuid-ncname-58-lexical  |
 |--------------|--------------------------------------|-------------------------|
 | 0, Nil       | 00000000-0000-0000-0000-000000000000 | A111111111111111111111A |
 | 1, Timestamp | ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1 | B6fTkmTD22KpWbDq1LuiszL |
@@ -54,7 +54,7 @@ Example:
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | E13UZ99RxxUJC1v4dWsYtbJ |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | F1x7wEJfz9eb1TYzsrT7ZsI |
 
-| Version      | canonical-format                     | uuid-ncname-64         |
+| Version      | uuid-canonical                     | uuid-ncname-64         |
 |--------------|--------------------------------------|------------------------|
 | 0, Nil       | 00000000-0000-0000-0000-000000000000 | AAAAAAAAAAAAAAAAAAAAAA |
 | 1, Timestamp | ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1 | BymvkyMuvHqKrAARahsihL |
