@@ -16,7 +16,7 @@ UuidNCName supports the following formats:
 * uuid-ncname-64-lexical
 
 The uuid-canonical and the uuid-ncname-…-lexical formats have the same lexicographic order as the
-bit sequence of the UUID.
+bit sequence of the UUID. This is only true for the same version and variant of an UUID.
 
 The last character of the uuid-ncname-…-lexical formats is in `[2-7][Q-Z][q-z]`.
 The last character of the uuid-ncname-…  (non-lexical) formats is in `[A-P][a-p]`.
