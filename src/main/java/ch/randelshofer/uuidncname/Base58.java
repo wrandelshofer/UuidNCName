@@ -20,8 +20,8 @@ package ch.randelshofer.uuidncname;
          * limitations under the License.
          */
 
-        import java.math.BigInteger;
-        import java.util.Arrays;
+import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  * Base58 is a way to encode Bitcoin addresses (or arbitrary data) as alphanumeric strings.
@@ -107,7 +107,7 @@ class Base58 {
             char c = input.charAt(i);
             int digit = c < 128 ? INDEXES[c] : -1;
             if (digit < 0) {
-                throw new IllegalStateException("InvalidCharacter in base 58");
+                throw new IllegalArgumentException("InvalidCharacter in base 58");
             }
             input58[i] = (byte) digit;
         }

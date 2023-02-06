@@ -13,123 +13,181 @@ class UuidNCNameTest {
     @TestFactory
     public List<DynamicTest> dynamicTests_base32() {
         return List.of(
-                dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase32("00000000-0000-0000-0000-000000000000", "aaaaaaaaaaaaaaaaaaaaaaaaaa")),
-                dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase32("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "bzjv6jsglv4pkfkyaarninsfbl")),
-                dynamicTest("000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase32("000003e8-cbb9-21ea-b201-00045a86c8a1", "caaaah2glxepkeaiaarninsfbl")),
-                dynamicTest("3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase32("3d813cbb-47fb-32ba-91df-831e1593ac29", "dhwatzo2h7mv2dx4ddykzhlbjj")),
-                dynamicTest("01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase32("01867b2c-a0dd-459c-98d7-89e545538d6c", "eagdhwlfa3vm4rv4j4vcvhdlmj")),
-                dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32("21f7f8de-8051-5b89-8680-0195ef798b6a", "feh37rxuakg4jnaabsxxxtc3ki"))
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase32("00000000-0000-0000-0000-000000000000", "aaaaaaaaaaaaaaaaaaaaaaaaaa")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase32("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "bzjv6jsglv4pkfkyaarninsfbl")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase32("C232AB00-9414-11EC-B3C8-9E6BDECED846", "byizkwaeucqpmhse6nppm5wcgl")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase32("000003e8-cbb9-21ea-b201-00045a86c8a1", "caaaah2glxepkeaiaarninsfbl")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase32("3d813cbb-47fb-32ba-91df-831e1593ac29", "dhwatzo2h7mv2dx4ddykzhlbjj")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase32("01867b2c-a0dd-459c-98d7-89e545538d6c", "eagdhwlfa3vm4rv4j4vcvhdlmj")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32("21f7f8de-8051-5b89-8680-0195ef798b6a", "feh37rxuakg4jnaabsxxxtc3ki")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase32("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "gd3euctbdfkyahse6nppm5wcgl")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase32("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "haf7sfytzwdgdrrg4bqgaoompj")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "igigd2tomab235sjs2x3jdaoai")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase32("ffffffff-ffff-ffff-ffff-ffffffffffff", "p777777777777777777777777p"))
+        );
+    }
+
+    @TestFactory
+    public List<DynamicTest> dynamicTests_base32_lexical() {
+        return List.of(
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase32Lexical("00000000-0000-0000-0000-000000000000", "a0000000000000000000000002")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase32Lexical("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "bp9lu9i6blsfa5ao00hd8di51v")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase32Lexical("C232AB00-9414-11EC-B3C8-9E6BDECED846", "bo8pam04k2gfc7i4udffctm26v")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase32Lexical("000003e8-cbb9-21ea-b201-00045a86c8a1", "c00007q6bn4fa40800hd8di51v")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase32Lexical("3d813cbb-47fb-32ba-91df-831e1593ac29", "d7m0jpeq7vclq3ns33oap7b19t")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase32Lexical("01867b2c-a0dd-459c-98d7-89e545538d6c", "e0637mb50rlcshls9sl2l73bct")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "f47rvhnk0a6s9d001innnj2ras")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase32Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "g3r4k2j135ao07i4udffctm26v")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase32Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "h05vi5ojpm363hh6s1g60eecft")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "i6863qjec01qrti9iqnr930e0s")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase32Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "pvvvvvvvvvvvvvvvvvvvvvvvvz"))
         );
     }
 
     @TestFactory
     public List<DynamicTest> dynamicTests_base58() {
         return List.of(
-                dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase58("00000000-0000-0000-0000-000000000000", "A111111111111111______A")),
-                dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszL")),
-                dynamicTest("000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase58("000003e8-cbb9-21ea-b201-00045a86c8a1", "C11KtP6Y9P3rRkvh2N1e__L")),
-                dynamicTest("3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase58("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nJ")),
-                dynamicTest("01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase58("01867b2c-a0dd-459c-98d7-89e545538d6c", "E3UZ99RxxUJC1v4dWsYtb_J")),
-                dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58("21f7f8de-8051-5b89-8680-0195ef798b6a", "Fx7wEJfz9eb1TYzsrT7Zs_I"))
-        );
-    }
-
-    @TestFactory
-    public List<DynamicTest> dynamicTests_base58Lexical() {
-        return List.of(
-                dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase58New("00000000-0000-0000-0000-000000000000", "A111111111111111111111A")),
-                dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58New("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszL")),
-                dynamicTest("000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase58New("000003e8-cbb9-21ea-b201-00045a86c8a1", "C1111KtP6Y9P3rRkvh2N1eL")),
-                dynamicTest("3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase58New("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nJ")),
-                dynamicTest("01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase58New("01867b2c-a0dd-459c-98d7-89e545538d6c", "E13UZ99RxxUJC1v4dWsYtbJ")),
-                dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58New("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eb1TYzsrT7ZsI"))
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase58("00000000-0000-0000-0000-000000000000", "A111111111111111______A")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszL")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase58("C232AB00-9414-11EC-B3C8-9E6BDECED846", "B6S7oX73gv2Y1iSjVTT2c5L")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase58("000003e8-cbb9-21ea-b201-00045a86c8a1", "C11KtP6Y9P3rRkvh2N1e__L")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase58("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nJ")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase58("01867b2c-a0dd-459c-98d7-89e545538d6c", "E3UZ99RxxUJC1v4dWsYtb_J")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58("21f7f8de-8051-5b89-8680-0195ef798b6a", "Fx7wEJfz9eb1TYzsrT7Zs_I")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase58("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "GrxRCnDiX4mxSpdi5LEvR_L")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase58("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H3RrXaX7uTM6qdwrXwpC6_J")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHI")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQP"))
         );
     }
 
     @TestFactory
     public List<DynamicTest> dynamicTests_base58_lexical() {
         return List.of(
-                dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase58Lexical("00000000-0000-0000-0000-000000000000", "A111111111111111111111A")),
-                dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58Lexical("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszL")),
-                dynamicTest("000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase58Lexical("000003e8-cbb9-21ea-b201-00045a86c8a1", "C1111KtP6Y9P3rRkvh2N1eL")),
-                dynamicTest("3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase58Lexical("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nJ")),
-                dynamicTest("01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase58Lexical("01867b2c-a0dd-459c-98d7-89e545538d6c", "E13UZ99RxxUJC1v4dWsYtbJ")),
-                dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eb1TYzsrT7ZsI"))
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase58Lexical("00000000-0000-0000-0000-000000000000", "A1111111111111111111112")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase58Lexical("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszV")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase58Lexical("C232AB00-9414-11EC-B3C8-9E6BDECED846", "B6S7oX73gv2Y1iSjVTT2c5V")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase58Lexical("000003e8-cbb9-21ea-b201-00045a86c8a1", "C1111KtP6Y9P3rRkvh2N1eV")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase58Lexical("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nT")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase58Lexical("01867b2c-a0dd-459c-98d7-89e545538d6c", "E13UZ99RxxUJC1v4dWsYtbT")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eb1TYzsrT7ZsS")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase58Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G1rxRCnDiX4mxSpdi5LEvRV")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase58Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H13RrXaX7uTM6qdwrXwpC6T")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHS")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQZ"))
         );
     }
+
     @TestFactory
     public List<DynamicTest> dynamicTests_base64() {
         return List.of(
-                dynamicTest("00000000-0000-0000-0000-000000000000", () -> testBase64("00000000-0000-0000-0000-000000000000", "AAAAAAAAAAAAAAAAAAAAAA")),
-                dynamicTest("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase64("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "BymvkyMuvHqKrAARahsihL")),
-                dynamicTest("000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase64("000003e8-cbb9-21ea-b201-00045a86c8a1", "CAAAD6Mu5HqIBAARahsihL")),
-                dynamicTest("3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase64("3d813cbb-47fb-32ba-91df-831e1593ac29", "DPYE8u0f7K6Hfgx4Vk6wpJ")),
-                dynamicTest("01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase64("01867b2c-a0dd-459c-98d7-89e545538d6c", "EAYZ7LKDdWcjXieVFU41sJ")),
-                dynamicTest("21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase64("21f7f8de-8051-5b89-8680-0195ef798b6a", "FIff43oBRuJaAAZXveYtqI"))
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase64("00000000-0000-0000-0000-000000000000", "AAAAAAAAAAAAAAAAAAAAAA")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase64("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "BymvkyMuvHqKrAARahsihL")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase64("C232AB00-9414-11EC-B3C8-9E6BDECED846", "BwjKrAJQUHsPInmvezthGL")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase64("000003e8-cbb9-21ea-b201-00045a86c8a1", "CAAAD6Mu5HqIBAARahsihL")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase64("3d813cbb-47fb-32ba-91df-831e1593ac29", "DPYE8u0f7K6Hfgx4Vk6wpJ")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase64("01867b2c-a0dd-459c-98d7-89e545538d6c", "EAYZ7LKDdWcjXieVFU41sJ")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase64("21f7f8de-8051-5b89-8680-0195ef798b6a", "FIff43oBRuJaAAZXveYtqI")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase64("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "GHslBTCMqsAPInmvezthGL")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase64("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "HAX8i4nmwzDjE3AwMBzmPJ")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase64("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IMgw9TcwAdb7JMtX2kYHAI")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase64("ffffffff-ffff-ffff-ffff-ffffffffffff", "P____________________P"))
         );
     }
 
-
-
-
+    @TestFactory
+    public List<DynamicTest> dynamicTests_base64_lexical() {
+        return List.of(
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase64Lexical("00000000-0000-0000-0000-000000000000", "A--------------------2")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase64Lexical("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "BmajZmBij6e9f--GPWgXWV")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase64Lexical("C232AB00-9414-11EC-B3C8-9E6BDECED846", "BkY9f-8FJ6gE7bajTnhW5V")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase64Lexical("000003e8-cbb9-21ea-b201-00045a86c8a1", "C---2uBit6e70--GPWgXWV")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase64Lexical("3d813cbb-47fb-32ba-91df-831e1593ac29", "DEN3wioUv9u6UVlsKZukdT")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase64Lexical("01867b2c-a0dd-459c-98d7-89e545538d6c", "E-NOvA92SLRYMXTK4JspgT")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase64Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "F7UUsrc0Gi8P--OMjTNheS")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase64Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G6g_0I1Beg-E7bajTnhW5V")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase64Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H-MwXsbakn2Y3r-kB0naET")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase64Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IBVkxIRk-SQv8BhMqZN6-S")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase64Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "PzzzzzzzzzzzzzzzzzzzzZ"))
+        );
+    }
 
 
     private void testBase32(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
         String actualString = UuidNCName.toBase32(expectedUuid);
-        UUID actualUuid =    UuidNCName.fromBase32(expectedString);
-        UUID actualUuid2 =    UuidNCName.fromString(expectedString);
-        UUID actualUuid3 =    UuidNCName.fromString(canonicalString);
-        assertEquals(expectedString,actualString);
-        assertEquals(expectedUuid,actualUuid);
-        assertEquals(expectedUuid,actualUuid2);
-        assertEquals(expectedUuid, actualUuid3);
+        UUID actualUuid = UuidNCName.fromString(expectedString);
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
+        assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
+    }
+
+    private void testBase32Lexical(String canonicalString, String expectedString) {
+        UUID expectedUuid = UUID.fromString(canonicalString);
+        String actualString = UuidNCName.toBase32Lexical(expectedUuid);
+        UUID actualUuid = UuidNCName.fromString(expectedString);
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
+        assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
+    }
+
+    private static String toUpperCase(String uuidNcName) {
+        // Changing the case of the first and the last characters must yield the same uuid
+        StringBuffer b = new StringBuffer(uuidNcName);
+        b.setCharAt(0, Character.toUpperCase(b.charAt(0)));
+        b.setCharAt(b.length() - 1, Character.toUpperCase(b.charAt(b.length() - 1)));
+        return b.toString();
+    }
+
+    private static String toLowerCase(String uuidNcName) {
+        // Changing the case of the first and the last characters must yield the same uuid
+        StringBuffer b = new StringBuffer(uuidNcName);
+        b.setCharAt(0, Character.toLowerCase(b.charAt(0)));
+        b.setCharAt(b.length() - 1, Character.toLowerCase(b.charAt(b.length() - 1)));
+        return b.toString();
     }
 
     private void testBase58(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
         String actual = UuidNCName.toBase58(expectedUuid);
-        UUID actualUuid = UuidNCName.fromBase58(expectedString);
-        UUID actualUuid2 = UuidNCName.fromString(expectedString);
-        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
+        UUID actualUuid = UuidNCName.fromString(expectedString);
         assertEquals(expectedString, actual);
         assertEquals(expectedUuid, actualUuid);
-        assertEquals(expectedUuid, actualUuid2);
-        assertEquals(expectedUuid, actualUuid3);
-    }
-
-    private void testBase58New(String canonicalString, String expectedString) {
-        UUID expectedUuid = UUID.fromString(canonicalString);
-        String actual = UuidNCName.toBase58Fast(expectedUuid);
-        UUID actualUuid = UuidNCName.fromBase58(expectedString);
-        UUID actualUuid2 = UuidNCName.fromString(expectedString);
-        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
-        assertEquals(expectedString, actual);
-        assertEquals(expectedUuid, actualUuid);
-        assertEquals(expectedUuid, actualUuid2);
-        assertEquals(expectedUuid, actualUuid3);
+        assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
+        assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
     }
 
     private void testBase58Lexical(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
         String actual = UuidNCName.toBase58Lexical(expectedUuid);
-        UUID actualUuid = UuidNCName.fromBase58Lexical(expectedString);
-        UUID actualUuid2 = UuidNCName.fromString(expectedString);
-        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
+        UUID actualUuid = UuidNCName.fromString(expectedString);
         assertEquals(expectedString, actual);
-        assertEquals(expectedUuid,actualUuid);
-        assertEquals(expectedUuid,actualUuid2);
-        assertEquals(expectedUuid,actualUuid3);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
+        assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
     }
+
+
     private void testBase64(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
         String actual = UuidNCName.toBase64(expectedUuid);
-        UUID actualUuid =    UuidNCName.fromBase64(expectedString);
-        UUID actualUuid2 =    UuidNCName.fromString(expectedString);
-        UUID actualUuid3 =    UuidNCName.fromString(canonicalString);
-        assertEquals(expectedString,actual);
-        assertEquals(expectedUuid,actualUuid);
-        assertEquals(expectedUuid,actualUuid2);
-        assertEquals(expectedUuid,actualUuid3);
+        UUID actualUuid = UuidNCName.fromString(expectedString);
+        assertEquals(expectedString, actual);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
+        assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
+    }
+
+    private void testBase64Lexical(String canonicalString, String expectedString) {
+        UUID expectedUuid = UUID.fromString(canonicalString);
+        String actual = UuidNCName.toBase64Lexical(expectedUuid);
+        UUID actualUuid = UuidNCName.fromString(expectedString);
+        UUID actualUuid3 = UuidNCName.fromString(canonicalString);
+        assertEquals(expectedString, actual);
+        assertEquals(expectedUuid, actualUuid);
+        assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
+        assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
     }
 }
