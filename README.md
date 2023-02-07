@@ -43,6 +43,7 @@ Example:
 | 3, MD5       | 3d813cbb-47fb-32ba-91df-831e1593ac29 | dhwatzo2h7mv2dx4ddykzhlbjj |
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | eagdhwlfa3vm4rv4j4vcvhdlmj |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | feh37rxuakg4jnaabsxxxtc3ki |
+| 15, Max      | ffffffff-ffff-ffff-ffff-ffffffffffff | p777777777777777777777777p |
 
 | Version      | uuid-canonical                       | uuid-ncname-32-lexical     |
 |--------------|--------------------------------------|----------------------------|
@@ -65,6 +66,7 @@ Example:
 | 3, MD5       | 3d813cbb-47fb-32ba-91df-831e1593ac29 | D2ioV6oTr9yq6dMojd469nJ |
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | E3UZ99RxxUJC1v4dWsYtb_J |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | Fx7wEJfz9eb1TYzsrT7Zs_I |
+| 15, Max      | ffffffff-ffff-ffff-ffff-ffffffffffff | P8AQGAut7N92awznwCnjuQP |
 
 | Version      | uuid-canonical                       | uuid-ncname-58-lexical  |
 |--------------|--------------------------------------|-------------------------|
@@ -74,6 +76,7 @@ Example:
 | 3, MD5       | 3d813cbb-47fb-32ba-91df-831e1593ac29 | D2ioV6oTr9yq6dMojd469nT |
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | E13UZ99RxxUJC1v4dWsYtbT |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | F1x7wEJfz9eb1TYzsrT7ZsS |
+| 15, Max      | ffffffff-ffff-ffff-ffff-ffffffffffff | P8AQGAut7N92awznwCnjuQZ |
 
 | Version      | uuid-canonical                     | uuid-ncname-64         |
 |--------------|--------------------------------------|------------------------|
@@ -83,6 +86,7 @@ Example:
 | 3, MD5       | 3d813cbb-47fb-32ba-91df-831e1593ac29 | DPYE8u0f7K6Hfgx4Vk6wpJ |
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | EAYZ7LKDdWcjXieVFU41sJ |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | FIff43oBRuJaAAZXveYtqI |
+| 15, Max      | ffffffff-ffff-ffff-ffff-ffffffffffff | P____________________P |
 
 | Version      | uuid-canonical                     | uuid-ncname-64-lexical |
 |--------------|--------------------------------------|------------------------|
@@ -92,3 +96,4 @@ Example:
 | 3, MD5       | 3d813cbb-47fb-32ba-91df-831e1593ac29 | DEN3wioUv9u6UVlsKZukdT |
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c | E-NOvA92SLRYMXTK4JspgT |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a | F7UUsrc0Gi8P--OMjTNheS |
+| 15, Max      | ffffffff-ffff-ffff-ffff-ffffffffffff | PzzzzzzzzzzzzzzzzzzzzZ |
