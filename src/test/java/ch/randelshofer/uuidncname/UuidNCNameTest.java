@@ -30,17 +30,17 @@ class UuidNCNameTest {
     @TestFactory
     public List<DynamicTest> dynamicTests_base32_lexical() {
         return List.of(
-                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase32Lexical("00000000-0000-0000-0000-000000000000", "a0000000000000000000000002")),
-                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase32Lexical("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "bp9lu9i6blsfa5ao00hd8di51v")),
-                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase32Lexical("C232AB00-9414-11EC-B3C8-9E6BDECED846", "bo8pam04k2gfc7i4udffctm26v")),
-                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase32Lexical("000003e8-cbb9-21ea-b201-00045a86c8a1", "c00007q6bn4fa40800hd8di51v")),
-                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase32Lexical("3d813cbb-47fb-32ba-91df-831e1593ac29", "d7m0jpeq7vclq3ns33oap7b19t")),
-                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase32Lexical("01867b2c-a0dd-459c-98d7-89e545538d6c", "e0637mb50rlcshls9sl2l73bct")),
-                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "f47rvhnk0a6s9d001innnj2ras")),
-                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase32Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "g3r4k2j135ao07i4udffctm26v")),
-                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase32Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "h05vi5ojpm363hh6s1g60eecft")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "i6863qjec01qrti9iqnr930e0s")),
-                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase32Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "pvvvvvvvvvvvvvvvvvvvvvvvvz"))
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase32Lexical("00000000-0000-0000-0000-000000000000", "a2222222222222222222222222")),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testBase32Lexical("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "btdpydmafpwje7es22lhchm73v")),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testBase32Lexical("C232AB00-9414-11EC-B3C8-9E6BDECED846", "bscteq26o4kjgbm6yhjjgxq4av")),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testBase32Lexical("000003e8-cbb9-21ea-b201-00045a86c8a1", "c2222buafr6je62c22lhchm73v")),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testBase32Lexical("3d813cbb-47fb-32ba-91df-831e1593ac29", "dbq2ntiubzgpu5rw55setbf3dt")),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testBase32Lexical("01867b2c-a0dd-459c-98d7-89e545538d6c", "e2a5bqf72vpgwlpwdwp4pb5fgt")),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "f6bvzlro2eawdh223mrrrn4ves")),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase32Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "g5v6o4n357es2bm6yhjjgxq4av")),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase32Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "h27zm7sntq5a5llaw3ka2iigjt")),
+                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "iaca5unig23uvxmdmurvd52i2s")),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase32Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "pzzzzzzzzzzzzzzzzzzzzzzzzz"))
         );
     }
 

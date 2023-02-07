@@ -12,13 +12,13 @@ public class UuidNCName {
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
             'u', 'v', 'w', 'x', 'y', 'z',
-            '2', '3', '4', '5', '6', '7'
+            '2', '3', '4', '5', '6', '7',
     };
     private static final byte[] BASE_32_UPPER_CASE = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
             'U', 'V', 'W', 'X', 'Y', 'Z',
-            '2', '3', '4', '5', '6', '7'
+            '2', '3', '4', '5', '6', '7',
     };
     private static final byte[] VARIANT_LEXICAL_LOWER_CASE = {
             '2', '3', '4', '5', '6', '7',
@@ -31,16 +31,16 @@ public class UuidNCName {
             'U', 'V', 'W', 'X', 'Y', 'Z'
     };
     private static final byte[] BASE_32_LEXICAL_LOWER_CASE = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            '2', '3', '4', '5', '6', '7',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
             'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-            'u', 'v',
+            'u', 'v', 'w', 'x', 'y', 'z',
     };
     private static final byte[] BASE_32_LEXICAL_UPPER_CASE = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            '2', '3', '4', '5', '6', '7',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-            'U', 'V',
+            'U', 'V', 'W', 'X', 'Y', 'Z',
     };
     private static final byte[] BASE_64_URL_SAFE = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
