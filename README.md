@@ -45,23 +45,23 @@ Here is the ABNF grammar for the supported productions:
     padding-o      = "1" ;
     
     base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
-    base32-lex      = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
+    base32-lex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
 
     base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
 
-    base64-url      = %x30-39 / %x41-5a / %x61-7a / %x2d / %x5f ; [A-Z_a-z0-9\-_]
-    base64-lex      = %x2d / %x30-39 / %x41-5a / %x5f / %x61-7a ; [-0-9A-Z_a-z]
+    base64-url     = %x30-39 / %x41-5a / %x61-7a / %x2d / %x5f ; [A-Z_a-z0-9\-_]
+    base64-lex     = %x2d / %x30-39 / %x41-5a / %x5f / %x61-7a ; [-0-9A-Z_a-z]
 
 ## Detection Heuristic
 
 All encodings are fixed length:
 
-* `uuid-canonical` is always 36 characters; contains 4 dashes.
+* `uuid-canonical` is always 36 characters; contains 4 dashes.<br><br>
 
 * `uuid-ncname-32` is always 26 characters; starts and ends with `bookend`.
 * `uuid-ncname-58` is always 23 characters; starts and ends with `bookend`;
   the `base58` digits are padded to the right with '_' characters.
-* `uuid-ncName-64` is always 22 characters; starts and ends with `bookend`.
+* `uuid-ncName-64` is always 22 characters; starts and ends with `bookend`.<br><br>
 
 * `uuid-ncname-32-lex` is always 26 characters; starts with `bookend` and ends with `bookend-lex`.
 * `uuid-ncname-58-lex` is always 23 characters; starts with `bookend` and ends with `bookend-lex`;
