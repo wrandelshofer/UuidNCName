@@ -74,7 +74,8 @@ class UuidNCNameTest {
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase58Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G1rxRCnDiX4mxSpdi5LEvRV")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase58Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H13RrXaX7uTM6qdwrXwpC6T")),
                 dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHS")),
-                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQZ"))
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQZ")),
+                dynamicTest("15 XXX,      00000000-0000-f000-f000-00003fffffff", () -> testBase58Lexical("00000000-0000-f000-f000-00003fffffff", "P1111111111111112dtD34Z"))
         );
     }
 

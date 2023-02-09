@@ -334,7 +334,7 @@ public class UuidNCName {
         byte[] b = new byte[23];
         long msb = getMsb(uuid);
         long lsb = getLsb(uuid);
-        FastBase58.encode58x58(msb, lsb, b, 1);
+        FastBase58.encode58p3(msb, lsb, b, 1);
         b[22] = VARIANT_LEXICAL_UPPER_CASE[getVariant(uuid)];
         b[0] = BASE_32_UPPER_CASE[uuid.version()];
         return new String(b, StandardCharsets.ISO_8859_1);

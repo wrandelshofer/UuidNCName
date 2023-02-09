@@ -29,18 +29,19 @@ Here is the ABNF grammar for the supported productions:
 
     uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit
     
-    uuid-ncname-32     = bookend 24base32                bookend
-    uuid-ncname-58     = bookend 15*21base58 *6padding-u bookend
-    uuid-ncname-64     = bookend 20base64-url            bookend
+    uuid-ncname-32     = version 24base32                variant
+    uuid-ncname-58     = version 15*21base58 *6padding-u variant
+    uuid-ncname-64     = version 20base64-url            variant
 
-    uuid-ncname-32-lex = bookend 24base32-lex            bookend-lex
-    uuid-ncname-58-lex = bookend *6padding-o 15*21base58 bookend-lex
-    uuid-ncname-64-lex = bookend 20base64-lex            bookend-lex
+    uuid-ncname-32-lex = version 24base32-lex            variant-lex
+    uuid-ncname-58-lex = version *6padding-o 15*21base58 variant-lex
+    uuid-ncname-64-lex = version 20base64-lex            variant-lex
 
     hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
 
-    bookend        = %x41-50 / %x61-70 ; [A-Pa-p]
-    bookend-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
+    version        = %x41-50 / %x61-70 ; [A-Pa-p]
+    variant        = %x41-50 / %x61-70 ; [A-Pa-p]
+    variant-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
     padding-u      = "_" ;
     padding-o      = "1" ;
     
@@ -63,10 +64,10 @@ All encodings are fixed length:
   the `base58` digits are padded to the right with '_' characters.
 * `uuid-ncName-64` is always 22 characters; starts and ends with `bookend`.<br><br>
 
-* `uuid-ncname-32-lex` is always 26 characters; starts with `bookend` and ends with `bookend-lex`.
-* `uuid-ncname-58-lex` is always 23 characters; starts with `bookend` and ends with `bookend-lex`;
+* `uuid-ncname-32-lex` is always 26 characters; starts with `bookend` and ends with `variant-lex`.
+* `uuid-ncname-58-lex` is always 23 characters; starts with `bookend` and ends with `variant-lex`;
   the `base58` digits are padded to the left with '1' characters.
-* `uuid-ncName-64-lex` is always 22 characters; starts with `bookend` and ends with `bookend-lex`.
+* `uuid-ncName-64-lex` is always 22 characters; starts with `bookend` and ends with `variant-lex`.
 
 ## Examples
 
