@@ -146,21 +146,6 @@ public class UuidNCName {
         return bits;
     }
 
-    private static byte[] readBase58(String string, int endIndex) {
-        byte[] bytes = Base58.decode(string.substring(1, endIndex));
-        if (bytes.length < 16) {
-            byte[] tmp = bytes;
-            bytes = new byte[16];
-            System.arraycopy(tmp, 0, bytes, bytes.length - tmp.length, tmp.length);
-        }
-        for (int i = 0; i < bytes.length - 16; i++) {
-            if (bytes[i] != 0) {
-                throw new IllegalArgumentException("UUID string has " + (bytes.length * 8 + 8) + " bits instead of 128 bits.");
-            }
-        }
-        return bytes;
-    }
-
     private static long readBase64(String str, int offset, byte[] charToBaseMap) {
         long bits = 0;
         for (int i = 0; i < 10; i++) {
@@ -206,6 +191,12 @@ public class UuidNCName {
         return readMsb(bits, version);
     }
 
+    private static long readMsbNew(byte[] bytes, int version) {
+        long bits = ((long) readLongBE.get(bytes, 1) << 4)
+                | (bytes[9] >>> 4);
+        return readMsb(bits, version);
+    }
+
     private static void writeUnsignedLong(byte[] str, int offset, long val, byte[] alphabet, int len, int shift, int mask) {
         int i = offset + len;
         do {
@@ -224,7 +215,7 @@ public class UuidNCName {
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
     }
 
-    private static UUID fromBase32Lexical(String str) {
+    private static UUID fromBase32Lex(String str) {
         if (str.length() != 26)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 26.");
         long msb = readBase32(str, 1, CHAR_TO_BASE_32_LEXICAL_MAP);
@@ -240,25 +231,28 @@ public class UuidNCName {
         int version = readVersion(str);
         int variant = readVariant(str, CHAR_TO_BASE_32_MAP);
         int endIndex = 22;
-        while (str.charAt(endIndex - 1) == '_' && endIndex > 1) {
+        while (str.charAt(endIndex - 1) == '_' && endIndex > 0) {
             endIndex--;
         }
-        byte[] bytes = readBase58(str, endIndex);
-        long msb = readMsb(bytes, version);
-        long lsb = readLsb(bytes, variant);
+        if (endIndex < 16)
+            throw new IllegalArgumentException("UUID string has too many '_' characters.");
+        int[] uint30 = FastBase58.decode58(str, 1, endIndex);
+        long msb = readMsb((((long) uint30[0] << 30) | uint30[1]), version);
+        long lsb = readLsb(((long) uint30[2] << 30) | uint30[3], variant);
         return new UUID(msb, lsb);
     }
 
-    private static UUID fromBase58Lexical(String str) {
+    private static UUID fromBase58Lex(String str) {
         if (str.length() != 23)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 23.");
         int version = readVersion(str);
         int variant = readVariant(str, CHAR_TO_VARIANT_LEXICAL_MAP);
-        byte[] bytes = readBase58(str, 22);
-        long msb = readMsb(bytes, version);
-        long lsb = readLsb(bytes, variant);
+        int[] uint30 = FastBase58.decode58Lex(str, 1, 21);
+        long msb = readMsb((((long) uint30[0] << 30) | uint30[1]), version);
+        long lsb = readLsb(((long) uint30[2] << 30) | uint30[3], variant);
         return new UUID(msb, lsb);
     }
+
 
     public static UUID fromBase64(String str) {
         if (str.length() != 22)
@@ -270,7 +264,7 @@ public class UuidNCName {
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
     }
 
-    public static UUID fromBase64Lexical(String str) {
+    public static UUID fromBase64Lex(String str) {
         if (str.length() != 22)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
         long msb = readBase64(str, 1, CHAR_TO_BASE_64_LEXICAL_MAP);
@@ -284,9 +278,9 @@ public class UuidNCName {
         char variantChar = str.charAt(str.length() - 1);
         int isLexical = (variantChar < 128) && CHAR_TO_VARIANT_LEXICAL_MAP[variantChar] >= 0 ? -22 : 0;
         return switch (str.length() + isLexical) {
-            case 0 -> fromBase64Lexical(str);
-            case 1 -> fromBase58Lexical(str);
-            case 4 -> fromBase32Lexical(str);
+            case 0 -> fromBase64Lex(str);
+            case 1 -> fromBase58Lex(str);
+            case 4 -> fromBase32Lex(str);
             case 22 -> fromBase64(str);
             case 23 -> fromBase58(str);
             case 26 -> fromBase32(str);
@@ -303,7 +297,7 @@ public class UuidNCName {
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase32Lexical(UUID uuid) {
+    public static String toBase32Lex(UUID uuid) {
         byte[] str = new byte[26];
         str[0] = BASE_32_LOWER_CASE[uuid.version()];
         str[25] = VARIANT_LEXICAL_LOWER_CASE[getVariant(uuid)];
@@ -312,48 +306,25 @@ public class UuidNCName {
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
+
     public static String toBase58(UUID uuid) {
-        byte[] b = new byte[23];
-        b[0] = BASE_32_UPPER_CASE[uuid.version()];
-        b[22] = BASE_32_UPPER_CASE[getVariant(uuid)];
-
-        byte[] raw = new byte[15];
-        long msb = getMsb(uuid);
-        readLongBE.set(raw, 0, msb << 4);
-        readLongBE.set(raw, 7, msb << 60 | getLsb(uuid));
-        byte[] encoded = Base58.encode(raw).getBytes(StandardCharsets.ISO_8859_1);
-        System.arraycopy(encoded, 0, b, 1, encoded.length);
-        for (int i = encoded.length; i < 21; i++) {
-            b[i + 1] = '_';
-        }
-
-        return new String(b, StandardCharsets.ISO_8859_1);
-    }
-
-    public static String toBase58Lexical(UUID uuid) {
-        byte[] b = new byte[23];
+        byte[] b = new byte[24];
         long msb = getMsb(uuid);
         long lsb = getLsb(uuid);
-        FastBase58.encode58p3(msb, lsb, b, 1);
-        b[22] = VARIANT_LEXICAL_UPPER_CASE[getVariant(uuid)];
-        b[0] = BASE_32_UPPER_CASE[uuid.version()];
-        return new String(b, StandardCharsets.ISO_8859_1);
+        FastBase58.encode58(msb, lsb, b, 2);
+        b[23] = BASE_32_UPPER_CASE[getVariant(uuid)];
+        b[1] = BASE_32_UPPER_CASE[uuid.version()];
+        return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase58LexicalSlow(UUID uuid) {
-        byte[] b = new byte[23];
-        b[0] = BASE_32_UPPER_CASE[uuid.version()];
-        b[22] = VARIANT_LEXICAL_UPPER_CASE[getVariant(uuid)];
-        byte[] raw = new byte[15];
+    public static String toBase58Lex(UUID uuid) {
+        byte[] b = new byte[24];
         long msb = getMsb(uuid);
-        readLongBE.set(raw, 0, msb << 4);
-        readLongBE.set(raw, 7, msb << 60 | getLsb(uuid));
-        byte[] encoded = Base58.encode(raw).getBytes(StandardCharsets.ISO_8859_1);
-        System.arraycopy(encoded, 0, b, 22 - encoded.length, encoded.length);
-        for (int i = 1; i < 22 - encoded.length; i++) {
-            b[i] = '1';
-        }
-        return new String(b, StandardCharsets.ISO_8859_1);
+        long lsb = getLsb(uuid);
+        FastBase58.encode58Lex(msb, lsb, b, 2);
+        b[23] = VARIANT_LEXICAL_UPPER_CASE[getVariant(uuid)];
+        b[1] = BASE_32_UPPER_CASE[uuid.version()];
+        return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
     }
 
     public static String toBase64(UUID uuid) {

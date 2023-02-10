@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 class UuidNCNameTest {
@@ -57,7 +58,8 @@ class UuidNCNameTest {
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase58("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "GrxRCnDiX4mxSpdi5LEvR_L")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase58("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H3RrXaX7uTM6qdwrXwpC6_J")),
                 dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHI")),
-                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQP"))
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQP")),
+                dynamicTest("15 XXX,      00000000-0000-f000-f000-00003fffffff", () -> testBase58("00000000-0000-f000-f000-00003fffffff", "P111111111112dtD34____P"))
         );
     }
 
@@ -97,6 +99,22 @@ class UuidNCNameTest {
     }
 
     @TestFactory
+    public List<DynamicTest> dynamicTests_illegalInput() {
+        return List.of(
+                dynamicTest("base-64 one less than Nil", () -> testIllegalInput("AAAAAAAAAAAAAAAAAAAA@A")),
+                dynamicTest("base-58 one less than Nil", () -> testIllegalInput("A11111111111111_______A")),
+
+                dynamicTest("base-58 one more than Max", () -> testIllegalInput("P8AQGAut7N92awznwCnjuRP")),
+                dynamicTest("base-58-lex one more than Max", () -> testIllegalInput("P8AQGAut7N92awznwCnjuRZ")),
+
+                dynamicTest("base-58 many more than Max", () -> testIllegalInput("PZZZZZZZZZZZZZZZZZZZZZP")),
+                dynamicTest("base-58-lex many more than Max", () -> testIllegalInput("PZZZZZZZZZZZZZZZZZZZZZP")),
+
+                dynamicTest("base-64 one more than Max", () -> testIllegalInput("P___________________`P"))
+        );
+    }
+
+    @TestFactory
     public List<DynamicTest> dynamicTests_base64_lexical() {
         return List.of(
                 dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testBase64Lexical("00000000-0000-0000-0000-000000000000", "A--------------------2")),
@@ -126,7 +144,7 @@ class UuidNCNameTest {
 
     private void testBase32Lexical(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
-        String actualString = UuidNCName.toBase32Lexical(expectedUuid);
+        String actualString = UuidNCName.toBase32Lex(expectedUuid);
         UUID actualUuid = UuidNCName.fromString(expectedString);
         assertEquals(expectedString, actualString);
         assertEquals(expectedUuid, actualUuid);
@@ -162,7 +180,7 @@ class UuidNCNameTest {
 
     private void testBase58Lexical(String canonicalString, String expectedString) {
         UUID expectedUuid = UUID.fromString(canonicalString);
-        String actual = UuidNCName.toBase58Lexical(expectedUuid);
+        String actual = UuidNCName.toBase58Lex(expectedUuid);
         UUID actualUuid = UuidNCName.fromString(expectedString);
         assertEquals(expectedString, actual);
         assertEquals(expectedUuid, actualUuid);
@@ -179,6 +197,10 @@ class UuidNCNameTest {
         assertEquals(expectedUuid, actualUuid);
         assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
         assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
+    }
+
+    private void testIllegalInput(String inputString) {
+        assertThrows(IllegalArgumentException.class, () -> UuidNCName.fromString(inputString));
     }
 
     private void testBase64Lexical(String canonicalString, String expectedString) {
