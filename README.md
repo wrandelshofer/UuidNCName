@@ -103,8 +103,8 @@ The `version` and `variant` fields are interspersed in the `data` field.
 ### Format uuid-ncname-32
 
 1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
-2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a [`bookend`](#bookend) character.
+2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a lower-case [`bookend`](#bookend) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
    This yields 24 digits (padded with leading zeroes).
 5. `data-chars :=` Encode each `data-digits` digit with a [`base32`](#base32) character.
@@ -113,8 +113,8 @@ The `version` and `variant` fields are interspersed in the `data` field.
 ### Format uuid-ncname-58
 
 1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
-2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a [`bookend`](#bookend) character.
+2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a upper-case [`bookend`](#bookend) character.
 4. `data-chars :=` Encode the 120-bit `data` field with the
    [Base58 encoding algorithm][base58-encoding-algorithm].<br>
    This yields 15 to 21 characters.
@@ -125,42 +125,42 @@ The `version` and `variant` fields are interspersed in the `data` field.
 ### Format uuid-ncname-64
 
 1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
-2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a [`bookend`](#bookend) character.
+2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a upper-case [`bookend`](#bookend) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-64.<br>
    This yields 20 digits (padded with leading zeroes).
 5. `data-chars :=` Encode each `data-digits` digit with a [`base64-url`](#base64-url) character.
-6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
+6. `uuid-ncname-64 :=` Concat `version-char`, `data-chars`, `variant-char`.
 
 ### Format uuid-ncname-32-lex
 
 1. `version,variant,data :=` Extract fields from the `UUID`
-2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a [`bookend-lex`](#bookend-lex) character.
+2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a lower-case [`bookend-lex`](#bookend-lex) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
    This yields 24 digits (padded with leading zeroes).
 5. `data-chars :=` Encode each digit with a [`base32-lex`](#base32-lex) character.
-6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
+6. `uuid-ncname-32-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
 
 ### Format uuid-ncname-58-lex
 
 1. `version,variant,data :=` Extract fields from the `UUID`
-2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a [`bookend-lex`](#bookend-lex) character.
+2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a upper-case [`bookend-lex`](#bookend-lex) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-58.<br>
    This yields 21 digits (padded with leading zeroes).
 5. `data-chars :=` Encode each digit with a [`base58`](#base58) character.
-6. `uuid-ncname-58 :=` Concat `version-char`, `data-chars`, `variant-char`.
+6. `uuid-ncname-58-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
 
 ### Format uuid-ncname-64-lex
 
 1. `version,variant,data :=` Extract fields from the `UUID`
-2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a [`bookend-lex`](#bookend-lex) character.
+2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a upper-case [`bookend-lex`](#bookend-lex) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-64.<br>
    This yields 20 digits (padded with leading zeroes).
 5. `data-chars :=` Encode each digit with a [`base64-lex`](#base64-lex) character.
-6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
+6. `uuid-ncname-64-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
 
 ## Examples
 
