@@ -1,17 +1,17 @@
 # UuidNCName
 
-UuidNCName converts [UUID](https://www.rfc-editor.org/rfc/rfc4122)s to/from valid NCName productions for use in (X|HT)
+UuidNCName converts [UUID][UUID-specification]s to/from valid NCName productions for use in (X|HT)
 ML.
 
-This is an implementation of the draft specification "Compact UUIDs for Constrained Grammars"
-https://www.ietf.org/id/draft-taylor-uuid-ncname-03.html
+This is an implementation of the draft specification
+["Compact UUIDs for Constrained Grammars"][UUID-NCName-specification]
 
 This implementation supports 3 additional "lexical" formats.
 The "lexical" formats have the same lexicographic order like the "canonical" UUID format
 (when the Unicode character set and the same UUID version is used). This is useful for ids
 that use
-the [UUIDv6](https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-6)
-or [UUIDv7](https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-6) format.
+the [UUIDv6][UUIDv6-specification]
+or [UUIDv7][UUIDv7-specification] format.
 
 The supported formats are:
 
@@ -27,47 +27,140 @@ The supported formats are:
 
 Here is the ABNF grammar for the supported productions:
 
-    uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit
+<pre>
+    <a id="uuid-canonical"/>uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit ;
     
-    uuid-ncname-32     = version 24base32                variant
-    uuid-ncname-58     = version 15*21base58 *6padding-u variant
-    uuid-ncname-64     = version 20base64-url            variant
+    <a id="uuid-ncname-32"/>uuid-ncname-32     = version 24base32                variant ;
+    <a id="uuid-ncname-58"/>uuid-ncname-58     = version 15*21base58 *6padding-u variant ;
+    <a id="uuid-ncname-64"/>uuid-ncname-64     = version 20base64-url            variant ;
 
-    uuid-ncname-32-lex = version 24base32-lex            variant-lex
-    uuid-ncname-58-lex = version *6padding-o 15*21base58 variant-lex
-    uuid-ncname-64-lex = version 20base64-lex            variant-lex
+    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = version 24base32-lex            variant-lex ;
+    <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = version *6padding-o 15*21base58 variant-lex ;
+    <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = version 20base64-lex            variant-lex ;
 
-    hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
+    <a id="hexDigit"/>hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
 
-    version        = %x41-50 / %x61-70 ; [A-Pa-p]
-    variant        = %x41-50 / %x61-70 ; [A-Pa-p]
-    variant-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
+    version        = bookend ;
+    variant        = bookend ;
+    variant-lex    = bookend-lex ;
+    <a id="bookend"/>bookend        = %x41-50 / %x61-70 ; [A-Pa-p]
+    <a id="bookend-lex"/>bookend-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
     padding-u      = "_" ;
     padding-o      = "1" ;
     
-    base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
-    base32-lex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
+    <a id="base32"/>base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
+    <a id="base32-lex"/>base32-lex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
 
-    base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
+    <a id="base58"/>base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
 
-    base64-url     = %x30-39 / %x41-5a / %x61-7a / %x2d / %x5f ; [A-Z_a-z0-9\-_]
-    base64-lex     = %x2d / %x30-39 / %x41-5a / %x5f / %x61-7a ; [-0-9A-Z_a-z]
+    <a id="base64-url"/>base64-url     = %x30-39 / %x41-5a / %x61-7a / %x2d / %x5f ; [A-Z_a-z0-9\-_]
+    <a id="base64-lex"/>base64-lex     = %x2d / %x30-39 / %x41-5a / %x5f / %x61-7a ; [-0-9A-Z_a-z]
+</pre>
 
 ## Detection Heuristic
 
 All encodings are fixed length:
 
-* `uuid-canonical` is always 36 characters; contains 4 dashes.<br><br>
+* [`uuid-canonical`](#uuid-canonical) is 36 characters; contains 4 dashes.<br><br>
 
-* `uuid-ncname-32` is always 26 characters; starts and ends with `bookend`.
-* `uuid-ncname-58` is always 23 characters; starts and ends with `bookend`;
-  the `base58` digits are padded to the right with '_' characters.
-* `uuid-ncName-64` is always 22 characters; starts and ends with `bookend`.<br><br>
+* [`uuid-ncname-32`](#uuid-ncname-32) is 26 characters; starts and ends with [`bookend`](#bookend).
+* [`uuid-ncname-58`](#uuid-ncname-58) is 23 characters; starts and ends with [`bookend`](#bookend).
+* [`uuid-ncName-64`](#uuid-ncname-64) is 22 characters; starts and ends with [`bookend`](#bookend).<br><br>
 
-* `uuid-ncname-32-lex` is always 26 characters; starts with `bookend` and ends with `variant-lex`.
-* `uuid-ncname-58-lex` is always 23 characters; starts with `bookend` and ends with `variant-lex`;
-  the `base58` digits are padded to the left with '1' characters.
-* `uuid-ncName-64-lex` is always 22 characters; starts with `bookend` and ends with `variant-lex`.
+* [`uuid-ncname-32-lex`](#uuid-ncname-32-lex) is 26 characters; starts with [`bookend`](#bookend); ends
+  with [`bookend-lex`](#bookend-lex).
+* [`uuid-ncname-58-lex`](#uuid-ncname-58-lex) is 23 characters; starts with [`bookend`](#bookend); ends
+  with [`bookend-lex`](#bookend-lex).
+* [`uuid-ncName-64-lex`](#uuid-ncname-64-lex) is 22 characters; starts with [`bookend`](#bookend); ends
+  with [`bookend-lex`](#bookend-lex).
+
+## Algorithms
+
+### Extract Fields from an UUID
+
+An <a id="UUID"/>`UUID` is a 128-bit unsigned integer in big-endian order.<br>
+
+It consists of the fields `version`, `variant` and `data`.<br>
+The `version` and `variant` fields are interspersed in the `data` field.
+
+1. `version` is a 4-bit unsigned integer in big-endian order.<br>
+   Extract bits 0x00000000_0000_f000_0000_000000000000 from the UUID,
+   and compress them into 4 bits.
+2. `variant` is a 4-bit unsigned integer in big-endian order.<br>
+   Extract bits 0x00000000_0000_0000_f000_000000000000 from the UUID,
+   and compress them into 4 bits.
+3. `data` is a 120-bit unsigned integer in big-endian order.<br>
+   Extract bits 0xffffffff_ffff_0fff_0fff_ffffffffffff from the UUID,
+   and compress them into 120 bits.
+
+### Format uuid-canonical
+
+1. `uuid-digits :=` Convert the 128-bit `UUID` from binary to base-16.<br>
+   This yields 32 digits (padded with leading zeroes).
+2. `uuid-chars :=` Encode each `uuid-digits` digit with a [`hexDigit`](#hexDigit) character.
+3. `uuid-canonical :=` Insert a '-' character after `uuid-chars` at 8, 12, 16 and 24.
+
+### Format uuid-ncname-32
+
+1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
+2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a [`bookend`](#bookend) character.
+4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
+   This yields 24 digits (padded with leading zeroes).
+5. `data-chars :=` Encode each `data-digits` digit with a [`base32`](#base32) character.
+6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
+
+### Format uuid-ncname-58
+
+1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
+2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a [`bookend`](#bookend) character.
+4. `data-chars :=` Encode the 120-bit `data` field with the
+   [Base58 encoding algorithm][base58-encoding-algorithm].<br>
+   This yields 15 to 21 characters.
+5. `data-chars-padded :=` Pad the `data-chars` with trailing '_' chars
+   to reach a total length of 21 characters.
+6. `uuid-ncname-58 :=` Concat `version-char`, `data-chars-padded`, `variant-char`.
+
+### Format uuid-ncname-64
+
+1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
+2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a [`bookend`](#bookend) character.
+4. `data-digits :=` Convert the 120-bit `data` field from binary to base-64.<br>
+   This yields 20 digits (padded with leading zeroes).
+5. `data-chars :=` Encode each `data-digits` digit with a [`base64-url`](#base64-url) character.
+6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
+
+### Format uuid-ncname-32-lex
+
+1. `version,variant,data :=` Extract fields from the `UUID`
+2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a [`bookend-lex`](#bookend-lex) character.
+4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
+   This yields 24 digits (padded with leading zeroes).
+5. `data-chars :=` Encode each digit with a [`base32-lex`](#base32-lex) character.
+6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
+
+### Format uuid-ncname-58-lex
+
+1. `version,variant,data :=` Extract fields from the `UUID`
+2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a [`bookend-lex`](#bookend-lex) character.
+4. `data-digits :=` Convert the 120-bit `data` field from binary to base-58.<br>
+   This yields 21 digits (padded with leading zeroes).
+5. `data-chars :=` Encode each digit with a [`base58`](#base58) character.
+6. `uuid-ncname-58 :=` Concat `version-char`, `data-chars`, `variant-char`.
+
+### Format uuid-ncname-64-lex
+
+1. `version,variant,data :=` Extract fields from the `UUID`
+2. `version-char :=` Encode `version` with a [`bookend`](#bookend) character.
+3. `variant-char :=` Encode `variant` with a [`bookend-lex`](#bookend-lex) character.
+4. `data-digits :=` Convert the 120-bit `data` field from binary to base-64.<br>
+   This yields 20 digits (padded with leading zeroes).
+5. `data-chars :=` Encode each digit with a [`base64-lex`](#base64-lex) character.
+6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
 
 ## Examples
 
@@ -109,3 +202,13 @@ All encodings are fixed length:
 | 7 Timestamp  | h27zm7sntq5a5llaw3ka2iigjt | H13RrXaX7uTM6qdwrXwpC6T | H-MwXsbakn2Y3r-kB0naET |
 | 8 Vendor     | iaca5unig23uvxmdmurvd52i2s | I2QDDTZysWZ5jcKS6HJDmHS | IBVkxIRk-SQv8BhMqZN6-S |
 | 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P8AQGAut7N92awznwCnjuQZ | PzzzzzzzzzzzzzzzzzzzzZ |
+
+[UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
+
+[UUIDv6-specification]: https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-6
+
+[UUIDv7-specification]: https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-7
+
+[UUID-NCName-specification]: https://www.ietf.org/id/draft-taylor-uuid-ncname-03.html
+
+[base58-encoding-algorithm]: https://datatracker.ietf.org/doc/html/draft-msporny-base58-02#section-3
