@@ -34,9 +34,9 @@ Here is the ABNF grammar for the supported productions:
     <a id="uuid-ncname-58"/>uuid-ncname-58     = version 15*21base58 *6padding-u variant ;
     <a id="uuid-ncname-64"/>uuid-ncname-64     = version 20base64-url            variant ;
 
-    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = version 24base32-lex            variant-lex ;
-    <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = version *6padding-o 15*21base58 variant-lex ;
-    <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = version 20base64-lex            variant-lex ;
+    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = version 24base32-lex variant-lex ;
+    <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = version 21base58     variant-lex ;
+    <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = version 20base64-lex variant-lex ;
 
     <a id="hexDigit"/>hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
 
