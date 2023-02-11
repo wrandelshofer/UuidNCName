@@ -23,7 +23,7 @@ class UuidNCNameTest {
                 dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32("21f7f8de-8051-5b89-8680-0195ef798b6a", "feh37rxuakg4jnaabsxxxtc3ki")),
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase32("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "gd3euctbdfkyahse6nppm5wcgl")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase32("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "haf7sfytzwdgdrrg4bqgaoompj")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "igigd2tomab235sjs2x3jdaoai")),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "igigd2tomab235sjs2x3jdaoai")),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase32("ffffffff-ffff-ffff-ffff-ffffffffffff", "p777777777777777777777777p"))
         );
     }
@@ -40,7 +40,7 @@ class UuidNCNameTest {
                 dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase32Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "f6bvzlro2eawdh223mrrrn4ves")),
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase32Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "g5v6o4n357es2bm6yhjjgxq4av")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase32Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "h27zm7sntq5a5llaw3ka2iigjt")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "iaca5unig23uvxmdmurvd52i2s")),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase32Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "iaca5unig23uvxmdmurvd52i2s")),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase32Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "pzzzzzzzzzzzzzzzzzzzzzzzzz"))
         );
     }
@@ -57,7 +57,7 @@ class UuidNCNameTest {
                 dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58("21f7f8de-8051-5b89-8680-0195ef798b6a", "Fx7wEJfz9eb1TYzsrT7Zs_I")),
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase58("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "GrxRCnDiX4mxSpdi5LEvR_L")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase58("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H3RrXaX7uTM6qdwrXwpC6_J")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHI")),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHI")),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQP")),
                 dynamicTest("15 XXX,      00000000-0000-f000-f000-00003fffffff", () -> testBase58("00000000-0000-f000-f000-00003fffffff", "P111111111112dtD34____P"))
         );
@@ -75,7 +75,7 @@ class UuidNCNameTest {
                 dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase58Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eb1TYzsrT7ZsS")),
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase58Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G1rxRCnDiX4mxSpdi5LEvRV")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase58Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H13RrXaX7uTM6qdwrXwpC6T")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHS")),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase58Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHS")),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase58Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQZ")),
                 dynamicTest("15 XXX,      00000000-0000-f000-f000-00003fffffff", () -> testBase58Lexical("00000000-0000-f000-f000-00003fffffff", "P1111111111111112dtD34Z"))
         );
@@ -93,7 +93,7 @@ class UuidNCNameTest {
                 dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase64("21f7f8de-8051-5b89-8680-0195ef798b6a", "FIff43oBRuJaAAZXveYtqI")),
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase64("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "GHslBTCMqsAPInmvezthGL")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase64("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "HAX8i4nmwzDjE3AwMBzmPJ")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase64("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IMgw9TcwAdb7JMtX2kYHAI")),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase64("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IMgw9TcwAdb7JMtX2kYHAI")),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase64("ffffffff-ffff-ffff-ffff-ffffffffffff", "P____________________P"))
         );
     }
@@ -126,7 +126,7 @@ class UuidNCNameTest {
                 dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testBase64Lexical("21f7f8de-8051-5b89-8680-0195ef798b6a", "F7UUsrc0Gi8P--OMjTNheS")),
                 dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testBase64Lexical("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G6g_0I1Beg-E7bajTnhW5V")),
                 dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testBase64Lexical("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H-MwXsbakn2Y3r-kB0naET")),
-                dynamicTest("8 Vendor,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase64Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IBVkxIRk-SQv8BhMqZN6-S")),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testBase64Lexical("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IBVkxIRk-SQv8BhMqZN6-S")),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testBase64Lexical("ffffffff-ffff-ffff-ffff-ffffffffffff", "PzzzzzzzzzzzzzzzzzzzzZ"))
         );
     }
