@@ -143,7 +143,7 @@ public class FastBase58 {
         readIntLE.set(out, 4, (int) (low >> 30));
         readIntLE.set(out, 0, (int) low & mask30);
 
-        // Each division by 58^3 (=195112) shortens the number by 17.57 bits.
+        // Each division by 58^3 (=195112) shortens the number by 17.5739 bits.
         // Therefore, we can process 17.5739 fewer bits in each iteration.
         // This means, that we can skip 17.5739/30=0.5857 'digits' in each iteration.
         // We approximate this with 37/64=37>>>6=0.5781.
@@ -162,12 +162,14 @@ public class FastBase58 {
     }
 
     /**
-     * Divides a number, represented as an array of bytes.
+     * Divides a number that is represented by an array of bytes.
      * <p>
      * Each block of 4 bytes contains a 'digit' in the base {@code 1<<baseShift}.
-     * The digits are ordered in little endian order. That is, the least significant
+     * The 'digits' are ordered in little endian order. That is, the least significant
      * digit is stored in the block 0, and the most significant digit is stored
      * in block 3.
+     *  A 'digit' is treated as an unsigned integer of 32 bits in little-endian order
+     *  (uint32le).
      * <p>
      * The given number is modified in-place
      * to contain the quotient, and the return value is the remainder.
@@ -194,20 +196,22 @@ public class FastBase58 {
     }
 
     /**
-     * Decodes the given base58 string into 4 chunks of 30 bits.
+     * Decodes the given base58-lex string into 4 chunks of 30 bits.
      *
      * @param input the base58-encoded string to decode
+     * @param from  the index (inclusive) of the first character in input to be decoded
+     * @param to    the index (exclusive) of the last character in input to be decoded
      * @return the decoded data bytes, 4 chunks with 30 bits each
      */
-    public static int[] decode58Lex(String input, int from, int end) {
-        int inputLength = end - from;
+    public static int[] decode58Lex(String input, int from, int to) {
+        int inputLength = to - from;
         if (inputLength == 0) {
             throw new IllegalArgumentException("Input is empty");
         }
         // Convert the base58-encoded ASCII chars to a base 58^3 byte sequence.
         int[] input58 = new int[21 / 3];
         int index = 0;
-        for (int i = from; i < end; i += 3) {
+        for (int i = from; i < to; i += 3) {
             char c0 = input.charAt(i);
             char c1 = input.charAt(i + 1);
             char c2 = input.charAt(i + 2);
@@ -234,15 +238,23 @@ public class FastBase58 {
         return decoded;
     }
 
-    public static int[] decode58(String input, int from, int end) {
-        int inputLength = end - from;
+    /**
+     * Decodes the given base58 string into 4 chunks of 30 bits.
+     *
+     * @param input the base58-encoded string to decode
+     * @param from  the index (inclusive) of the first character in input to be decoded
+     * @param to    the index (exclusive) of the last character in input to be decoded
+     * @return the decoded data bytes, 4 chunks with 30 bits each
+     */
+    public static int[] decode58(String input, int from, int to) {
+        int inputLength = to - from;
         if (inputLength == 0) {
             throw new IllegalArgumentException("Input is empty");
         }
         // Convert the base58-encoded ASCII chars to a base 58 byte sequence.
         int[] input58 = new int[21];
         int index = (21 - inputLength);
-        for (int i = from; i < end; i++) {
+        for (int i = from; i < to; i++) {
             char c0 = input.charAt(i);
             int digit0 = c0 < 128 ? INDEXES[c0] : -1;
             if ((digit0) < 0) {
