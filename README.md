@@ -4,14 +4,13 @@ UuidNCName converts [UUID][UUID-specification]s to/from valid NCName productions
 ML.
 
 This is an implementation of the draft specification
-["Compact UUIDs for Constrained Grammars"][UUID-NCName-specification]
+["Compact UUIDs for Constrained Grammars"][UUID-NCName-specification].
 
 This implementation supports 3 additional "lexical" formats.
 The "lexical" formats have the same lexicographic order like the "canonical" UUID format
-(when the Unicode character set and the same UUID version is used). This is useful for ids
-that use
-the [UUIDv6][UUIDv6-specification]
-or [UUIDv7][UUIDv7-specification] format.
+for the first 64 bits of an `UUID`, when the Unicode character set and the same UUID version is used.
+This is useful for ids that use the [UUIDv6][UUIDv6-specification] or [UUIDv7][UUIDv7-specification]
+format.
 
 The supported formats are:
 
@@ -30,9 +29,9 @@ Here is the ABNF grammar for the supported productions:
 <pre>
     <a id="uuid-canonical"/>uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit ;
     
-    <a id="uuid-ncname-32"/>uuid-ncname-32     = version 24base32                variant ;
-    <a id="uuid-ncname-58"/>uuid-ncname-58     = version 15*21base58 *6padding-u variant ;
-    <a id="uuid-ncname-64"/>uuid-ncname-64     = version 20base64-url            variant ;
+    <a id="uuid-ncname-32"/>uuid-ncname-32     = version 24base32              variant ;
+    <a id="uuid-ncname-58"/>uuid-ncname-58     = version 15*21base58 *6padding variant ;
+    <a id="uuid-ncname-64"/>uuid-ncname-64     = version 20base64-url          variant ;
 
     <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = version 24base32-lex variant-lex ;
     <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = version 21base58     variant-lex ;
@@ -45,8 +44,7 @@ Here is the ABNF grammar for the supported productions:
     variant-lex    = bookend-lex ;
     <a id="bookend"/>bookend        = %x41-50 / %x61-70 ; [A-Pa-p]
     <a id="bookend-lex"/>bookend-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
-    padding-u      = "_" ;
-    padding-o      = "1" ;
+    padding        = "_" ;
     
     <a id="base32"/>base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
     <a id="base32-lex"/>base32-lex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
@@ -80,6 +78,22 @@ All encodings are fixed length:
 
 An <a id="UUID"/>`UUID` is a 128-bit unsigned integer in big-endian order.<br>
 
+These 128-bits are structured into fields. The field layout depends on the
+version and variant of a `UUID`. For the purpose of the NCName formats, we
+overlay the following fields over the `UUID`.
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |                         data-88-119                           |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |          data-72-87           |version|      data-60-71       |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |variant|                  data-32-59                           |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |                          data-0-31                            |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+
 It consists of the fields `version`, `variant` and `data`.<br>
 The `version` and `variant` fields are interspersed in the `data` field.
 
@@ -107,7 +121,7 @@ The `version` and `variant` fields are interspersed in the `data` field.
 3. `variant-char :=` Encode `variant` with a lower-case [`bookend`](#bookend) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
    This yields 24 digits (padded with leading zeroes).
-5. `data-chars :=` Encode each `data-digits` digit with a [`base32`](#base32) character.
+5. `data-chars :=` Encode each `data-digits` digit with a lower-case [`base32`](#base32) character.
 6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
 
 ### Format uuid-ncname-58
@@ -162,6 +176,196 @@ The `version` and `variant` fields are interspersed in the `data` field.
 5. `data-chars :=` Encode each digit with a [`base64-lex`](#base64-lex) character.
 6. `uuid-ncname-64-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
 
+## Encoding Alphabets
+
+### The Upper-Case `base32` Alphabet
+
+This is the same alphabet as the one specified in
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+
+| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
+|    0    |    'A'    |    8    |    'I'    |   16    |    'Q'    |   24    |    'Y'    |
+|    1    |    'B'    |    9    |    'J'    |   17    |    'R'    |   25    |    'Z'    |
+|    2    |    'C'    |   10    |    'K'    |   18    |    'S'    |   26    |    '2'    |
+|    3    |    'D'    |   11    |    'L'    |   19    |    'T'    |   27    |    '3'    |
+|    4    |    'E'    |   12    |    'M'    |   20    |    'U'    |   28    |    '4'    |
+|    5    |    'F'    |   13    |    'N'    |   21    |    'V'    |   29    |    '5'    |
+|    6    |    'G'    |   14    |    'O'    |   22    |    'W'    |   30    |    '6'    |
+|    7    |    'H'    |   15    |    'P'    |   23    |    'X'    |   31    |    '7'    |
+
+### The Lower-Case `base32` Alphabet
+
+This is a lower-case variant of the alphabet specified in
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+
+| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
+|    0    |    'a'    |    8    |    'i'    |   16    |    'q'    |   24    |    'y'    |
+|    1    |    'b'    |    9    |    'j'    |   17    |    'r'    |   25    |    'z'    |
+|    2    |    'c'    |   10    |    'k'    |   18    |    's'    |   26    |    '2'    |
+|    3    |    'd'    |   11    |    'l'    |   19    |    't'    |   27    |    '3'    |
+|    4    |    'e'    |   12    |    'm'    |   20    |    'u'    |   28    |    '4'    |
+|    5    |    'f'    |   13    |    'n'    |   21    |    'v'    |   29    |    '5'    |
+|    6    |    'g'    |   14    |    'o'    |   22    |    'w'    |   30    |    '6'    |
+|    7    |    'h'    |   15    |    'p'    |   23    |    'x'    |   31    |    '7'    |
+
+### The Upper-Case `base32-lex` Alphabet
+
+This is a lexically reordered variant of the alphabet specified in
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+
+| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
+|    0    |    '2'    |    8    |    'C'    |   16    |    'K'    |   24    |    'S'    |
+|    1    |    '3'    |    9    |    'D'    |   17    |    'L'    |   25    |    'T'    |
+|    2    |    '4'    |   10    |    'E'    |   18    |    'M'    |   26    |    'U'    |
+|    3    |    '5'    |   11    |    'F'    |   19    |    'N'    |   27    |    'V'    |
+|    4    |    '6'    |   12    |    'G'    |   20    |    'O'    |   28    |    'W'    |
+|    5    |    '7'    |   13    |    'H'    |   21    |    'P'    |   29    |    'X'    |
+|    6    |    'A'    |   14    |    'I'    |   22    |    'Q'    |   30    |    'Y'    |
+|    7    |    'B'    |   15    |    'J'    |   23    |    'R'    |   31    |    'Z'    |
+
+### The Lower-Case `base32-lex` Alphabet
+
+This is a lexically reordered lower-case variant of the alphabet specified in
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+
+| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
+|    0    |    '2'    |    8    |    'c'    |   16    |    'k'    |   24    |    's'    |
+|    1    |    '3'    |    9    |    'd'    |   17    |    'l'    |   25    |    't'    |
+|    2    |    '4'    |   10    |    'e'    |   18    |    'm'    |   26    |    'u'    |
+|    3    |    '5'    |   11    |    'f'    |   19    |    'n'    |   27    |    'v'    |
+|    4    |    '6'    |   12    |    'g'    |   20    |    'o'    |   28    |    'w'    |
+|    5    |    '7'    |   13    |    'h'    |   21    |    'p'    |   29    |    'x'    |
+|    6    |    'a'    |   14    |    'i'    |   22    |    'q'    |   30    |    'y'    |
+|    7    |    'b'    |   15    |    'j'    |   23    |    'r'    |   31    |    'z'    |
+
+### The `base58` Alphabet
+
+This is the same alphabet as the one specified in
+[draft-msporny-base58-02, Table 1: Base58 Mapping Table][base-58-alphabet-table]].
+
+| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
+|    0    |    '1'    |   16    |    'H'    |   32    |    'Z'    |   48    |    'q'    |
+|    1    |    '2'    |   17    |    'J'    |   33    |    'a'    |   49    |    'r'    |
+|    2    |    '3'    |   18    |    'K'    |   34    |    'b'    |   50    |    's'    |
+|    3    |    '4'    |   19    |    'L'    |   35    |    'c'    |   51    |    't'    |
+|    4    |    '5'    |   20    |    'M'    |   36    |    'd'    |   52    |    'u'    |
+|    5    |    '6'    |   21    |    'N'    |   37    |    'e'    |   53    |    'v'    |
+|    6    |    '7'    |   22    |    'P'    |   38    |    'f'    |   54    |    'w'    |
+|    7    |    '8'    |   23    |    'Q'    |   39    |    'g'    |   55    |    'x'    |
+|    8    |    '9'    |   24    |    'R'    |   40    |    'h'    |   56    |    'y'    |
+|    9    |    'A'    |   25    |    'S'    |   41    |    'i'    |   57    |    'z'    |
+|   10    |    'B'    |   26    |    'T'    |   42    |    'j'    |         |           |
+|   11    |    'C'    |   27    |    'U'    |   43    |    'k'    |         |           |
+|   12    |    'D'    |   28    |    'V'    |   44    |    'm'    |         |           |
+|   13    |    'E'    |   29    |    'W'    |   45    |    'n'    |         |           |
+|   14    |    'F'    |   30    |    'X'    |   46    |    'o'    |         |           |
+|   15    |    'G'    |   31    |    'Y'    |   47    |    'p'    |         |           |
+
+### The `base64-url` Alphabet
+
+This is the same alphabet as the one specified in
+[RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-alphabet-table].
+
+| Decimal | Character | Decimal | Character | Decimal | Character | Decimal |   Character    |
+|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:--------------:|
+|    0    |    'A'    |   16    |    'Q'    |   32    |    'g'    |   48    |      'w'       |
+|    1    |    'B'    |   17    |    'R'    |   33    |    'h'    |   49    |      'x'       |
+|    2    |    'C'    |   18    |    'S'    |   34    |    'i'    |   50    |      'y'       |
+|    3    |    'D'    |   19    |    'T'    |   35    |    'j'    |   51    |      'z'       |
+|    4    |    'E'    |   20    |    'U'    |   36    |    'k'    |   52    |      '0'       |
+|    5    |    'F'    |   21    |    'V'    |   37    |    'l'    |   53    |      '1'       |
+|    6    |    'G'    |   22    |    'W'    |   38    |    'm'    |   54    |      '2'       |
+|    7    |    'H'    |   23    |    'X'    |   39    |    'n'    |   55    |      '3'       |
+|    8    |    'I'    |   24    |    'Y'    |   40    |    'o'    |   56    |      '4'       |
+|    9    |    'J'    |   25    |    'Z'    |   41    |    'p'    |   57    |      '5'       |
+|   10    |    'K'    |   26    |    'a'    |   42    |    'q'    |   58    |      '6'       |
+|   11    |    'L'    |   27    |    'b'    |   43    |    'r'    |   59    |      '7'       |
+|   12    |    'M'    |   28    |    'c'    |   44    |    's'    |   60    |      '8'       |
+|   13    |    'N'    |   29    |    'd'    |   45    |    't'    |   61    |      '9'       |
+|   14    |    'O'    |   30    |    'e'    |   46    |    'u'    |   62    |  '-' (minus)   |
+|   15    |    'P'    |   31    |    'f'    |   47    |    'v'    |   63    | '_'(underline) |
+
+### The `base64-lex` Alphabet
+
+This is a lexically reordered variant of the alphabet specified in
+[RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-alphabet-table].
+
+| Decimal |  Character  | Decimal | Character | Decimal |   Character    | Decimal | Character |
+|:-------:|:-----------:|:-------:|:---------:|:-------:|:--------------:|:-------:|:---------:|
+|    0    | '-' (minus) |   16    |    'F'    |   32    |      'V'       |   48    |    'k'    |
+|    1    |     '0'     |   17    |    'G'    |   33    |      'W'       |   49    |    'l'    |
+|    2    |     '1'     |   18    |    'H'    |   34    |      'X'       |   50    |    'm'    |
+|    3    |     '2'     |   19    |    'I'    |   35    |      'Y'       |   51    |    'n'    |
+|    4    |     '3'     |   20    |    'J'    |   36    |      'Z'       |   52    |    'o'    |
+|    5    |     '4'     |   21    |    'K'    |   37    | '_'(underline) |   53    |    'p'    |
+|    6    |     '5'     |   22    |    'L'    |   38    |      'a'       |   54    |    'q'    |
+|    7    |     '6'     |   23    |    'M'    |   39    |      'b'       |   55    |    'r'    |
+|    8    |     '7'     |   24    |    'N'    |   40    |      'c'       |   56    |    's'    |
+|    9    |     '8'     |   25    |    'O'    |   41    |      'd'       |   57    |    't'    |
+|   10    |     '9'     |   26    |    'P'    |   42    |      'e'       |   58    |    'u'    |
+|   11    |     'A'     |   27    |    'Q'    |   43    |      'f'       |   59    |    'v'    |
+|   12    |     'B'     |   28    |    'R'    |   44    |      'g'       |   60    |    'w'    |
+|   13    |     'C'     |   29    |    'S'    |   45    |      'h'       |   61    |    'x'    |
+|   14    |     'D'     |   30    |    'T'    |   46    |      'i'       |   62    |    'y'    |
+|   15    |     'E'     |   31    |    'U'    |   47    |      'j'       |   63    |    'z'    |
+
+### The Upper-Case `bookend` Alphabet
+
+| Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|
+|    0    |    'A'    |    8    |    'I'    |
+|    1    |    'B'    |    9    |    'J'    |
+|    2    |    'C'    |   10    |    'K'    |
+|    3    |    'D'    |   11    |    'L'    |
+|    4    |    'E'    |   12    |    'M'    |
+|    5    |    'F'    |   13    |    'N'    |
+|    6    |    'G'    |   14    |    'O'    |
+|    7    |    'H'    |   15    |    'P'    |
+
+### The Lower-Case `bookend` Alphabet
+
+| Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|
+|    0    |    'a'    |    8    |    'i'    |
+|    1    |    'b'    |    9    |    'j'    |
+|    2    |    'c'    |   10    |    'k'    |
+|    3    |    'd'    |   11    |    'l'    |
+|    4    |    'e'    |   12    |    'm'    |
+|    5    |    'f'    |   13    |    'n'    |
+|    6    |    'g'    |   14    |    'o'    |
+|    7    |    'h'    |   15    |    'p'    |
+
+### The Upper-Case `bookend-lex` Alphabet
+
+| Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|
+|    0    |    '2'    |    8    |    'S'    |
+|    1    |    '3'    |    9    |    'T'    |
+|    2    |    '4'    |   10    |    'U'    |
+|    3    |    '5'    |   11    |    'V'    |
+|    4    |    '6'    |   12    |    'W'    |
+|    5    |    '7'    |   13    |    'X'    |
+|    6    |    'Q'    |   14    |    'Y'    |
+|    7    |    'R'    |   15    |    'Z'    |
+
+### The Lower-Case `bookend-lex` Alphabet
+
+| Decimal | Character | Decimal | Character |
+|:-------:|:---------:|:-------:|:---------:|
+|    0    |    '2'    |    8    |    's'    |
+|    1    |    '3'    |    9    |    't'    |
+|    2    |    '4'    |   10    |    'u'    |
+|    3    |    '5'    |   11    |    'v'    |
+|    4    |    '6'    |   12    |    'w'    |
+|    5    |    '7'    |   13    |    'x'    |
+|    6    |    'q'    |   14    |    'y'    |
+|    7    |    'r'    |   15    |    'z'    |
+
 ## Examples
 
 | Version      | uuid-canonical                       |
@@ -211,4 +415,10 @@ The `version` and `variant` fields are interspersed in the `data` field.
 
 [UUID-NCName-specification]: https://www.ietf.org/id/draft-taylor-uuid-ncname-03.html
 
+[base-32-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-6
+
+[base-64-url-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-5
+
 [base58-encoding-algorithm]: https://datatracker.ietf.org/doc/html/draft-msporny-base58-02#section-3
+
+[base-58-encoding-table]: https://datatracker.ietf.org/doc/html/draft-msporny-base58-02#section-2
