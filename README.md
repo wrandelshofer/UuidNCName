@@ -79,7 +79,7 @@ All encodings are fixed length:
 An <a id="UUID"/>`UUID` is a 128-bit unsigned integer in big-endian order.<br>
 
 `UUID`s are structured into fields. The field layout depends on the
-version and variant of a `UUID`. For the purpose of the NCName formats, we
+version and variant of a `UUID`. For the purpose of formatting, we
 overlay the following fields over the `UUID`.
 
        0                   1                   2                   3
