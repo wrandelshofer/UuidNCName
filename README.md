@@ -376,9 +376,9 @@ This is a lexically reordered variant of the alphabet specified in
 | 3, MD5       | 3d813cbb-47fb-32ba-91df-831e1593ac29 |
 | 4, Random    | 01867b2c-a0dd-459c-98d7-89e545538d6c |
 | 5, SHA-1     | 21f7f8de-8051-5b89-8680-0195ef798b6a |
-| 6 Timestamp  | 1EC9414C-232A-6B00-B3C8-9E6BDECED846 |
-| 7 Timestamp  | 017F22E2-79B0-7CC3-98C4-DC0C0C07398F |
-| 8 Vendor     | 320C3D4D-CC00-875B-8EC9-32D5F69181C0 |
+| 6, Timestamp | 1EC9414C-232A-6B00-B3C8-9E6BDECED846 |
+| 7, Timestamp | 017F22E2-79B0-7CC3-98C4-DC0C0C07398F |
+| 8, Vendor    | 320C3D4D-CC00-875B-8EC9-32D5F69181C0 |
 | 15, Max      | ffffffff-ffff-ffff-ffff-ffffffffffff |
 
 | Version      | uuid-ncname-32             | uuid-ncname-58          | uuid-ncname-64         |
@@ -389,9 +389,9 @@ This is a lexically reordered variant of the alphabet specified in
 | 3, MD5       | dhwatzo2h7mv2dx4ddykzhlbjj | D2ioV6oTr9yq6dMojd469nJ | DPYE8u0f7K6Hfgx4Vk6wpJ |
 | 4, Random    | eagdhwlfa3vm4rv4j4vcvhdlmj | E3UZ99RxxUJC1v4dWsYtb_J | EAYZ7LKDdWcjXieVFU41sJ |
 | 5, SHA-1     | feh37rxuakg4jnaabsxxxtc3ki | Fx7wEJfz9eb1TYzsrT7Zs_I | FIff43oBRuJaAAZXveYtqI |
-| 6 Timestamp  | gd3euctbdfkyahse6nppm5wcgl | GrxRCnDiX4mxSpdi5LEvR_L | GHslBTCMqsAPInmvezthGL |
-| 7 Timestamp  | haf7sfytzwdgdrrg4bqgaoompj | H3RrXaX7uTM6qdwrXwpC6_J | HAX8i4nmwzDjE3AwMBzmPJ |
-| 8 Vendor     | igigd2tomab235sjs2x3jdaoai | I2QDDTZysWZ5jcKS6HJDmHI | IMgw9TcwAdb7JMtX2kYHAI |
+| 6, Timestamp | gd3euctbdfkyahse6nppm5wcgl | GrxRCnDiX4mxSpdi5LEvR_L | GHslBTCMqsAPInmvezthGL |
+| 7, Timestamp | haf7sfytzwdgdrrg4bqgaoompj | H3RrXaX7uTM6qdwrXwpC6_J | HAX8i4nmwzDjE3AwMBzmPJ |
+| 8, Vendor    | igigd2tomab235sjs2x3jdaoai | I2QDDTZysWZ5jcKS6HJDmHI | IMgw9TcwAdb7JMtX2kYHAI |
 | 15, Max      | p777777777777777777777777p | P8AQGAut7N92awznwCnjuQP | P____________________P |
 
 | Version      | uuid-ncname-32-lex         | uuid-ncname-58-lex      | uuid-ncname-64-lex     |
@@ -402,9 +402,9 @@ This is a lexically reordered variant of the alphabet specified in
 | 3, MD5       | dbq2ntiubzgpu5rw55setbf3dt | D2ioV6oTr9yq6dMojd469nT | DEN3wioUv9u6UVlsKZukdT |
 | 4, Random    | e2a5bqf72vpgwlpwdwp4pb5fgt | E13UZ99RxxUJC1v4dWsYtbT | E-NOvA92SLRYMXTK4JspgT |
 | 5, SHA-1     | f6bvzlro2eawdh223mrrrn4ves | F1x7wEJfz9eb1TYzsrT7ZsS | F7UUsrc0Gi8P--OMjTNheS |
-| 6 Timestamp  | g5v6o4n357es2bm6yhjjgxq4av | G1rxRCnDiX4mxSpdi5LEvRV | G6g_0I1Beg-E7bajTnhW5V |
-| 7 Timestamp  | h27zm7sntq5a5llaw3ka2iigjt | H13RrXaX7uTM6qdwrXwpC6T | H-MwXsbakn2Y3r-kB0naET |
-| 8 Vendor     | iaca5unig23uvxmdmurvd52i2s | I2QDDTZysWZ5jcKS6HJDmHS | IBVkxIRk-SQv8BhMqZN6-S |
+| 6, Timestamp | g5v6o4n357es2bm6yhjjgxq4av | G1rxRCnDiX4mxSpdi5LEvRV | G6g_0I1Beg-E7bajTnhW5V |
+| 7, Timestamp | h27zm7sntq5a5llaw3ka2iigjt | H13RrXaX7uTM6qdwrXwpC6T | H-MwXsbakn2Y3r-kB0naET |
+| 8, Vendor    | iaca5unig23uvxmdmurvd52i2s | I2QDDTZysWZ5jcKS6HJDmHS | IBVkxIRk-SQv8BhMqZN6-S |
 | 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P8AQGAut7N92awznwCnjuQZ | PzzzzzzzzzzzzzzzzzzzzZ |
 
 [UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
