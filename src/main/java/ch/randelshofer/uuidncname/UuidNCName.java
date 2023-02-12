@@ -100,8 +100,6 @@ public class UuidNCName {
     }
 
     private static UUID fromBase32(String str) {
-        if (str.length() != 26)
-            throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 26.");
         long msb = readUInt60(str, 1, 12, BASE_32_INVERSE_ALPHABET, 5);
         long lsb = readUInt60(str, 13, 12, BASE_32_INVERSE_ALPHABET, 5);
         int version = readVersion(str);
@@ -110,8 +108,6 @@ public class UuidNCName {
     }
 
     private static UUID fromBase32Lex(String str) {
-        if (str.length() != 26)
-            throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 26.");
         long msb = readUInt60(str, 1, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
         long lsb = readUInt60(str, 13, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
         int version = readVersion(str);
@@ -120,8 +116,6 @@ public class UuidNCName {
     }
 
     private static UUID fromBase58(String str) {
-        if (str.length() != 23)
-            throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 23.");
         int version = readVersion(str);
         int variant = readVariant(str, BASE_32_INVERSE_ALPHABET);
         int endIndex = 22;
@@ -137,8 +131,6 @@ public class UuidNCName {
     }
 
     private static UUID fromBase58Lex(String str) {
-        if (str.length() != 23)
-            throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 23.");
         int version = readVersion(str);
         int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
         int[] uint30 = FastBase58.decode58Lex(str, 1, 21);
@@ -148,8 +140,6 @@ public class UuidNCName {
     }
 
     private static UUID fromBase64(String str) {
-        if (str.length() != 22)
-            throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
         long msb = readUInt60(str, 1, 10, BASE_64_INVERSE_ALPHABET, 6);
         long lsb = readUInt60(str, 11, 10, BASE_64_INVERSE_ALPHABET, 6);
         int version = readVersion(str);
@@ -158,8 +148,6 @@ public class UuidNCName {
     }
 
     private static UUID fromBase64Lex(String str) {
-        if (str.length() != 22)
-            throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
         long msb = readUInt60(str, 1, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
         long lsb = readUInt60(str, 11, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
         int version = readVersion(str);
@@ -218,17 +206,6 @@ public class UuidNCName {
         return ((long) version << 12) | Long.expand(bits, 0xffffffff_ffff_0fffL);
     }
 
-    private static long readMsb(byte[] bytes, int version) {
-        long bits = ((long) readLongBE.get(bytes, bytes.length - 16) << 4)
-                | ((long) readLongBE.get(bytes, bytes.length - 8) >>> 60);
-        return readMsb(bits, version);
-    }
-
-    private static long readMsbNew(byte[] bytes, int version) {
-        long bits = ((long) readLongBE.get(bytes, 1) << 4)
-                | (bytes[9] >>> 4);
-        return readMsb(bits, version);
-    }
 
     private static long readUInt60(String str, int offset, int len, byte[] inverseAlphabet, int baseShift) {
         long bits = 0;
