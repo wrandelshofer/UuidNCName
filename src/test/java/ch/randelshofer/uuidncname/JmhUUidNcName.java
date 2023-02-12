@@ -48,39 +48,39 @@ public class JmhUUidNcName {
 
     private UUID uuid = UUID.randomUUID();
     private String canonical = uuid.toString();
-    private String base32 = UuidNCName.toBase32(uuid);
-    private String base32Lex = UuidNCName.toBase32Lex(uuid);
-    private String base58 = UuidNCName.toBase58(uuid);
-    private String base58Lex = UuidNCName.toBase58Lex(uuid);
-    private String base64 = UuidNCName.toBase64(uuid);
-    private String base64Lex = UuidNCName.toBase64Lexical(uuid);
+    private String base32 = UuidNCName.toString(uuid, NCNameFormat.BASE32);
+    private String base32Lex = UuidNCName.toString(uuid, NCNameFormat.BASE32_LEX);
+    private String base58 = UuidNCName.toString(uuid, NCNameFormat.BASE58);
+    private String base58Lex = UuidNCName.toString(uuid, NCNameFormat.BASE58_LEX);
+    private String base64 = UuidNCName.toString(uuid, NCNameFormat.BASE64);
+    private String base64Lex = UuidNCName.toString(uuid, NCNameFormat.BASE64_LEX);
 
-    /*
-        @Benchmark
-        public UUID rCanonical() {
-            return UUID.fromString(canonical);
-        }
 
-        @Benchmark
-        public UUID rBase32() {
-            return UuidNCName.fromString(base32);
-        }
+    @Benchmark
+    public UUID rCanonical() {
+        return UUID.fromString(canonical);
+    }
 
-        @Benchmark
-        public UUID rBase32Lex() {
-            return UuidNCName.fromString(base32Lex);
-        }
+    @Benchmark
+    public UUID rBase32() {
+        return UuidNCName.fromString(base32);
+    }
 
-        @Benchmark
-        public UUID rBase64Lex() {
-            return UuidNCName.fromString(base64Lex);
-        }
+    @Benchmark
+    public UUID rBase32Lex() {
+        return UuidNCName.fromString(base32Lex);
+    }
 
-        @Benchmark
-        public UUID rBase64() {
-            return UuidNCName.fromString(base64);
-        }
-    */
+    @Benchmark
+    public UUID rBase64Lex() {
+        return UuidNCName.fromString(base64Lex);
+    }
+
+    @Benchmark
+    public UUID rBase64() {
+        return UuidNCName.fromString(base64);
+    }
+
     @Benchmark
     public UUID rBase58() {
         return UuidNCName.fromString(base58);
@@ -90,7 +90,7 @@ public class JmhUUidNcName {
     public UUID rBase58Lex() {
         return UuidNCName.fromString(base58Lex);
     }
-/*
+
     @Benchmark
     public String wCanonical() {
         return uuid.toString();
@@ -98,25 +98,25 @@ public class JmhUUidNcName {
 
     @Benchmark
     public String wBase32() {
-        return UuidNCName.toBase32(uuid);
+        return UuidNCName.toString(uuid, NCNameFormat.BASE32);
     }
 
     @Benchmark
     public String wBase64() {
-        return UuidNCName.toBase64(uuid);
+        return UuidNCName.toString(uuid, NCNameFormat.BASE64);
     }
 
 
     @Benchmark
     public String wBase58() {
-        return UuidNCName.toBase58(uuid);
+        return UuidNCName.toString(uuid, NCNameFormat.BASE58);
     }
 
 
     @Benchmark
     public String wBase58Lex() {
-        return UuidNCName.toBase58Lex(uuid);
+        return UuidNCName.toString(uuid, NCNameFormat.BASE58_LEX);
     }
-*/
+
 
 }

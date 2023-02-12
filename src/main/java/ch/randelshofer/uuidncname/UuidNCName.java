@@ -147,7 +147,7 @@ public class UuidNCName {
         return new UUID(msb, lsb);
     }
 
-    public static UUID fromBase64(String str) {
+    private static UUID fromBase64(String str) {
         if (str.length() != 22)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
         long msb = readUnsignedLong(str, 1, 10, BASE_64_INVERSE_ALPHABET, 6);
@@ -157,7 +157,7 @@ public class UuidNCName {
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
     }
 
-    public static UUID fromBase64Lex(String str) {
+    private static UUID fromBase64Lex(String str) {
         if (str.length() != 22)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
         long msb = readUnsignedLong(str, 1, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
@@ -165,6 +165,18 @@ public class UuidNCName {
         int version = readVersion(str);
         int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
+    }
+
+    public static String toString(UUID uuid, NCNameFormat format) {
+        return switch (format) {
+            case CANONICAL -> toCanonical(uuid);
+            case BASE32 -> toBase32(uuid);
+            case BASE58 -> toBase58(uuid);
+            case BASE64 -> toBase64(uuid);
+            case BASE32_LEX -> toBase32Lex(uuid);
+            case BASE58_LEX -> toBase58Lex(uuid);
+            case BASE64_LEX -> toBase64Lex(uuid);
+        };
     }
 
     public static UUID fromString(String str) {
@@ -243,7 +255,7 @@ public class UuidNCName {
         return version;
     }
 
-    public static String toBase32(UUID uuid) {
+    private static String toBase32(UUID uuid) {
         byte[] str = new byte[26];
         str[0] = BASE_32_LOWER_CASE_ALPHABET[uuid.version()];
         str[25] = BASE_32_LOWER_CASE_ALPHABET[getVariant(uuid)];
@@ -252,7 +264,7 @@ public class UuidNCName {
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase32Lex(UUID uuid) {
+    private static String toBase32Lex(UUID uuid) {
         byte[] str = new byte[26];
         str[0] = BASE_32_LOWER_CASE_ALPHABET[uuid.version()];
         str[25] = VARIANT_LEXICAL_LOWER_CASE_ALPHABET[getVariant(uuid)];
@@ -261,7 +273,7 @@ public class UuidNCName {
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase58(UUID uuid) {
+    private static String toBase58(UUID uuid) {
         byte[] b = new byte[24];
         long msb = getMsb(uuid);
         long lsb = getLsb(uuid);
@@ -271,7 +283,7 @@ public class UuidNCName {
         return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase58Lex(UUID uuid) {
+    private static String toBase58Lex(UUID uuid) {
         byte[] b = new byte[24];
         long msb = getMsb(uuid);
         long lsb = getLsb(uuid);
@@ -281,7 +293,7 @@ public class UuidNCName {
         return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase64(UUID uuid) {
+    private static String toBase64(UUID uuid) {
         byte[] str = new byte[22];
         str[0] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
         str[21] = BASE_32_UPPER_CASE_ALPHABET[getVariant(uuid)];
@@ -290,7 +302,7 @@ public class UuidNCName {
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toBase64Lexical(UUID uuid) {
+    private static String toBase64Lex(UUID uuid) {
         byte[] str = new byte[22];
         str[0] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
         str[21] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariant(uuid)];
@@ -299,7 +311,7 @@ public class UuidNCName {
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
-    public static String toCanonical(UUID uuid) {
+    private static String toCanonical(UUID uuid) {
         return uuid.toString();
     }
 
