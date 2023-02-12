@@ -1,0 +1,32 @@
+name: Java CI build and test
+
+on: [ push ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        java: [ 20-ea ]
+        arch: [ x64 ]
+        dist: [ zulu ]
+      fail-fast: false
+      max-parallel: 4
+    name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}, ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          architecture: ${{ matrix.arch }}
+          distribution: ${{ matrix.dist }}
+
+      - name: Show where Java Home is
+        run: echo JAVA_HOME=$JAVA_HOME
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots --errors package
+      - name: Run JMH Benchmarks
+        run: mvn jmh:benchmark
+...

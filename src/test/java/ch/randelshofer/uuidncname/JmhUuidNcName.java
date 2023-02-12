@@ -38,12 +38,12 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1, jvmArgsAppend = {
         "-Xmx4g"
 })
-@Measurement(iterations = 2)
-@Warmup(iterations = 2)
+@Measurement(iterations = 1)
+@Warmup(iterations = 1)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
-public class JmhUuidNcNameX {
+public class JmhUuidNcName {
 
 
     private UUID uuid = UUID.randomUUID();

@@ -1,6 +1,6 @@
 package ch.randelshofer.uuidncname;
 
-public enum NCNameFormat {
+public enum UuidFormat {
     CANONICAL,
     BASE32,
     BASE58,

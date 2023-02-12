@@ -9,9 +9,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="UuidNCName" />
+        <module name="ch.randelshofer.uuidncname" />
         <module name="ConstantDivision" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="UuidNCName" target="20" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -72,6 +72,11 @@
           <artifactId>flatten-maven-plugin</artifactId>
           <version>1.3.0</version>
         </plugin>
+        <plugin>
+          <groupId>pw.krejci</groupId>
+          <artifactId>jmh-maven-plugin</artifactId>
+          <version>0.2.2</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 

@@ -102,8 +102,8 @@ public class UuidNCName {
     private static UUID fromBase32(String str) {
         if (str.length() != 26)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 26.");
-        long msb = readUnsignedLong(str, 1, 12, BASE_32_INVERSE_ALPHABET, 5);
-        long lsb = readUnsignedLong(str, 13, 12, BASE_32_INVERSE_ALPHABET, 5);
+        long msb = readUInt60(str, 1, 12, BASE_32_INVERSE_ALPHABET, 5);
+        long lsb = readUInt60(str, 13, 12, BASE_32_INVERSE_ALPHABET, 5);
         int version = readVersion(str);
         int variant = readVariant(str, BASE_32_INVERSE_ALPHABET);
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
@@ -112,8 +112,8 @@ public class UuidNCName {
     private static UUID fromBase32Lex(String str) {
         if (str.length() != 26)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 26.");
-        long msb = readUnsignedLong(str, 1, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
-        long lsb = readUnsignedLong(str, 13, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
+        long msb = readUInt60(str, 1, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
+        long lsb = readUInt60(str, 13, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
         int version = readVersion(str);
         int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
@@ -150,8 +150,8 @@ public class UuidNCName {
     private static UUID fromBase64(String str) {
         if (str.length() != 22)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
-        long msb = readUnsignedLong(str, 1, 10, BASE_64_INVERSE_ALPHABET, 6);
-        long lsb = readUnsignedLong(str, 11, 10, BASE_64_INVERSE_ALPHABET, 6);
+        long msb = readUInt60(str, 1, 10, BASE_64_INVERSE_ALPHABET, 6);
+        long lsb = readUInt60(str, 11, 10, BASE_64_INVERSE_ALPHABET, 6);
         int version = readVersion(str);
         int variant = readVariant(str, BASE_32_INVERSE_ALPHABET);
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
@@ -160,14 +160,14 @@ public class UuidNCName {
     private static UUID fromBase64Lex(String str) {
         if (str.length() != 22)
             throw new IllegalArgumentException("UUID string is " + str.length() + " characters long instead of 22.");
-        long msb = readUnsignedLong(str, 1, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
-        long lsb = readUnsignedLong(str, 11, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
+        long msb = readUInt60(str, 1, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
+        long lsb = readUInt60(str, 11, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
         int version = readVersion(str);
         int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
         return new UUID(readMsb(msb, version), readLsb(lsb, variant));
     }
 
-    public static String toString(UUID uuid, NCNameFormat format) {
+    public static String toString(UUID uuid, UuidFormat format) {
         return switch (format) {
             case CANONICAL -> toCanonical(uuid);
             case BASE32 -> toBase32(uuid);
@@ -230,7 +230,7 @@ public class UuidNCName {
         return readMsb(bits, version);
     }
 
-    private static long readUnsignedLong(String str, int offset, int len, byte[] inverseAlphabet, int baseShift) {
+    private static long readUInt60(String str, int offset, int len, byte[] inverseAlphabet, int baseShift) {
         long bits = 0;
         for (int i = 0; i < len; i++) {
             char ch = str.charAt(offset + i);
@@ -259,8 +259,8 @@ public class UuidNCName {
         byte[] str = new byte[26];
         str[0] = BASE_32_LOWER_CASE_ALPHABET[uuid.version()];
         str[25] = BASE_32_LOWER_CASE_ALPHABET[getVariant(uuid)];
-        writeUnsignedLong(str, 1, 12, getMsb(uuid), BASE_32_LOWER_CASE_ALPHABET, 5, 31);
-        writeUnsignedLong(str, 13, 12, getLsb(uuid), BASE_32_LOWER_CASE_ALPHABET, 5, 31);
+        writeUInt60(str, 1, 12, getMsb(uuid), BASE_32_LOWER_CASE_ALPHABET, 5, 31);
+        writeUInt60(str, 13, 12, getLsb(uuid), BASE_32_LOWER_CASE_ALPHABET, 5, 31);
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
@@ -268,8 +268,8 @@ public class UuidNCName {
         byte[] str = new byte[26];
         str[0] = BASE_32_LOWER_CASE_ALPHABET[uuid.version()];
         str[25] = VARIANT_LEXICAL_LOWER_CASE_ALPHABET[getVariant(uuid)];
-        writeUnsignedLong(str, 1, 12, getMsb(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
-        writeUnsignedLong(str, 13, 12, getLsb(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
+        writeUInt60(str, 1, 12, getMsb(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
+        writeUInt60(str, 13, 12, getLsb(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
@@ -297,8 +297,8 @@ public class UuidNCName {
         byte[] str = new byte[22];
         str[0] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
         str[21] = BASE_32_UPPER_CASE_ALPHABET[getVariant(uuid)];
-        writeUnsignedLong(str, 1, 10, getMsb(uuid), BASE_64_URL_SAFE_ALPHABET, 6, 63);
-        writeUnsignedLong(str, 11, 10, getLsb(uuid), BASE_64_URL_SAFE_ALPHABET, 6, 63);
+        writeUInt60(str, 1, 10, getMsb(uuid), BASE_64_URL_SAFE_ALPHABET, 6, 63);
+        writeUInt60(str, 11, 10, getLsb(uuid), BASE_64_URL_SAFE_ALPHABET, 6, 63);
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
@@ -306,8 +306,8 @@ public class UuidNCName {
         byte[] str = new byte[22];
         str[0] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
         str[21] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariant(uuid)];
-        writeUnsignedLong(str, 1, 10, getMsb(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
-        writeUnsignedLong(str, 11, 10, getLsb(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
+        writeUInt60(str, 1, 10, getMsb(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
+        writeUInt60(str, 11, 10, getLsb(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
@@ -315,7 +315,7 @@ public class UuidNCName {
         return uuid.toString();
     }
 
-    private static void writeUnsignedLong(byte[] str, int offset, int len, long val, byte[] alphabet, int baseShift, int mask) {
+    private static void writeUInt60(byte[] str, int offset, int len, long val, byte[] alphabet, int baseShift, int mask) {
         int i = offset + len;
         do {
             str[--i] = alphabet[(int) val & mask];
