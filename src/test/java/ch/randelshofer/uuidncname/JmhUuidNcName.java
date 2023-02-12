@@ -121,11 +121,11 @@ public class JmhUuidNcName {
         public String wBase32() {
             return UuidNCName.toString(uuid, UuidFormat.BASE32);
         }
-    */
     @Benchmark
     public String wBase58() {
         return UuidNCName.toString(uuid, UuidFormat.BASE58);
     }
+    */
 
     @Benchmark
     public String wBase58Lex() {
