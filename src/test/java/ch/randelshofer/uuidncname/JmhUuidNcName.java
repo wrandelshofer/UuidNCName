@@ -21,18 +21,24 @@ import java.util.concurrent.TimeUnit;
  * # Intel(R) Core(TM) i7-8700B CPU @ 3.20GHz
  *
  * Benchmark                 Mode  Cnt   Score   Error  Units
- * JmhUUidNcName.rBase32     avgt    2  27.279          ns/op
- * JmhUUidNcName.rBase32Lex  avgt    2  24.868          ns/op
- * JmhUUidNcName.rBase58     avgt    2  53.427          ns/op
- * JmhUUidNcName.rBase58Lex  avgt    2  51.031          ns/op
- * JmhUUidNcName.rBase64     avgt    2  23.102          ns/op
- * JmhUUidNcName.rBase64Lex  avgt    2  21.348          ns/op
- * JmhUUidNcName.rCanonical  avgt    2  17.930          ns/op
- * JmhUUidNcName.wBase32     avgt    2  34.002          ns/op
- * JmhUUidNcName.wBase58     avgt    2  89.181          ns/op
- * JmhUUidNcName.wBase58Lex  avgt    2  83.707          ns/op
- * JmhUUidNcName.wBase64     avgt    2  30.583          ns/op
- * JmhUUidNcName.wCanonical  avgt    2  22.545          ns/op
+ * JmhUuidNcName.wBase58     avgt    2  91.435          ns/op
+ * JmhUuidNcName.wBase58Lex  avgt    2  76.601          ns/op
+ * JmhUuidNcName.wCanonical  avgt    2  22.511          ns/op
+ *
+ * Benchmark                 Mode  Cnt   Score   Error  Units
+ * JmhUuidNcName.rBase32     avgt   10  22.533 ± 0.089  ns/op
+ * JmhUuidNcName.rBase32Lex  avgt   10  22.413 ± 0.265  ns/op
+ * JmhUuidNcName.rBase58     avgt   10  43.839 ± 2.853  ns/op
+ * JmhUuidNcName.rBase58Lex  avgt   10  42.334 ± 0.205  ns/op
+ * JmhUuidNcName.rBase64     avgt   10  20.340 ± 0.185  ns/op
+ * JmhUuidNcName.rBase64Lex  avgt   10  20.723 ± 2.754  ns/op
+ * JmhUuidNcName.rCanonical  avgt   10  15.704 ± 0.056  ns/op
+ * JmhUuidNcName.wBase32     avgt   10  27.041 ± 0.631  ns/op
+ * JmhUuidNcName.wBase58     avgt   10  82.925 ± 1.782  ns/op
+ * JmhUuidNcName.wBase58Lex  avgt   10  74.217 ± 0.409  ns/op
+ * JmhUuidNcName.wBase64     avgt   10  25.869 ± 1.949  ns/op
+ * JmhUuidNcName.wCanonical  avgt   10  18.006 ± 0.089  ns/op
+ * [
  * </pre>
  *
  * <pre>
@@ -58,8 +64,8 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1, jvmArgsAppend = {
         "-Xmx4g"
 })
-@Measurement(iterations = 1)
-@Warmup(iterations = 1)
+@Measurement(iterations = 2)
+@Warmup(iterations = 2)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
@@ -75,46 +81,47 @@ public class JmhUuidNcName {
     private String base64 = UuidNCName.toString(uuid, UuidFormat.BASE64);
     private String base64Lex = UuidNCName.toString(uuid, UuidFormat.BASE64_LEX);
 
-    @Benchmark
-    public UUID rBase32() {
-        return UuidNCName.fromString(base32);
-    }
+    /*
+        @Benchmark
+        public UUID rBase32() {
+            return UuidNCName.fromString(base32);
+        }
 
-    @Benchmark
-    public UUID rBase32Lex() {
-        return UuidNCName.fromString(base32Lex);
-    }
+        @Benchmark
+        public UUID rBase32Lex() {
+            return UuidNCName.fromString(base32Lex);
+        }
 
-    @Benchmark
-    public UUID rBase58() {
-        return UuidNCName.fromString(base58);
-    }
+        @Benchmark
+        public UUID rBase58() {
+            return UuidNCName.fromString(base58);
+        }
 
-    @Benchmark
-    public UUID rBase58Lex() {
-        return UuidNCName.fromString(base58Lex);
-    }
+        @Benchmark
+        public UUID rBase58Lex() {
+            return UuidNCName.fromString(base58Lex);
+        }
 
-    @Benchmark
-    public UUID rBase64() {
-        return UuidNCName.fromString(base64);
-    }
+        @Benchmark
+        public UUID rBase64() {
+            return UuidNCName.fromString(base64);
+        }
 
-    @Benchmark
-    public UUID rBase64Lex() {
-        return UuidNCName.fromString(base64Lex);
-    }
+        @Benchmark
+        public UUID rBase64Lex() {
+            return UuidNCName.fromString(base64Lex);
+        }
 
-    @Benchmark
-    public UUID rCanonical() {
-        return UUID.fromString(canonical);
-    }
+        @Benchmark
+        public UUID rCanonical() {
+            return UUID.fromString(canonical);
+        }
 
-    @Benchmark
-    public String wBase32() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE32);
-    }
-
+        @Benchmark
+        public String wBase32() {
+            return UuidNCName.toString(uuid, UuidFormat.BASE32);
+        }
+    */
     @Benchmark
     public String wBase58() {
         return UuidNCName.toString(uuid, UuidFormat.BASE58);
@@ -125,13 +132,15 @@ public class JmhUuidNcName {
         return UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
     }
 
-    @Benchmark
-    public String wBase64() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE64);
-    }
-
+    /*
+        @Benchmark
+        public String wBase64() {
+            return UuidNCName.toString(uuid, UuidFormat.BASE64);
+        }
+    */
     @Benchmark
     public String wCanonical() {
         return uuid.toString();
     }
+
 }
