@@ -34,6 +34,26 @@ import java.util.concurrent.TimeUnit;
  * JmhUUidNcName.wBase64     avgt    2  30.583          ns/op
  * JmhUUidNcName.wCanonical  avgt    2  22.545          ns/op
  * </pre>
+ *
+ * <pre>
+ * # JMH version: 1.35
+ * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20-ea+33
+ *
+ *
+ * Benchmark                 Mode  Cnt    Score   Error  Units
+ * JmhUuidNcName.rBase32     avgt        40.185          ns/op
+ * JmhUuidNcName.rBase32Lex  avgt        39.808          ns/op
+ * JmhUuidNcName.rBase58     avgt        72.018          ns/op
+ * JmhUuidNcName.rBase58Lex  avgt        68.786          ns/op
+ * JmhUuidNcName.rBase64     avgt        34.299          ns/op
+ * JmhUuidNcName.rBase64Lex  avgt        34.293          ns/op
+ * JmhUuidNcName.rCanonical  avgt        26.789          ns/op
+ * JmhUuidNcName.wBase32     avgt        48.996          ns/op
+ * JmhUuidNcName.wBase58     avgt       153.432          ns/op
+ * JmhUuidNcName.wBase58Lex  avgt       123.279          ns/op
+ * JmhUuidNcName.wBase64     avgt        43.433          ns/op
+ * JmhUuidNcName.wCanonical  avgt        30.187          ns/op
+ * </pre>
  */
 @Fork(value = 1, jvmArgsAppend = {
         "-Xmx4g"

@@ -25,6 +25,8 @@ jobs:
 
       - name: Show where Java Home is
         run: echo JAVA_HOME=$JAVA_HOME
+      - name: Show CPU info
+        run: cat /proc/cpuinfo | grep 'vendor' | uniq
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots --errors package
       - name: Run JMH Benchmarks
