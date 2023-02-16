@@ -287,7 +287,7 @@ This is a lexically reordered lower-case variant of the alphabet specified in
 ### The `base58` Alphabet
 
 This is the alphabet specified in
-[draft-msporny-base58-02, Table 1: Base58 Mapping Table][base-58-encoding-table]].
+[draft-msporny-base58-02, Table 1: Base58 Mapping Table][base-58-encoding-table].
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|

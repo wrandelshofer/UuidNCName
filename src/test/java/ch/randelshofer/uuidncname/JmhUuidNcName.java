@@ -17,22 +17,22 @@ import java.util.concurrent.TimeUnit;
  * Benchmarks for selected floating point strings.
  * <pre>
  * # JMH version: 1.35
- * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20-ea+35-2342
+ * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20+36-2344
  * # Intel(R) Core(TM) i7-8700B CPU @ 3.20GHz
  *
  * Benchmark                 Mode  Cnt   Score   Error  Units
- * JmhUUidNcName.rBase32     avgt    2  27.279          ns/op
- * JmhUUidNcName.rBase32Lex  avgt    2  24.868          ns/op
- * JmhUUidNcName.rBase58     avgt    2  53.427          ns/op
- * JmhUUidNcName.rBase58Lex  avgt    2  51.031          ns/op
- * JmhUUidNcName.rBase64     avgt    2  23.102          ns/op
- * JmhUUidNcName.rBase64Lex  avgt    2  21.348          ns/op
- * JmhUUidNcName.rCanonical  avgt    2  17.930          ns/op
- * JmhUUidNcName.wBase32     avgt    2  34.002          ns/op
- * JmhUUidNcName.wBase58     avgt    2  89.181          ns/op
- * JmhUUidNcName.wBase58Lex  avgt    2  83.707          ns/op
- * JmhUUidNcName.wBase64     avgt    2  30.583          ns/op
- * JmhUUidNcName.wCanonical  avgt    2  22.545          ns/op
+ * JmhUuidNcName.rBase32     avgt    2  25.066          ns/op
+ * JmhUuidNcName.rBase32Lex  avgt    2  26.564          ns/op
+ * JmhUuidNcName.rBase58     avgt    2  52.454          ns/op
+ * JmhUuidNcName.rBase58Lex  avgt    2  50.533          ns/op
+ * JmhUuidNcName.rBase64     avgt    2  22.580          ns/op
+ * JmhUuidNcName.rBase64Lex  avgt    2  22.886          ns/op
+ * JmhUuidNcName.rCanonical  avgt    2  17.777          ns/op
+ * JmhUuidNcName.wBase32     avgt    2  32.865          ns/op
+ * JmhUuidNcName.wBase58     avgt    2  91.578          ns/op
+ * JmhUuidNcName.wBase58Lex  avgt    2  81.406          ns/op
+ * JmhUuidNcName.wBase64     avgt    2  31.967          ns/op
+ * JmhUuidNcName.wCanonical  avgt    2  22.848          ns/op
  * </pre>
  *
  * <pre>
@@ -58,8 +58,8 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1, jvmArgsAppend = {
         "-Xmx4g"
 })
-@Measurement(iterations = 1)
-@Warmup(iterations = 1)
+@Measurement(iterations = 2)
+@Warmup(iterations = 2)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
