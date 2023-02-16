@@ -58,7 +58,7 @@ Here is the ABNF grammar of the supported formats:
 
 ## Detection Heuristic
 
-All encodings are fixed length:
+All formats are fixed length:
 
 * [`uuid-canonical`](#uuid-canonical) is 36 characters; contains 4 dashes.<br><br>
 
@@ -151,7 +151,7 @@ in the lexical representation, because we do not reorder data bits of the UUID.
 
 1. `uuid-digits :=` Convert the 128-bit `UUID` from binary to base-16.<br>
    This yields 32 digits (padded with leading zeroes).
-2. `uuid-chars :=` Encode each `uuid-digits` digit with a [`hexDigit`](#hexDigit) character.
+2. `uuid-chars :=` Encode each `uuid-digits` digit with a lower-case [`hexDigit`](#hexDigit) character.
 3. `uuid-canonical :=` Insert a '-' character after `uuid-chars` at 8, 12, 16 and 24.
 
 ### formatUuidNcName32(UUID):String
@@ -443,15 +443,15 @@ This is a lexically reordered variant of the alphabet specified in
 | Version      | uuid-ncname-32-lex         | uuid-ncname-58-lex      | uuid-ncname-64-lex     |
 |--------------|----------------------------|-------------------------|------------------------|
 | 0, Nil       | a2222222222222222222222222 | A1111111111111111111112 | A--------------------2 |
-| 1, Timestamp | btdpydmafpwje7es22lhchm73v | B6fTkmTD22KpWbDq1LuiszV | BmajZmBij6e9f--GPWgXWV |
-| 2, DCE       | c2222buafr6je62c22lhchm73v | C1111KtP6Y9P3rRkvh2N1eV | C---2uBit6e70--GPWgXWV |
-| 3, MD5       | dbq2ntiubzgpu5rw55setbf3dt | D2ioV6oTr9yq6dMojd469nT | DEN3wioUv9u6UVlsKZukdT |
-| 4, Random    | e2a5bqf72vpgwlpwdwp4pb5fgt | E13UZ99RxxUJC1v4dWsYtbT | E-NOvA92SLRYMXTK4JspgT |
-| 5, SHA-1     | f6bvzlro2eawdh223mrrrn4ves | F1x7wEJfz9eb1TYzsrT7ZsS | F7UUsrc0Gi8P--OMjTNheS |
-| 6, Timestamp | g5v6o4n357es2bm6yhjjgxq4av | G1rxRCnDiX4mxSpdi5LEvRV | G6g_0I1Beg-E7bajTnhW5V |
-| 7, Timestamp | h27zm7sntq5a5llaw3ka2iigjt | H13RrXaX7uTM6qdwrXwpC6T | H-MwXsbakn2Y3r-kB0naET |
-| 8, Custom    | iaca5unig23uvxmdmurvd52i2s | I2QDDTZysWZ5jcKS6HJDmHS | IBVkxIRk-SQv8BhMqZN6-S |
-| 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P8AQGAut7N92awznwCnjuQZ | PzzzzzzzzzzzzzzzzzzzzZ |
+| 1, Timestamp | btdpydmafpwjeteq226fe5glct | B6fTkmTD22KrBbQ6F3diU7T | BmajZmBij6emek-3LcQ7cT |
+| 2, DCE       | c2222buafr6jet24226fe5glct | C1111KtP6Y9QogqndZahf5T | C---2uBit6em-F-3LcQ7cT |
+| 3, MD5       | dbq2ntiubzgpucxz2sy4qduset | D2ioV6oTr9yqXobWp5RXvqT | DEN3wioUv9uGrsBT4ODg9T |
+| 4, Random    | e2a5bqf72vpgwghj4j7cpdsuvs | E13UZ99RxxUHkVGJNDLJV8S | E-NOvA92SLRNpsb_GKDCQS |
+| 5, SHA-1     | f6bvzlro2eawd5c22gpxxwsquu | F1x7wEJfz9eaCAWiLtSNd7U | F7UUsrc0Gi85V-5KvraAPU |
+| 6, Timestamp | g5v6o4n357es2twlbnfvvbhklu | G1rxRCnDiX4oVLAmr79G6LU | G6g_0I1Beg-nm8tfrgvNGU |
+| 7, Timestamp | h27zm7sntq5a5ggdr2g3k5nn5v | H13RrXaX7uTLfqn6haaYcaV | H-MwXsbakn2NlCkB2-RtYV |
+| 8, Custom    | iaca5unig23uvbgmgqpyucs5ks | P8AQGAut7N92awznwCnjuQZ | IBVkxIRk-SQDmIAKxd50kS |
+| 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P111111111131R5AhEe6iiZ | PzzzzzzzzzzzzzzzzzzzzZ |
 
 [UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
 
