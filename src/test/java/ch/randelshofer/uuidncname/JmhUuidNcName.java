@@ -29,9 +29,11 @@ import java.util.concurrent.TimeUnit;
  * JmhUuidNcName.rBase64Lex  avgt    2  22.886          ns/op
  * JmhUuidNcName.rCanonical  avgt    2  17.777          ns/op
  * JmhUuidNcName.wBase32     avgt    2  32.865          ns/op
+ * JmhUuidNcName.wBase32Lex  avgt    2  36.059          ns/op
  * JmhUuidNcName.wBase58     avgt    2  91.578          ns/op
  * JmhUuidNcName.wBase58Lex  avgt    2  81.406          ns/op
  * JmhUuidNcName.wBase64     avgt    2  31.967          ns/op
+ * JmhUuidNcName.wBase64Lex  avgt    2  32.575          ns/op
  * JmhUuidNcName.wCanonical  avgt    2  22.848          ns/op
  * </pre>
  *
@@ -116,6 +118,11 @@ public class JmhUuidNcName {
     }
 
     @Benchmark
+    public String wBase32Lex() {
+        return UuidNCName.toString(uuid, UuidFormat.BASE32_LEX);
+    }
+
+    @Benchmark
     public String wBase58() {
         return UuidNCName.toString(uuid, UuidFormat.BASE58);
     }
@@ -128,6 +135,11 @@ public class JmhUuidNcName {
     @Benchmark
     public String wBase64() {
         return UuidNCName.toString(uuid, UuidFormat.BASE64);
+    }
+
+    @Benchmark
+    public String wBase64Lex() {
+        return UuidNCName.toString(uuid, UuidFormat.BASE64_LEX);
     }
 
     @Benchmark
