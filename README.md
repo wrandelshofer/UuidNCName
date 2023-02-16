@@ -130,7 +130,7 @@ For the purpose of formatting, we overlay an `UUID` with the following fields:
    and compress them into 4 bits.
 2. `variant-lex` is a 4-bit unsigned integer in big-endian order.<br>
    Extract bits 0x00000000_0000_0000_c000_000000000003 from the UUID,
-   and compress them into 4 bits.
+   and compress them into 4 bits. (Shown as v0 and v1 in the diagram above).
 3. `data-lex` is a 120-bit unsigned integer in big-endian order.<br>
    Extract bits 0xffffffff_ffff_0fff_3fff_fffffffffffc from the UUID,
    and compress them into 120 bits.
@@ -222,191 +222,191 @@ in the lexical representation, because we do not reorder data bits of the UUID.
 
 ### The Upper-Case `base32` Alphabet
 
-This is the same alphabet as the one specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+This is the alphabet specified in
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
 
-| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
-|    0    |    'A'    |    8    |    'I'    |   16    |    'Q'    |   24    |    'Y'    |
-|    1    |    'B'    |    9    |    'J'    |   17    |    'R'    |   25    |    'Z'    |
-|    2    |    'C'    |   10    |    'K'    |   18    |    'S'    |   26    |    '2'    |
-|    3    |    'D'    |   11    |    'L'    |   19    |    'T'    |   27    |    '3'    |
-|    4    |    'E'    |   12    |    'M'    |   20    |    'U'    |   28    |    '4'    |
-|    5    |    'F'    |   13    |    'N'    |   21    |    'V'    |   29    |    '5'    |
-|    6    |    'G'    |   14    |    'O'    |   22    |    'W'    |   30    |    '6'    |
-|    7    |    'H'    |   15    |    'P'    |   23    |    'X'    |   31    |    '7'    |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | 'A'  |  8  | 'I'  | 16  | 'Q'  | 24  | 'Y'  |
+|  1  | 'B'  |  9  | 'J'  | 17  | 'R'  | 25  | 'Z'  |
+|  2  | 'C'  | 10  | 'K'  | 18  | 'S'  | 26  | '2'  |
+|  3  | 'D'  | 11  | 'L'  | 19  | 'T'  | 27  | '3'  |
+|  4  | 'E'  | 12  | 'M'  | 20  | 'U'  | 28  | '4'  |
+|  5  | 'F'  | 13  | 'N'  | 21  | 'V'  | 29  | '5'  |
+|  6  | 'G'  | 14  | 'O'  | 22  | 'W'  | 30  | '6'  |
+|  7  | 'H'  | 15  | 'P'  | 23  | 'X'  | 31  | '7'  |
 
 ### The Lower-Case `base32` Alphabet
 
 This is a lower-case variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
 
-| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
-|    0    |    'a'    |    8    |    'i'    |   16    |    'q'    |   24    |    'y'    |
-|    1    |    'b'    |    9    |    'j'    |   17    |    'r'    |   25    |    'z'    |
-|    2    |    'c'    |   10    |    'k'    |   18    |    's'    |   26    |    '2'    |
-|    3    |    'd'    |   11    |    'l'    |   19    |    't'    |   27    |    '3'    |
-|    4    |    'e'    |   12    |    'm'    |   20    |    'u'    |   28    |    '4'    |
-|    5    |    'f'    |   13    |    'n'    |   21    |    'v'    |   29    |    '5'    |
-|    6    |    'g'    |   14    |    'o'    |   22    |    'w'    |   30    |    '6'    |
-|    7    |    'h'    |   15    |    'p'    |   23    |    'x'    |   31    |    '7'    |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | 'a'  |  8  | 'i'  | 16  | 'q'  | 24  | 'y'  |
+|  1  | 'b'  |  9  | 'j'  | 17  | 'r'  | 25  | 'z'  |
+|  2  | 'c'  | 10  | 'k'  | 18  | 's'  | 26  | '2'  |
+|  3  | 'd'  | 11  | 'l'  | 19  | 't'  | 27  | '3'  |
+|  4  | 'e'  | 12  | 'm'  | 20  | 'u'  | 28  | '4'  |
+|  5  | 'f'  | 13  | 'n'  | 21  | 'v'  | 29  | '5'  |
+|  6  | 'g'  | 14  | 'o'  | 22  | 'w'  | 30  | '6'  |
+|  7  | 'h'  | 15  | 'p'  | 23  | 'x'  | 31  | '7'  |
 
 ### The Upper-Case `base32-lex` Alphabet
 
 This is a lexically reordered variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
 
-| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
-|    0    |    '2'    |    8    |    'C'    |   16    |    'K'    |   24    |    'S'    |
-|    1    |    '3'    |    9    |    'D'    |   17    |    'L'    |   25    |    'T'    |
-|    2    |    '4'    |   10    |    'E'    |   18    |    'M'    |   26    |    'U'    |
-|    3    |    '5'    |   11    |    'F'    |   19    |    'N'    |   27    |    'V'    |
-|    4    |    '6'    |   12    |    'G'    |   20    |    'O'    |   28    |    'W'    |
-|    5    |    '7'    |   13    |    'H'    |   21    |    'P'    |   29    |    'X'    |
-|    6    |    'A'    |   14    |    'I'    |   22    |    'Q'    |   30    |    'Y'    |
-|    7    |    'B'    |   15    |    'J'    |   23    |    'R'    |   31    |    'Z'    |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | '2'  |  8  | 'C'  | 16  | 'K'  | 24  | 'S'  |
+|  1  | '3'  |  9  | 'D'  | 17  | 'L'  | 25  | 'T'  |
+|  2  | '4'  | 10  | 'E'  | 18  | 'M'  | 26  | 'U'  |
+|  3  | '5'  | 11  | 'F'  | 19  | 'N'  | 27  | 'V'  |
+|  4  | '6'  | 12  | 'G'  | 20  | 'O'  | 28  | 'W'  |
+|  5  | '7'  | 13  | 'H'  | 21  | 'P'  | 29  | 'X'  |
+|  6  | 'A'  | 14  | 'I'  | 22  | 'Q'  | 30  | 'Y'  |
+|  7  | 'B'  | 15  | 'J'  | 23  | 'R'  | 31  | 'Z'  |
 
 ### The Lower-Case `base32-lex` Alphabet
 
 This is a lexically reordered lower-case variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-alphabet-table].
+[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
 
-| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
-|    0    |    '2'    |    8    |    'c'    |   16    |    'k'    |   24    |    's'    |
-|    1    |    '3'    |    9    |    'd'    |   17    |    'l'    |   25    |    't'    |
-|    2    |    '4'    |   10    |    'e'    |   18    |    'm'    |   26    |    'u'    |
-|    3    |    '5'    |   11    |    'f'    |   19    |    'n'    |   27    |    'v'    |
-|    4    |    '6'    |   12    |    'g'    |   20    |    'o'    |   28    |    'w'    |
-|    5    |    '7'    |   13    |    'h'    |   21    |    'p'    |   29    |    'x'    |
-|    6    |    'a'    |   14    |    'i'    |   22    |    'q'    |   30    |    'y'    |
-|    7    |    'b'    |   15    |    'j'    |   23    |    'r'    |   31    |    'z'    |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | '2'  |  8  | 'c'  | 16  | 'k'  | 24  | 's'  |
+|  1  | '3'  |  9  | 'd'  | 17  | 'l'  | 25  | 't'  |
+|  2  | '4'  | 10  | 'e'  | 18  | 'm'  | 26  | 'u'  |
+|  3  | '5'  | 11  | 'f'  | 19  | 'n'  | 27  | 'v'  |
+|  4  | '6'  | 12  | 'g'  | 20  | 'o'  | 28  | 'w'  |
+|  5  | '7'  | 13  | 'h'  | 21  | 'p'  | 29  | 'x'  |
+|  6  | 'a'  | 14  | 'i'  | 22  | 'q'  | 30  | 'y'  |
+|  7  | 'b'  | 15  | 'j'  | 23  | 'r'  | 31  | 'z'  |
 
 ### The `base58` Alphabet
 
-This is the same alphabet as the one specified in
-[draft-msporny-base58-02, Table 1: Base58 Mapping Table][base-58-alphabet-table]].
+This is the alphabet specified in
+[draft-msporny-base58-02, Table 1: Base58 Mapping Table][base-58-encoding-table]].
 
-| Decimal | Character | Decimal | Character | Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
-|    0    |    '1'    |   16    |    'H'    |   32    |    'Z'    |   48    |    'q'    |
-|    1    |    '2'    |   17    |    'J'    |   33    |    'a'    |   49    |    'r'    |
-|    2    |    '3'    |   18    |    'K'    |   34    |    'b'    |   50    |    's'    |
-|    3    |    '4'    |   19    |    'L'    |   35    |    'c'    |   51    |    't'    |
-|    4    |    '5'    |   20    |    'M'    |   36    |    'd'    |   52    |    'u'    |
-|    5    |    '6'    |   21    |    'N'    |   37    |    'e'    |   53    |    'v'    |
-|    6    |    '7'    |   22    |    'P'    |   38    |    'f'    |   54    |    'w'    |
-|    7    |    '8'    |   23    |    'Q'    |   39    |    'g'    |   55    |    'x'    |
-|    8    |    '9'    |   24    |    'R'    |   40    |    'h'    |   56    |    'y'    |
-|    9    |    'A'    |   25    |    'S'    |   41    |    'i'    |   57    |    'z'    |
-|   10    |    'B'    |   26    |    'T'    |   42    |    'j'    |         |           |
-|   11    |    'C'    |   27    |    'U'    |   43    |    'k'    |         |           |
-|   12    |    'D'    |   28    |    'V'    |   44    |    'm'    |         |           |
-|   13    |    'E'    |   29    |    'W'    |   45    |    'n'    |         |           |
-|   14    |    'F'    |   30    |    'X'    |   46    |    'o'    |         |           |
-|   15    |    'G'    |   31    |    'Y'    |   47    |    'p'    |         |           |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | '1'  | 16  | 'H'  | 32  | 'Z'  | 48  | 'q'  |
+|  1  | '2'  | 17  | 'J'  | 33  | 'a'  | 49  | 'r'  |
+|  2  | '3'  | 18  | 'K'  | 34  | 'b'  | 50  | 's'  |
+|  3  | '4'  | 19  | 'L'  | 35  | 'c'  | 51  | 't'  |
+|  4  | '5'  | 20  | 'M'  | 36  | 'd'  | 52  | 'u'  |
+|  5  | '6'  | 21  | 'N'  | 37  | 'e'  | 53  | 'v'  |
+|  6  | '7'  | 22  | 'P'  | 38  | 'f'  | 54  | 'w'  |
+|  7  | '8'  | 23  | 'Q'  | 39  | 'g'  | 55  | 'x'  |
+|  8  | '9'  | 24  | 'R'  | 40  | 'h'  | 56  | 'y'  |
+|  9  | 'A'  | 25  | 'S'  | 41  | 'i'  | 57  | 'z'  |
+| 10  | 'B'  | 26  | 'T'  | 42  | 'j'  |     |      |
+| 11  | 'C'  | 27  | 'U'  | 43  | 'k'  |     |      |
+| 12  | 'D'  | 28  | 'V'  | 44  | 'm'  |     |      |
+| 13  | 'E'  | 29  | 'W'  | 45  | 'n'  |     |      |
+| 14  | 'F'  | 30  | 'X'  | 46  | 'o'  |     |      |
+| 15  | 'G'  | 31  | 'Y'  | 47  | 'p'  |     |      |
 
 ### The `base64-url` Alphabet
 
-This is the same alphabet as the one specified in
-[RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-alphabet-table].
+This is the alphabet specified in
+[RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-encoding-table].
 
-| Decimal | Character | Decimal | Character | Decimal | Character | Decimal |   Character    |
-|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|:-------:|:--------------:|
-|    0    |    'A'    |   16    |    'Q'    |   32    |    'g'    |   48    |      'w'       |
-|    1    |    'B'    |   17    |    'R'    |   33    |    'h'    |   49    |      'x'       |
-|    2    |    'C'    |   18    |    'S'    |   34    |    'i'    |   50    |      'y'       |
-|    3    |    'D'    |   19    |    'T'    |   35    |    'j'    |   51    |      'z'       |
-|    4    |    'E'    |   20    |    'U'    |   36    |    'k'    |   52    |      '0'       |
-|    5    |    'F'    |   21    |    'V'    |   37    |    'l'    |   53    |      '1'       |
-|    6    |    'G'    |   22    |    'W'    |   38    |    'm'    |   54    |      '2'       |
-|    7    |    'H'    |   23    |    'X'    |   39    |    'n'    |   55    |      '3'       |
-|    8    |    'I'    |   24    |    'Y'    |   40    |    'o'    |   56    |      '4'       |
-|    9    |    'J'    |   25    |    'Z'    |   41    |    'p'    |   57    |      '5'       |
-|   10    |    'K'    |   26    |    'a'    |   42    |    'q'    |   58    |      '6'       |
-|   11    |    'L'    |   27    |    'b'    |   43    |    'r'    |   59    |      '7'       |
-|   12    |    'M'    |   28    |    'c'    |   44    |    's'    |   60    |      '8'       |
-|   13    |    'N'    |   29    |    'd'    |   45    |    't'    |   61    |      '9'       |
-|   14    |    'O'    |   30    |    'e'    |   46    |    'u'    |   62    |  '-' (minus)   |
-|   15    |    'P'    |   31    |    'f'    |   47    |    'v'    |   63    | '_'(underline) |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | 'A'  | 16  | 'Q'  | 32  | 'g'  | 48  | 'w'  |
+|  1  | 'B'  | 17  | 'R'  | 33  | 'h'  | 49  | 'x'  |
+|  2  | 'C'  | 18  | 'S'  | 34  | 'i'  | 50  | 'y'  |
+|  3  | 'D'  | 19  | 'T'  | 35  | 'j'  | 51  | 'z'  |
+|  4  | 'E'  | 20  | 'U'  | 36  | 'k'  | 52  | '0'  |
+|  5  | 'F'  | 21  | 'V'  | 37  | 'l'  | 53  | '1'  |
+|  6  | 'G'  | 22  | 'W'  | 38  | 'm'  | 54  | '2'  |
+|  7  | 'H'  | 23  | 'X'  | 39  | 'n'  | 55  | '3'  |
+|  8  | 'I'  | 24  | 'Y'  | 40  | 'o'  | 56  | '4'  |
+|  9  | 'J'  | 25  | 'Z'  | 41  | 'p'  | 57  | '5'  |
+| 10  | 'K'  | 26  | 'a'  | 42  | 'q'  | 58  | '6'  |
+| 11  | 'L'  | 27  | 'b'  | 43  | 'r'  | 59  | '7'  |
+| 12  | 'M'  | 28  | 'c'  | 44  | 's'  | 60  | '8'  |
+| 13  | 'N'  | 29  | 'd'  | 45  | 't'  | 61  | '9'  |
+| 14  | 'O'  | 30  | 'e'  | 46  | 'u'  | 62  | '-'  |
+| 15  | 'P'  | 31  | 'f'  | 47  | 'v'  | 63  | '_'  |
 
 ### The `base64-lex` Alphabet
 
 This is a lexically reordered variant of the alphabet specified in
-[RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-alphabet-table].
+[RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-encoding-table].
 
-| Decimal |  Character  | Decimal | Character | Decimal |   Character    | Decimal | Character |
-|:-------:|:-----------:|:-------:|:---------:|:-------:|:--------------:|:-------:|:---------:|
-|    0    | '-' (minus) |   16    |    'F'    |   32    |      'V'       |   48    |    'k'    |
-|    1    |     '0'     |   17    |    'G'    |   33    |      'W'       |   49    |    'l'    |
-|    2    |     '1'     |   18    |    'H'    |   34    |      'X'       |   50    |    'm'    |
-|    3    |     '2'     |   19    |    'I'    |   35    |      'Y'       |   51    |    'n'    |
-|    4    |     '3'     |   20    |    'J'    |   36    |      'Z'       |   52    |    'o'    |
-|    5    |     '4'     |   21    |    'K'    |   37    | '_'(underline) |   53    |    'p'    |
-|    6    |     '5'     |   22    |    'L'    |   38    |      'a'       |   54    |    'q'    |
-|    7    |     '6'     |   23    |    'M'    |   39    |      'b'       |   55    |    'r'    |
-|    8    |     '7'     |   24    |    'N'    |   40    |      'c'       |   56    |    's'    |
-|    9    |     '8'     |   25    |    'O'    |   41    |      'd'       |   57    |    't'    |
-|   10    |     '9'     |   26    |    'P'    |   42    |      'e'       |   58    |    'u'    |
-|   11    |     'A'     |   27    |    'Q'    |   43    |      'f'       |   59    |    'v'    |
-|   12    |     'B'     |   28    |    'R'    |   44    |      'g'       |   60    |    'w'    |
-|   13    |     'C'     |   29    |    'S'    |   45    |      'h'       |   61    |    'x'    |
-|   14    |     'D'     |   30    |    'T'    |   46    |      'i'       |   62    |    'y'    |
-|   15    |     'E'     |   31    |    'U'    |   47    |      'j'       |   63    |    'z'    |
+| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
+|  0  | '-'  | 16  | 'F'  | 32  | 'V'  | 48  | 'k'  |
+|  1  | '0'  | 17  | 'G'  | 33  | 'W'  | 49  | 'l'  |
+|  2  | '1'  | 18  | 'H'  | 34  | 'X'  | 50  | 'm'  |
+|  3  | '2'  | 19  | 'I'  | 35  | 'Y'  | 51  | 'n'  |
+|  4  | '3'  | 20  | 'J'  | 36  | 'Z'  | 52  | 'o'  |
+|  5  | '4'  | 21  | 'K'  | 37  | '_'  | 53  | 'p'  |
+|  6  | '5'  | 22  | 'L'  | 38  | 'a'  | 54  | 'q'  |
+|  7  | '6'  | 23  | 'M'  | 39  | 'b'  | 55  | 'r'  |
+|  8  | '7'  | 24  | 'N'  | 40  | 'c'  | 56  | 's'  |
+|  9  | '8'  | 25  | 'O'  | 41  | 'd'  | 57  | 't'  |
+| 10  | '9'  | 26  | 'P'  | 42  | 'e'  | 58  | 'u'  |
+| 11  | 'A'  | 27  | 'Q'  | 43  | 'f'  | 59  | 'v'  |
+| 12  | 'B'  | 28  | 'R'  | 44  | 'g'  | 60  | 'w'  |
+| 13  | 'C'  | 29  | 'S'  | 45  | 'h'  | 61  | 'x'  |
+| 14  | 'D'  | 30  | 'T'  | 46  | 'i'  | 62  | 'y'  |
+| 15  | 'E'  | 31  | 'U'  | 47  | 'j'  | 63  | 'z'  |
 
 ### The Upper-Case `bookend` Alphabet
 
-| Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|
-|    0    |    'A'    |    8    |    'I'    |
-|    1    |    'B'    |    9    |    'J'    |
-|    2    |    'C'    |   10    |    'K'    |
-|    3    |    'D'    |   11    |    'L'    |
-|    4    |    'E'    |   12    |    'M'    |
-|    5    |    'F'    |   13    |    'N'    |
-|    6    |    'G'    |   14    |    'O'    |
-|    7    |    'H'    |   15    |    'P'    |
+| Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|
+|  0  | 'A'  |  8  | 'I'  |
+|  1  | 'B'  |  9  | 'J'  |
+|  2  | 'C'  | 10  | 'K'  |
+|  3  | 'D'  | 11  | 'L'  |
+|  4  | 'E'  | 12  | 'M'  |
+|  5  | 'F'  | 13  | 'N'  |
+|  6  | 'G'  | 14  | 'O'  |
+|  7  | 'H'  | 15  | 'P'  |
 
 ### The Lower-Case `bookend` Alphabet
 
-| Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|
-|    0    |    'a'    |    8    |    'i'    |
-|    1    |    'b'    |    9    |    'j'    |
-|    2    |    'c'    |   10    |    'k'    |
-|    3    |    'd'    |   11    |    'l'    |
-|    4    |    'e'    |   12    |    'm'    |
-|    5    |    'f'    |   13    |    'n'    |
-|    6    |    'g'    |   14    |    'o'    |
-|    7    |    'h'    |   15    |    'p'    |
+| Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|
+|  0  | 'a'  |  8  | 'i'  |
+|  1  | 'b'  |  9  | 'j'  |
+|  2  | 'c'  | 10  | 'k'  |
+|  3  | 'd'  | 11  | 'l'  |
+|  4  | 'e'  | 12  | 'm'  |
+|  5  | 'f'  | 13  | 'n'  |
+|  6  | 'g'  | 14  | 'o'  |
+|  7  | 'h'  | 15  | 'p'  |
 
 ### The Upper-Case `bookend-lex` Alphabet
 
-| Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|
-|    0    |    '2'    |    8    |    'S'    |
-|    1    |    '3'    |    9    |    'T'    |
-|    2    |    '4'    |   10    |    'U'    |
-|    3    |    '5'    |   11    |    'V'    |
-|    4    |    '6'    |   12    |    'W'    |
-|    5    |    '7'    |   13    |    'X'    |
-|    6    |    'Q'    |   14    |    'Y'    |
-|    7    |    'R'    |   15    |    'Z'    |
+| Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|
+|  0  | '2'  |  8  | 'S'  |
+|  1  | '3'  |  9  | 'T'  |
+|  2  | '4'  | 10  | 'U'  |
+|  3  | '5'  | 11  | 'V'  |
+|  4  | '6'  | 12  | 'W'  |
+|  5  | '7'  | 13  | 'X'  |
+|  6  | 'Q'  | 14  | 'Y'  |
+|  7  | 'R'  | 15  | 'Z'  |
 
 ### The Lower-Case `bookend-lex` Alphabet
 
-| Decimal | Character | Decimal | Character |
-|:-------:|:---------:|:-------:|:---------:|
-|    0    |    '2'    |    8    |    's'    |
-|    1    |    '3'    |    9    |    't'    |
-|    2    |    '4'    |   10    |    'u'    |
-|    3    |    '5'    |   11    |    'v'    |
-|    4    |    '6'    |   12    |    'w'    |
-|    5    |    '7'    |   13    |    'x'    |
-|    6    |    'q'    |   14    |    'y'    |
-|    7    |    'r'    |   15    |    'z'    |
+| Dec | Char | Dec | Char |
+|:---:|:----:|:---:|:----:|
+|  0  | '2'  |  8  | 's'  |
+|  1  | '3'  |  9  | 't'  |
+|  2  | '4'  | 10  | 'u'  |
+|  3  | '5'  | 11  | 'v'  |
+|  4  | '6'  | 12  | 'w'  |
+|  5  | '7'  | 13  | 'x'  |
+|  6  | 'q'  | 14  | 'y'  |
+|  7  | 'r'  | 15  | 'z'  |
 
 ## Examples
 
