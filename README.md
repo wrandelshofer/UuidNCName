@@ -8,7 +8,11 @@ This is an implementation of the draft specification
 
 This implementation supports 3 additional "lexical" formats.
 The "lexical" formats have the same lexicographic order like the "canonical" UUID format,
-when the Unicode character set and the same UUID version and variant is used.
+when the following conditions are true:
+
+- Unicode or ASCII character set is used.
+- All UUIDs have the same version and variant.
+
 This is useful for ids that use the [UUIDv6][UUIDv6-specification] or [UUIDv7][UUIDv7-specification]
 format.
 
