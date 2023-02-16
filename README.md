@@ -28,7 +28,7 @@ The supported formats are:
 
 ## Syntax
 
-Here is the ABNF grammar for the supported productions:
+Here is the ABNF grammar of the supported formats:
 
 <pre>
     <a id="uuid-canonical"/>uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit ;
