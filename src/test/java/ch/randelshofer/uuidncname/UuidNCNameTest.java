@@ -11,6 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 class UuidNCNameTest {
+    private static String toLowerCase(String uuidNcName) {
+        // Changing the case of the first and the last characters must yield the same uuid
+        StringBuffer b = new StringBuffer(uuidNcName);
+        b.setCharAt(0, Character.toLowerCase(b.charAt(0)));
+        b.setCharAt(b.length() - 1, Character.toLowerCase(b.charAt(b.length() - 1)));
+        return b.toString();
+    }
+
+    private static String toUpperCase(String uuidNcName) {
+        // Changing the case of the first and the last characters must yield the same uuid
+        StringBuffer b = new StringBuffer(uuidNcName);
+        b.setCharAt(0, Character.toUpperCase(b.charAt(0)));
+        b.setCharAt(b.length() - 1, Character.toUpperCase(b.charAt(b.length() - 1)));
+        return b.toString();
+    }
+
     @TestFactory
     public List<DynamicTest> dynamicTests_base32() {
         return List.of(
@@ -32,15 +48,15 @@ class UuidNCNameTest {
     public List<DynamicTest> dynamicTests_base32_lex() {
         return List.of(
                 dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testUuidNCName("00000000-0000-0000-0000-000000000000", "a2222222222222222222222222", UuidFormat.BASE32_LEX)),
-                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testUuidNCName("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "btdpydmafpwje7es22lhchm73v", UuidFormat.BASE32_LEX)),
-                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testUuidNCName("C232AB00-9414-11EC-B3C8-9E6BDECED846", "bscteq26o4kjgbm6yhjjgxq4av", UuidFormat.BASE32_LEX)),
-                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testUuidNCName("000003e8-cbb9-21ea-b201-00045a86c8a1", "c2222buafr6je62c22lhchm73v", UuidFormat.BASE32_LEX)),
-                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testUuidNCName("3d813cbb-47fb-32ba-91df-831e1593ac29", "dbq2ntiubzgpu5rw55setbf3dt", UuidFormat.BASE32_LEX)),
-                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testUuidNCName("01867b2c-a0dd-459c-98d7-89e545538d6c", "e2a5bqf72vpgwlpwdwp4pb5fgt", UuidFormat.BASE32_LEX)),
-                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testUuidNCName("21f7f8de-8051-5b89-8680-0195ef798b6a", "f6bvzlro2eawdh223mrrrn4ves", UuidFormat.BASE32_LEX)),
-                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testUuidNCName("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "g5v6o4n357es2bm6yhjjgxq4av", UuidFormat.BASE32_LEX)),
-                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testUuidNCName("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "h27zm7sntq5a5llaw3ka2iigjt", UuidFormat.BASE32_LEX)),
-                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testUuidNCName("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "iaca5unig23uvxmdmurvd52i2s", UuidFormat.BASE32_LEX)),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testUuidNCName("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "btdpydmafpwjeteq226fe5glct", UuidFormat.BASE32_LEX)),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testUuidNCName("C232AB00-9414-11EC-B3C8-9E6BDECED846", "bscteq26o4kjgtwlbnfvvbhklu", UuidFormat.BASE32_LEX)),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testUuidNCName("000003e8-cbb9-21ea-b201-00045a86c8a1", "c2222buafr6jet24226fe5glct", UuidFormat.BASE32_LEX)),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testUuidNCName("3d813cbb-47fb-32ba-91df-831e1593ac29", "dbq2ntiubzgpucxz2sy4qduset", UuidFormat.BASE32_LEX)),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testUuidNCName("01867b2c-a0dd-459c-98d7-89e545538d6c", "e2a5bqf72vpgwghj4j7cpdsuvs", UuidFormat.BASE32_LEX)),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testUuidNCName("21f7f8de-8051-5b89-8680-0195ef798b6a", "f6bvzlro2eawd5c22gpxxwsquu", UuidFormat.BASE32_LEX)),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testUuidNCName("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "g5v6o4n357es2twlbnfvvbhklu", UuidFormat.BASE32_LEX)),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testUuidNCName("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "h27zm7sntq5a5ggdr2g3k5nn5v", UuidFormat.BASE32_LEX)),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testUuidNCName("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "iaca5unig23uvbgmgqpyucs5ks", UuidFormat.BASE32_LEX)),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testUuidNCName("ffffffff-ffff-ffff-ffff-ffffffffffff", "pzzzzzzzzzzzzzzzzzzzzzzzzz", UuidFormat.BASE32_LEX))
         );
     }
@@ -67,17 +83,17 @@ class UuidNCNameTest {
     public List<DynamicTest> dynamicTests_base58_lex() {
         return List.of(
                 dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testUuidNCName("00000000-0000-0000-0000-000000000000", "A1111111111111111111112", UuidFormat.BASE58_LEX)),
-                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testUuidNCName("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KpWbDq1LuiszV", UuidFormat.BASE58_LEX)),
-                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testUuidNCName("C232AB00-9414-11EC-B3C8-9E6BDECED846", "B6S7oX73gv2Y1iSjVTT2c5V", UuidFormat.BASE58_LEX)),
-                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testUuidNCName("000003e8-cbb9-21ea-b201-00045a86c8a1", "C1111KtP6Y9P3rRkvh2N1eV", UuidFormat.BASE58_LEX)),
-                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testUuidNCName("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yq6dMojd469nT", UuidFormat.BASE58_LEX)),
-                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testUuidNCName("01867b2c-a0dd-459c-98d7-89e545538d6c", "E13UZ99RxxUJC1v4dWsYtbT", UuidFormat.BASE58_LEX)),
-                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testUuidNCName("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eb1TYzsrT7ZsS", UuidFormat.BASE58_LEX)),
-                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testUuidNCName("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G1rxRCnDiX4mxSpdi5LEvRV", UuidFormat.BASE58_LEX)),
-                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testUuidNCName("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H13RrXaX7uTM6qdwrXwpC6T", UuidFormat.BASE58_LEX)),
-                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testUuidNCName("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ5jcKS6HJDmHS", UuidFormat.BASE58_LEX)),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testUuidNCName("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "B6fTkmTD22KrBbQ6F3diU7T", UuidFormat.BASE58_LEX)),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testUuidNCName("C232AB00-9414-11EC-B3C8-9E6BDECED846", "B6S7oX73gv2ZYbnsdVG3mzU", UuidFormat.BASE58_LEX)),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testUuidNCName("000003e8-cbb9-21ea-b201-00045a86c8a1", "C1111KtP6Y9QogqndZahf5T", UuidFormat.BASE58_LEX)),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testUuidNCName("3d813cbb-47fb-32ba-91df-831e1593ac29", "D2ioV6oTr9yqXobWp5RXvqT", UuidFormat.BASE58_LEX)),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testUuidNCName("01867b2c-a0dd-459c-98d7-89e545538d6c", "E13UZ99RxxUHkVGJNDLJV8S", UuidFormat.BASE58_LEX)),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testUuidNCName("21f7f8de-8051-5b89-8680-0195ef798b6a", "F1x7wEJfz9eaCAWiLtSNd7U", UuidFormat.BASE58_LEX)),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testUuidNCName("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G1rxRCnDiX4oVLAmr79G6LU", UuidFormat.BASE58_LEX)),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testUuidNCName("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H13RrXaX7uTLfqn6haaYcaV", UuidFormat.BASE58_LEX)),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testUuidNCName("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "I2QDDTZysWZ3t2b7UGbWyDS", UuidFormat.BASE58_LEX)),
                 dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testUuidNCName("ffffffff-ffff-ffff-ffff-ffffffffffff", "P8AQGAut7N92awznwCnjuQZ", UuidFormat.BASE58_LEX)),
-                dynamicTest("15 XXX,      00000000-0000-f000-f000-00003fffffff", () -> testUuidNCName("00000000-0000-f000-f000-00003fffffff", "P1111111111111112dtD34Z", UuidFormat.BASE58_LEX))
+                dynamicTest("15 XXX,      00000000-0000-f000-f000-00003fffffff", () -> testUuidNCName("00000000-0000-f000-f000-00003fffffff", "P111111111131R5AhEe6iiZ", UuidFormat.BASE58_LEX))
         );
     }
 
@@ -99,6 +115,23 @@ class UuidNCNameTest {
     }
 
     @TestFactory
+    public List<DynamicTest> dynamicTests_base64_lexical() {
+        return List.of(
+                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testUuidNCName("00000000-0000-0000-0000-000000000000", "A--------------------2", UuidFormat.BASE64_LEX)),
+                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testUuidNCName("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "BmajZmBij6emek-3LcQ7cT", UuidFormat.BASE64_LEX)),
+                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testUuidNCName("C232AB00-9414-11EC-B3C8-9E6BDECED846", "BkY9f-8FJ6gnm8tfrgvNGU", UuidFormat.BASE64_LEX)),
+                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testUuidNCName("000003e8-cbb9-21ea-b201-00045a86c8a1", "C---2uBit6em-F-3LcQ7cT", UuidFormat.BASE64_LEX)),
+                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testUuidNCName("3d813cbb-47fb-32ba-91df-831e1593ac29", "DEN3wioUv9uGrsBT4ODg9T", UuidFormat.BASE64_LEX)),
+                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testUuidNCName("01867b2c-a0dd-459c-98d7-89e545538d6c", "E-NOvA92SLRNpsb_GKDCQS", UuidFormat.BASE64_LEX)),
+                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testUuidNCName("21f7f8de-8051-5b89-8680-0195ef798b6a", "F7UUsrc0Gi85V-5KvraAPU", UuidFormat.BASE64_LEX)),
+                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testUuidNCName("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G6g_0I1Beg-nm8tfrgvNGU", UuidFormat.BASE64_LEX)),
+                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testUuidNCName("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H-MwXsbakn2NlCkB2-RtYV", UuidFormat.BASE64_LEX)),
+                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testUuidNCName("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IBVkxIRk-SQDmIAKxd50kS", UuidFormat.BASE64_LEX)),
+                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testUuidNCName("ffffffff-ffff-ffff-ffff-ffffffffffff", "PzzzzzzzzzzzzzzzzzzzzZ", UuidFormat.BASE64_LEX))
+        );
+    }
+
+    @TestFactory
     public List<DynamicTest> dynamicTests_illegalInput() {
         return List.of(
                 dynamicTest("base-64 one less than Nil", () -> testIllegalInput("AAAAAAAAAAAAAAAAAAAA@A")),
@@ -114,38 +147,8 @@ class UuidNCNameTest {
         );
     }
 
-    @TestFactory
-    public List<DynamicTest> dynamicTests_base64_lexical() {
-        return List.of(
-                dynamicTest("0 Nil,       00000000-0000-0000-0000-000000000000", () -> testUuidNCName("00000000-0000-0000-0000-000000000000", "A--------------------2", UuidFormat.BASE64_LEX)),
-                dynamicTest("1 Timestamp, ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", () -> testUuidNCName("ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1", "BmajZmBij6e9f--GPWgXWV", UuidFormat.BASE64_LEX)),
-                dynamicTest("1 Timestamp, C232AB00-9414-11EC-B3C8-9E6BDECED846", () -> testUuidNCName("C232AB00-9414-11EC-B3C8-9E6BDECED846", "BkY9f-8FJ6gE7bajTnhW5V", UuidFormat.BASE64_LEX)),
-                dynamicTest("2 DCE,       000003e8-cbb9-21ea-b201-00045a86c8a1", () -> testUuidNCName("000003e8-cbb9-21ea-b201-00045a86c8a1", "C---2uBit6e70--GPWgXWV", UuidFormat.BASE64_LEX)),
-                dynamicTest("3 MD5,       3d813cbb-47fb-32ba-91df-831e1593ac29", () -> testUuidNCName("3d813cbb-47fb-32ba-91df-831e1593ac29", "DEN3wioUv9u6UVlsKZukdT", UuidFormat.BASE64_LEX)),
-                dynamicTest("4 Random,    01867b2c-a0dd-459c-98d7-89e545538d6c", () -> testUuidNCName("01867b2c-a0dd-459c-98d7-89e545538d6c", "E-NOvA92SLRYMXTK4JspgT", UuidFormat.BASE64_LEX)),
-                dynamicTest("5 SHA-1,     21f7f8de-8051-5b89-8680-0195ef798b6a", () -> testUuidNCName("21f7f8de-8051-5b89-8680-0195ef798b6a", "F7UUsrc0Gi8P--OMjTNheS", UuidFormat.BASE64_LEX)),
-                dynamicTest("6 Timestamp, 1EC9414C-232A-6B00-B3C8-9E6BDECED846", () -> testUuidNCName("1EC9414C-232A-6B00-B3C8-9E6BDECED846", "G6g_0I1Beg-E7bajTnhW5V", UuidFormat.BASE64_LEX)),
-                dynamicTest("7 Timestamp, 017F22E2-79B0-7CC3-98C4-DC0C0C07398F", () -> testUuidNCName("017F22E2-79B0-7CC3-98C4-DC0C0C07398F", "H-MwXsbakn2Y3r-kB0naET", UuidFormat.BASE64_LEX)),
-                dynamicTest("8 Custom,    320C3D4D-CC00-875B-8EC9-32D5F69181C0", () -> testUuidNCName("320C3D4D-CC00-875B-8EC9-32D5F69181C0", "IBVkxIRk-SQv8BhMqZN6-S", UuidFormat.BASE64_LEX)),
-                dynamicTest("15 Max,      ffffffff-ffff-ffff-ffff-ffffffffffff", () -> testUuidNCName("ffffffff-ffff-ffff-ffff-ffffffffffff", "PzzzzzzzzzzzzzzzzzzzzZ", UuidFormat.BASE64_LEX))
-        );
-    }
-
-
-    private static String toUpperCase(String uuidNcName) {
-        // Changing the case of the first and the last characters must yield the same uuid
-        StringBuffer b = new StringBuffer(uuidNcName);
-        b.setCharAt(0, Character.toUpperCase(b.charAt(0)));
-        b.setCharAt(b.length() - 1, Character.toUpperCase(b.charAt(b.length() - 1)));
-        return b.toString();
-    }
-
-    private static String toLowerCase(String uuidNcName) {
-        // Changing the case of the first and the last characters must yield the same uuid
-        StringBuffer b = new StringBuffer(uuidNcName);
-        b.setCharAt(0, Character.toLowerCase(b.charAt(0)));
-        b.setCharAt(b.length() - 1, Character.toLowerCase(b.charAt(b.length() - 1)));
-        return b.toString();
+    private void testIllegalInput(String inputString) {
+        assertThrows(IllegalArgumentException.class, () -> UuidNCName.fromString(inputString));
     }
 
     private void testUuidNCName(String canonicalString, String expectedString, UuidFormat format) {
@@ -156,9 +159,5 @@ class UuidNCNameTest {
         assertEquals(expectedUuid, actualUuid);
         assertEquals(expectedUuid, UuidNCName.fromString(toUpperCase(expectedString)));
         assertEquals(expectedUuid, UuidNCName.fromString(toLowerCase(expectedString)));
-    }
-
-    private void testIllegalInput(String inputString) {
-        assertThrows(IllegalArgumentException.class, () -> UuidNCName.fromString(inputString));
     }
 }

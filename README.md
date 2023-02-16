@@ -7,8 +7,8 @@ This is an implementation of the draft specification
 ["Compact UUIDs for Constrained Grammars"][UUID-NCName-specification].
 
 This implementation supports 3 additional "lexical" formats.
-The "lexical" formats have the same lexicographic order like the "canonical" UUID format
-for the first 64 bits of an `UUID`, when the Unicode character set and the same UUID version is used.
+The "lexical" formats have the same lexicographic order like the "canonical" UUID format,
+when the Unicode character set and the same UUID version and variant is used.
 This is useful for ids that use the [UUIDv6][UUIDv6-specification] or [UUIDv7][UUIDv7-specification]
 format.
 
@@ -29,19 +29,16 @@ Here is the ABNF grammar for the supported productions:
 <pre>
     <a id="uuid-canonical"/>uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit ;
     
-    <a id="uuid-ncname-32"/>uuid-ncname-32     = version 24base32              variant ;
-    <a id="uuid-ncname-58"/>uuid-ncname-58     = version 15*21base58 *6padding variant ;
-    <a id="uuid-ncname-64"/>uuid-ncname-64     = version 20base64-url          variant ;
+    <a id="uuid-ncname-32"/>uuid-ncname-32     = bookend 24base32              bookend ;
+    <a id="uuid-ncname-58"/>uuid-ncname-58     = bookend 15*21base58 *6padding bookend ;
+    <a id="uuid-ncname-64"/>uuid-ncname-64     = bookend 20base64-url          bookend ;
 
-    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = version 24base32-lex variant-lex ;
-    <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = version 21base58     variant-lex ;
-    <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = version 20base64-lex variant-lex ;
+    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = bookend 24base32-lex bookend-lex ;
+    <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = bookend 21base58     bookend-lex ;
+    <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = bookend 20base64-lex bookend-lex ;
 
     <a id="hexDigit"/>hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
 
-    version        = bookend ;
-    variant        = bookend ;
-    variant-lex    = bookend-lex ;
     <a id="bookend"/>bookend        = %x41-50 / %x61-70 ; [A-Pa-p]
     <a id="bookend-lex"/>bookend-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
     padding        = "_" ;
@@ -74,28 +71,25 @@ All encodings are fixed length:
 
 ## Algorithms
 
-### Extract Fields from an UUID
+### extractNonLexicalFields(UUID):(version,variant,data)
 
-An <a id="UUID"/>`UUID` is a 128-bit unsigned integer in big-endian order.<br>
+An <a id="UUID"/>`UUID` is a 128-bit unsigned integer in big-endian order.
+It contains variable-length fields. The field layout depends on the
+version and variant of a `UUID`.
 
-`UUID`s are structured into fields. The field layout depends on the
-version and variant of a `UUID`. For the purpose of formatting, we
-overlay the following fields over the `UUID`.
+For the purpose of formatting, we overlay an `UUID` with the following fields:
 
        0                   1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
-      |                         data-88-119                           |
+      |                         data[88-119]                          |
       :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
-      |          data-72-87           |version|      data-60-71       |
+      |          data[72-87]          |version|      data[60-71]      |
       :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
-      |variant|                  data-32-59                           |
+      |variant|                  data[32-59]                          |
       :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
-      |                          data-0-31                            |
+      |                          data[0-31]                           |
       :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
-
-It consists of the fields `version`, `variant` and `data`.<br>
-The `version` and `variant` fields are interspersed in the `data` field.
 
 1. `version` is a 4-bit unsigned integer in big-endian order.<br>
    Extract bits 0x00000000_0000_f000_0000_000000000000 from the UUID,
@@ -107,16 +101,59 @@ The `version` and `variant` fields are interspersed in the `data` field.
    Extract bits 0xffffffff_ffff_0fff_0fff_ffffffffffff from the UUID,
    and compress them into 120 bits.
 
-### Format uuid-canonical
+Note that the field `variant` is only 2 bits long in [UUIDv6][UUIDv6-specification]
+and [UUIDv7][UUIDv7-specification].
+
+By moving a 4-bit variant field to the end of the String in the formatting algorithms
+`uuid-ncname-32`, `uuid-ncname-58` and  `uuid-ncname-64`, we effectively reorder data bits
+of the UUID, and therefore we do not retain the ordering of the UUIDs in the lexical
+representation.
+
+### extractLexicalFields(UUID):(version,variant-lex,data-lex)
+
+For the purpose of formatting, we overlay an `UUID` with the following fields:
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |                       data-lex[88-119]                        |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |        data-lex[72-87]        |version|    data-lex[60-71]    |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |v1 |                   data-lex[30-59]                         |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+      |                       data-lex[0-29]                      |v0 |
+      :-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:-+-+-+-:
+
+1. `version` is a 4-bit unsigned integer in big-endian order.<br>
+   Extract bits 0x00000000_0000_f000_0000_000000000000 from the UUID,
+   and compress them into 4 bits.
+2. `variant-lex` is a 4-bit unsigned integer in big-endian order.<br>
+   Extract bits 0x00000000_0000_0000_c000_000000000003 from the UUID,
+   and compress them into 4 bits.
+3. `data-lex` is a 120-bit unsigned integer in big-endian order.<br>
+   Extract bits 0xffffffff_ffff_0fff_3fff_fffffffffffc from the UUID,
+   and compress them into 120 bits.
+
+Note that the field `variant` is only 2 bits long in [UUIDv6][UUIDv6-specification]
+and [UUIDv7][UUIDv7-specification].
+
+Although we move the variant field to the
+end of the String in the formatting algorithms `uuid-ncname-32-lex`,
+`uuid-ncname-58-lex` and `uuid-ncname-64-lex`, we **retain** the ordering
+in the lexical representation, because we do not reorder data bits of the UUID.
+
+### formatUuidCanonical(UUID):String
 
 1. `uuid-digits :=` Convert the 128-bit `UUID` from binary to base-16.<br>
    This yields 32 digits (padded with leading zeroes).
 2. `uuid-chars :=` Encode each `uuid-digits` digit with a [`hexDigit`](#hexDigit) character.
 3. `uuid-canonical :=` Insert a '-' character after `uuid-chars` at 8, 12, 16 and 24.
 
-### Format uuid-ncname-32
+### formatUuidNcName32(UUID):String
 
-1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
+1. `version,variant,data :=` Extract fields from a `UUID` with algorithm
+   `extractNonLexicalFields`.
 2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
 3. `variant-char :=` Encode `variant` with a lower-case [`bookend`](#bookend) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
@@ -124,9 +161,10 @@ The `version` and `variant` fields are interspersed in the `data` field.
 5. `data-chars :=` Encode each `data-digits` digit with a lower-case [`base32`](#base32) character.
 6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
 
-### Format uuid-ncname-58
+### formatUuidNcName58(UUID):String
 
-1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
+1. `version,variant,data :=` Extract fields from a `UUID` with algorithm
+   `extractNonLexicalFields`.
 2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
 3. `variant-char :=` Encode `variant` with a upper-case [`bookend`](#bookend) character.
 4. `data-chars :=` Encode the 120-bit `data` field with the
@@ -136,9 +174,10 @@ The `version` and `variant` fields are interspersed in the `data` field.
    to reach a total length of 21 characters.
 6. `uuid-ncname-58 :=` Concat `version-char`, `data-chars-padded`, `variant-char`.
 
-### Format uuid-ncname-64
+### formatUuidNcName64(UUID):String
 
-1. `version,variant,data :=` Extract fields from the 128-bit `UUID`.
+1. `version,variant,data :=` Extract fields from a `UUID` with algorithm
+   `extractNonLexicalFields`.
 2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
 3. `variant-char :=` Encode `variant` with a upper-case [`bookend`](#bookend) character.
 4. `data-digits :=` Convert the 120-bit `data` field from binary to base-64.<br>
@@ -146,35 +185,38 @@ The `version` and `variant` fields are interspersed in the `data` field.
 5. `data-chars :=` Encode each `data-digits` digit with a [`base64-url`](#base64-url) character.
 6. `uuid-ncname-64 :=` Concat `version-char`, `data-chars`, `variant-char`.
 
-### Format uuid-ncname-32-lex
+### formatUuidNcName32Lex(UUID):String
 
-1. `version,variant,data :=` Extract fields from the `UUID`
+1. `version,variant-lex,data-lex :=` Extract fields from a `UUID` with algorithm
+   `extractLexicalFields`.
 2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a lower-case [`bookend-lex`](#bookend-lex) character.
-4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
+3. `data-lex-digits :=` Convert the 120-bit `data-lex` field from binary to base-32.<br>
    This yields 24 digits (padded with leading zeroes).
-5. `data-chars :=` Encode each digit with a [`base32-lex`](#base32-lex) character.
-6. `uuid-ncname-32-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
+4. `data-lex-chars :=` Encode each data-lex digit with a [`base32-lex`](#base32-lex) character.
+5. `variant-lex-char :=` Encode `variant-lex` with a lower-case [`bookend-lex`](#bookend-lex) character.
+6. `uuid-ncname-32-lex :=` Concat `version-char`, `data-lex-chars`, `variant-lex-char`.
 
-### Format uuid-ncname-58-lex
+### formatUuidNcName58Lex(UUID):String
 
-1. `version,variant,data :=` Extract fields from the `UUID`
-2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a upper-case [`bookend-lex`](#bookend-lex) character.
-4. `data-digits :=` Convert the 120-bit `data` field from binary to base-58.<br>
+1. `version,variant-lex,data-lex :=` Extract fields from a `UUID` with algorithm
+   `extractLexicalFields`.
+2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
+3. `data-lex-digits :=` Convert the 120-bit `data-lex` field from binary to base-58.<br>
    This yields 21 digits (padded with leading zeroes).
-5. `data-chars :=` Encode each digit with a [`base58`](#base58) character.
-6. `uuid-ncname-58-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
+4. `data-lex-chars :=` Encode each data-lex digit with a [`base58`](#base58) character.
+5. `variant-lex-char :=` Encode `variant-lex` with a lower-case [`bookend-lex`](#bookend-lex) character.
+6. `uuid-ncname-58-lex :=` Concat `version-char`, `data-lex-chars`, `variant-lex-char`.
 
-### Format uuid-ncname-64-lex
+### formatUuidNcName64Lex(UUID):String
 
-1. `version,variant,data :=` Extract fields from the `UUID`
-2. `version-char :=` Encode `version` with a upper-case [`bookend`](#bookend) character.
-3. `variant-char :=` Encode `variant` with a upper-case [`bookend-lex`](#bookend-lex) character.
-4. `data-digits :=` Convert the 120-bit `data` field from binary to base-64.<br>
+1. `version,variant-lex,data-lex :=` Extract fields from a `UUID` with algorithm
+   `extractLexicalFields`.
+2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
+3. `data-lex-digits :=` Convert the 120-bit `data-lex` field from binary to base-64.<br>
    This yields 20 digits (padded with leading zeroes).
-5. `data-chars :=` Encode each digit with a [`base64-lex`](#base64-lex) character.
-6. `uuid-ncname-64-lex :=` Concat `version-char`, `data-chars`, `variant-char`.
+4. `data-lex-chars :=` Encode each data-lex digit with a [`base64-lex`](#base64-lex) character.
+5. `variant-lex-char :=` Encode `variant-lex` with a lower-case [`bookend-lex`](#bookend-lex) character.
+6. `uuid-ncname-32-lex :=` Concat `version-char`, `data-lex-chars`, `variant-lex-char`.
 
 ## Encoding Alphabets
 

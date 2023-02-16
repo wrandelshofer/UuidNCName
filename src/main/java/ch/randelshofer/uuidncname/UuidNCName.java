@@ -111,8 +111,8 @@ public class UuidNCName {
         long msb = readUInt60(str, 1, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
         long lsb = readUInt60(str, 13, 12, BASE_32_LEXICAL_INVERSE_ALPHABET, 5);
         int version = readVersion(str);
-        int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
-        return new UUID(readMsb(msb, version), readLsb(lsb, variant));
+        int variantLex = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
+        return new UUID(readMsb(msb, version), readLsbLex(lsb, variantLex));
     }
 
     private static UUID fromBase58(String str) {
@@ -132,10 +132,10 @@ public class UuidNCName {
 
     private static UUID fromBase58Lex(String str) {
         int version = readVersion(str);
-        int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
+        int variantLex = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
         int[] uint30 = FastBase58.decode58Lex(str, 1, 21);
         long msb = readMsb((((long) uint30[0] << 30) | uint30[1]), version);
-        long lsb = readLsb(((long) uint30[2] << 30) | uint30[3], variant);
+        long lsb = readLsbLex(((long) uint30[2] << 30) | uint30[3], variantLex);
         return new UUID(msb, lsb);
     }
 
@@ -151,8 +151,8 @@ public class UuidNCName {
         long msb = readUInt60(str, 1, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
         long lsb = readUInt60(str, 11, 10, BASE_64_LEXICAL_INVERSE_ALPHABET, 6);
         int version = readVersion(str);
-        int variant = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
-        return new UUID(readMsb(msb, version), readLsb(lsb, variant));
+        int variantLex = readVariant(str, VARIANT_LEXICAL_INVERSE_ALPHABET);
+        return new UUID(readMsb(msb, version), readLsbLex(lsb, variantLex));
     }
 
     public static String toString(UUID uuid, UuidFormat format) {
@@ -185,6 +185,10 @@ public class UuidNCName {
         return uuid.getLeastSignificantBits() & 0x0fff_ffffffffffffL;
     }
 
+    private static long getLsbLex(UUID uuid) {
+        return Long.compress(uuid.getLeastSignificantBits(), 0x3fff_fffffffffffcL);
+    }
+
     private static long getMsb(UUID uuid) {
         return Long.compress(uuid.getMostSignificantBits(), 0xffffffff_ffff_0fffL);
     }
@@ -193,13 +197,17 @@ public class UuidNCName {
         return (int) (uuid.getLeastSignificantBits() >>> 60);
     }
 
+    private static int getVariantLex(UUID uuid) {
+        return (int) Long.compress(uuid.getLeastSignificantBits(), 0xc000_000000000003L);
+    }
+
     private static long readLsb(long bits, int variant) {
         return ((long) variant << 60) | bits;
     }
 
-    private static long readLsb(byte[] bytes, int variant) {
-        long bits = (long) readLongBE.get(bytes, bytes.length - 8) & 0x0fff_ffffffffffffL;
-        return readLsb(bits, variant);
+    private static long readLsbLex(long bits, int variant) {
+        return Long.expand(variant, 0xc000_000000000003L)
+                | bits << 2;
     }
 
     private static long readMsb(long bits, int version) {
@@ -244,9 +252,9 @@ public class UuidNCName {
     private static String toBase32Lex(UUID uuid) {
         byte[] str = new byte[26];
         str[0] = BASE_32_LOWER_CASE_ALPHABET[uuid.version()];
-        str[25] = VARIANT_LEXICAL_LOWER_CASE_ALPHABET[getVariant(uuid)];
+        str[25] = VARIANT_LEXICAL_LOWER_CASE_ALPHABET[getVariantLex(uuid)];
         writeUInt60(str, 1, 12, getMsb(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
-        writeUInt60(str, 13, 12, getLsb(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
+        writeUInt60(str, 13, 12, getLsbLex(uuid), BASE_32_LEXICAL_LOWER_CASE_ALPHABET, 5, 31);
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
@@ -263,9 +271,9 @@ public class UuidNCName {
     private static String toBase58Lex(UUID uuid) {
         byte[] b = new byte[24];
         long msb = getMsb(uuid);
-        long lsb = getLsb(uuid);
+        long lsb = getLsbLex(uuid);
         FastBase58.encode58Lex(msb, lsb, b, 2);
-        b[23] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariant(uuid)];
+        b[23] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariantLex(uuid)];
         b[1] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
         return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
     }
@@ -282,9 +290,9 @@ public class UuidNCName {
     private static String toBase64Lex(UUID uuid) {
         byte[] str = new byte[22];
         str[0] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
-        str[21] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariant(uuid)];
+        str[21] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariantLex(uuid)];
         writeUInt60(str, 1, 10, getMsb(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
-        writeUInt60(str, 11, 10, getLsb(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
+        writeUInt60(str, 11, 10, getLsbLex(uuid), BASE_64_LEXICAL_ALPHABET, 6, 63);
         return new String(str, StandardCharsets.ISO_8859_1);
     }
 
