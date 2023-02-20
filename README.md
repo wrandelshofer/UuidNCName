@@ -450,8 +450,8 @@ This is a lexically reordered variant of the alphabet specified in
 | 5, SHA-1     | f6bvzlro2eawd5c22gpxxwsquu | F1x7wEJfz9eaCAWiLtSNd7U | F7UUsrc0Gi85V-5KvraAPU |
 | 6, Timestamp | g5v6o4n357es2twlbnfvvbhklu | G1rxRCnDiX4oVLAmr79G6LU | G6g_0I1Beg-nm8tfrgvNGU |
 | 7, Timestamp | h27zm7sntq5a5ggdr2g3k5nn5v | H13RrXaX7uTLfqn6haaYcaV | H-MwXsbakn2NlCkB2-RtYV |
-| 8, Custom    | iaca5unig23uvbgmgqpyucs5ks | P8AQGAut7N92awznwCnjuQZ | IBVkxIRk-SQDmIAKxd50kS |
-| 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P111111111131R5AhEe6iiZ | PzzzzzzzzzzzzzzzzzzzzZ |
+| 8, Custom    | iaca5unig23uvbgmgqpyucs5ks | I2QDDTZysWZ3t2b7UGbWyDS | IBVkxIRk-SQDmIAKxd50kS |
+| 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P8AQGAut7N92awznwCnjuQZ | PzzzzzzzzzzzzzzzzzzzzZ |
 
 [UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
 
