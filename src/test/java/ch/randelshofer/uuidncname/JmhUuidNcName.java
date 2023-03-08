@@ -16,25 +16,25 @@ import java.util.concurrent.TimeUnit;
 /**
  * Benchmarks for selected floating point strings.
  * <pre>
- * # JMH version: 1.35
+ * # JMH version: 1.36
  * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20+36-2344
  * # Intel(R) Core(TM) i7-8700B CPU @ 3.20GHz
  *
  * Benchmark                 Mode  Cnt   Score   Error  Units
- * JmhUuidNcName.rBase32     avgt    2  25.066          ns/op
- * JmhUuidNcName.rBase32Lex  avgt    2  26.564          ns/op
- * JmhUuidNcName.rBase58     avgt    2  52.454          ns/op
- * JmhUuidNcName.rBase58Lex  avgt    2  50.533          ns/op
- * JmhUuidNcName.rBase64     avgt    2  22.580          ns/op
- * JmhUuidNcName.rBase64Lex  avgt    2  22.886          ns/op
- * JmhUuidNcName.rCanonical  avgt    2  17.777          ns/op
- * JmhUuidNcName.wBase32     avgt    2  32.865          ns/op
- * JmhUuidNcName.wBase32Lex  avgt    2  36.059          ns/op
- * JmhUuidNcName.wBase58     avgt    2  91.578          ns/op
- * JmhUuidNcName.wBase58Lex  avgt    2  81.406          ns/op
- * JmhUuidNcName.wBase64     avgt    2  31.967          ns/op
- * JmhUuidNcName.wBase64Lex  avgt    2  32.575          ns/op
- * JmhUuidNcName.wCanonical  avgt    2  22.848          ns/op
+ * JmhUuidNcName.rBase32     avgt    2  25.467          ns/op
+ * JmhUuidNcName.rBase32Lex  avgt    2  24.088          ns/op
+ * JmhUuidNcName.rBase58     avgt    2  43.057          ns/op
+ * JmhUuidNcName.rBase58Lex  avgt    2  44.967          ns/op
+ * JmhUuidNcName.rBase64     avgt    2  20.480          ns/op
+ * JmhUuidNcName.rBase64Lex  avgt    2  20.413          ns/op
+ * JmhUuidNcName.rCanonical  avgt    2  15.889          ns/op
+ * JmhUuidNcName.wBase32     avgt    2  28.370          ns/op
+ * JmhUuidNcName.wBase32Lex  avgt    2  26.557          ns/op
+ * JmhUuidNcName.wBase58     avgt    2  86.124          ns/op
+ * JmhUuidNcName.wBase58Lex  avgt    2  74.942          ns/op
+ * JmhUuidNcName.wBase64     avgt    2  27.435          ns/op
+ * JmhUuidNcName.wBase64Lex  avgt    2  24.601          ns/op
+ * JmhUuidNcName.wCanonical  avgt    2  18.486          ns/op
  * </pre>
  *
  * <pre>
@@ -76,7 +76,7 @@ public class JmhUuidNcName {
     private String base58Lex = UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
     private String base64 = UuidNCName.toString(uuid, UuidFormat.BASE64);
     private String base64Lex = UuidNCName.toString(uuid, UuidFormat.BASE64_LEX);
-
+/*
     @Benchmark
     public UUID rBase32() {
         return UuidNCName.fromString(base32);
@@ -131,11 +131,11 @@ public class JmhUuidNcName {
     public String wBase58Lex() {
         return UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
     }
-
     @Benchmark
     public String wBase64() {
         return UuidNCName.toString(uuid, UuidFormat.BASE64);
     }
+*/
 
     @Benchmark
     public String wBase64Lex() {

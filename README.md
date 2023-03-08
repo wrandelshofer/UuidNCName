@@ -37,7 +37,7 @@ Here is the ABNF grammar of the supported formats:
     <a id="uuid-ncname-58"/>uuid-ncname-58     = bookend 15*21base58 *6padding bookend ;
     <a id="uuid-ncname-64"/>uuid-ncname-64     = bookend 20base64-url          bookend ;
 
-    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = bookend 24base32-lex bookend-lex ;
+    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = bookend 24base32hex bookend-lex ;
     <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = bookend 21base58     bookend-lex ;
     <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = bookend 20base64-lex bookend-lex ;
 
@@ -48,7 +48,7 @@ Here is the ABNF grammar of the supported formats:
     padding        = "_" ;
     
     <a id="base32"/>base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
-    <a id="base32-lex"/>base32-lex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
+    <a id="base32hex"/>base32hex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
 
     <a id="base58"/>base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
 
@@ -160,7 +160,7 @@ in the lexical representation, because we do not reorder data bits of the UUID.
    `extractNonLexicalFields`.
 2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
 3. `variant-char :=` Encode `variant` with a lower-case [`bookend`](#bookend) character.
-4. `data-digits :=` Convert the 120-bit `data` field from binary to base-32.<br>
+4. `data-digits :=` Convert the 120-bit `data` field from binary to base32.<br>
    This yields 24 digits (padded with leading zeroes).
 5. `data-chars :=` Encode each `data-digits` digit with a lower-case [`base32`](#base32) character.
 6. `uuid-ncname-32 :=` Concat `version-char`, `data-chars`, `variant-char`.
@@ -194,9 +194,9 @@ in the lexical representation, because we do not reorder data bits of the UUID.
 1. `version,variant-lex,data-lex :=` Extract fields from a `UUID` with algorithm
    `extractLexicalFields`.
 2. `version-char :=` Encode `version` with a lower-case [`bookend`](#bookend) character.
-3. `data-lex-digits :=` Convert the 120-bit `data-lex` field from binary to base-32.<br>
+3. `data-lex-digits :=` Convert the 120-bit `data-lex` field from binary to base32.<br>
    This yields 24 digits (padded with leading zeroes).
-4. `data-lex-chars :=` Encode each data-lex digit with a [`base32-lex`](#base32-lex) character.
+4. `data-lex-chars :=` Encode each data-lex digit with a [`base32hex`](#base32hex) character.
 5. `variant-lex-char :=` Encode `variant-lex` with a lower-case [`bookend-lex`](#bookend-lex) character.
 6. `uuid-ncname-32-lex :=` Concat `version-char`, `data-lex-chars`, `variant-lex-char`.
 
@@ -226,8 +226,8 @@ in the lexical representation, because we do not reorder data bits of the UUID.
 
 ### The Upper-Case `base32` Alphabet
 
-This is the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
+This is an exact replica of the alphabet specified in
+[RFC-4648, Table 3: The Base 32 Alphabet][base32-encoding-table].
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
@@ -243,7 +243,7 @@ This is the alphabet specified in
 ### The Lower-Case `base32` Alphabet
 
 This is a lower-case variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
+[RFC-4648, Table 3: The Base 32 Alphabet][base32-encoding-table].
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
@@ -256,26 +256,26 @@ This is a lower-case variant of the alphabet specified in
 |  6  | 'g'  | 14  | 'o'  | 22  | 'w'  | 30  | '6'  |
 |  7  | 'h'  | 15  | 'p'  | 23  | 'x'  | 31  | '7'  |
 
-### The Upper-Case `base32-lex` Alphabet
+### The Upper-Case `base32hex` Alphabet
 
-This is a lexically reordered variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
+This is an exact replica of the alphabet specified in
+[RFC-4648, Table 4: The "Extended Hex" Base 32 Alphabet][base32hex-encoding-table].
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
-|  0  | '2'  |  8  | 'C'  | 16  | 'K'  | 24  | 'S'  |
-|  1  | '3'  |  9  | 'D'  | 17  | 'L'  | 25  | 'T'  |
-|  2  | '4'  | 10  | 'E'  | 18  | 'M'  | 26  | 'U'  |
-|  3  | '5'  | 11  | 'F'  | 19  | 'N'  | 27  | 'V'  |
-|  4  | '6'  | 12  | 'G'  | 20  | 'O'  | 28  | 'W'  |
-|  5  | '7'  | 13  | 'H'  | 21  | 'P'  | 29  | 'X'  |
-|  6  | 'A'  | 14  | 'I'  | 22  | 'Q'  | 30  | 'Y'  |
-|  7  | 'B'  | 15  | 'J'  | 23  | 'R'  | 31  | 'Z'  |
+|  0  | '0'  |  8  | '8'  | 16  | 'G'  | 24  | 'O'  |
+|  1  | '1'  |  9  | '9'  | 17  | 'H'  | 25  | 'P'  |
+|  2  | '2'  | 10  | 'A'  | 18  | 'I'  | 26  | 'Q'  |
+|  3  | '3'  | 11  | 'B'  | 19  | 'J'  | 27  | 'R'  |
+|  4  | '4'  | 12  | 'C'  | 20  | 'K'  | 28  | 'S'  |
+|  5  | '5'  | 13  | 'D'  | 21  | 'L'  | 29  | 'T'  |
+|  6  | '6'  | 14  | 'E'  | 22  | 'M'  | 30  | 'U'  |
+|  7  | '7'  | 15  | 'F'  | 23  | 'N'  | 31  | 'V'  |
 
-### The Lower-Case `base32-lex` Alphabet
+### The Lower-Case `base32hex` Alphabet
 
-This is a lexically reordered lower-case variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base-32-encoding-table].
+This is a lower-case variant of the alphabet specified in
+[RFC-4648, Table 4: The "Extended Hex" Base 32 Alphabet][base32hex-encoding-table].
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
@@ -442,16 +442,16 @@ This is a lexically reordered variant of the alphabet specified in
 
 | Version      | uuid-ncname-32-lex         | uuid-ncname-58-lex      | uuid-ncname-64-lex     |
 |--------------|----------------------------|-------------------------|------------------------|
-| 0, Nil       | a2222222222222222222222222 | A1111111111111111111112 | A--------------------2 |
-| 1, Timestamp | btdpydmafpwjeteq226fe5glct | B6fTkmTD22KrBbQ6F3diU7T | BmajZmBij6emek-3LcQ7cT |
-| 2, DCE       | c2222buafr6jet24226fe5glct | C1111KtP6Y9QogqndZahf5T | C---2uBit6em-F-3LcQ7cT |
-| 3, MD5       | dbq2ntiubzgpucxz2sy4qduset | D2ioV6oTr9yqXobWp5RXvqT | DEN3wioUv9uGrsBT4ODg9T |
-| 4, Random    | e2a5bqf72vpgwghj4j7cpdsuvs | E13UZ99RxxUHkVGJNDLJV8S | E-NOvA92SLRNpsb_GKDCQS |
-| 5, SHA-1     | f6bvzlro2eawd5c22gpxxwsquu | F1x7wEJfz9eaCAWiLtSNd7U | F7UUsrc0Gi85V-5KvraAPU |
-| 6, Timestamp | g5v6o4n357es2twlbnfvvbhklu | G1rxRCnDiX4oVLAmr79G6LU | G6g_0I1Beg-nm8tfrgvNGU |
-| 7, Timestamp | h27zm7sntq5a5ggdr2g3k5nn5v | H13RrXaX7uTLfqn6haaYcaV | H-MwXsbakn2NlCkB2-RtYV |
-| 8, Custom    | iaca5unig23uvbgmgqpyucs5ks | I2QDDTZysWZ3t2b7UGbWyDS | IBVkxIRk-SQDmIAKxd50kS |
-| 15, Max      | pzzzzzzzzzzzzzzzzzzzzzzzzz | P8AQGAut7N92awznwCnjuQZ | PzzzzzzzzzzzzzzzzzzzzZ |
+| 0, Nil       | a0000000000000000000000002 | A1111111111111111111112 | A--------------------2 |
+| 1, Timestamp | bp9lu9i6blsfapam004ba3ch8t | B6fTkmTD22KrBbQ6F3diU7T | BmajZmBij6emek-3LcQ7cT |
+| 2, DCE       | c00007q6bn4fap02004ba3ch8t | C1111KtP6Y9QogqndZahf5T | C---2uBit6em-F-3LcQ7cT |
+| 3, MD5       | d7m0jpeq7vclq8tv0ou2m9qoat | D2ioV6oTr9yqXobWp5RXvqT | DEN3wioUv9uGrsBT4ODg9T |
+| 4, Random    | e0637mb50rlcscdf2f58l9oqrs | E13UZ99RxxUHkVGJNDLJV8S | E-NOvA92SLRNpsb_GKDCQS |
+| 5, SHA-1     | f47rvhnk0a6s93800clttsomqu | F1x7wEJfz9eaCAWiLtSNd7U | F7UUsrc0Gi85V-5KvraAPU |
+| 6, Timestamp | g3r4k2j135ao0psh7jbrr7dghu | G1rxRCnDiX4oVLAmr79G6LU | G6g_0I1Beg-nm8tfrgvNGU |
+| 7, Timestamp | h05vi5ojpm363cc9n0c1g3jj3v | H13RrXaX7uTLfqn6haaYcaV | H-MwXsbakn2NlCkB2-RtYV |
+| 8, Custom    | i6863qjec01qr7cicmluq8o3gs | I2QDDTZysWZ3t2b7UGbWyDS | IBVkxIRk-SQDmIAKxd50kS |
+| 15, Max      | pvvvvvvvvvvvvvvvvvvvvvvvvz | P8AQGAut7N92awznwCnjuQZ | PzzzzzzzzzzzzzzzzzzzzZ |
 
 [UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
 
@@ -461,7 +461,9 @@ This is a lexically reordered variant of the alphabet specified in
 
 [UUID-NCName-specification]: https://www.ietf.org/id/draft-taylor-uuid-ncname-03.html
 
-[base-32-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-6
+[base32-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-6
+
+[base32hex-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-7
 
 [base-64-url-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-5
 

@@ -14,14 +14,14 @@ import static ch.randelshofer.uuidncname.ConstantDivision.fastmod_u32L;
 
 public class FastBase58 {
     public static final byte[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".getBytes(StandardCharsets.ISO_8859_1);
-    private static final int[] INDEXES = new int[128];
+    private static final int[] INVERSE_ALPHABET = new int[128];
     private final static VarHandle readIntLE =
             MethodHandles.byteArrayViewVarHandle(int[].class, ByteOrder.LITTLE_ENDIAN);
 
     static {
-        Arrays.fill(INDEXES, -1);
+        Arrays.fill(INVERSE_ALPHABET, -1);
         for (int i = 0; i < ALPHABET.length; i++) {
-            INDEXES[ALPHABET[i]] = i;
+            INVERSE_ALPHABET[ALPHABET[i]] = i;
         }
     }
 
@@ -215,9 +215,9 @@ public class FastBase58 {
             char c0 = input.charAt(i);
             char c1 = input.charAt(i + 1);
             char c2 = input.charAt(i + 2);
-            int digit0 = c0 < 128 ? INDEXES[c0] : -1;
-            int digit1 = c1 < 128 ? INDEXES[c1] : -1;
-            int digit2 = c2 < 128 ? INDEXES[c2] : -1;
+            int digit0 = lookupDigit(c0);
+            int digit1 = lookupDigit(c1);
+            int digit2 = lookupDigit(c2);
             if ((digit0 | digit1 | digit2) < 0) {
                 throw new IllegalArgumentException("InvalidCharacter in base 58");
             }
@@ -239,6 +239,19 @@ public class FastBase58 {
     }
 
     /**
+     * Looks the digit of the specified character up. Returns a value &lt; 0 if the character is not a valid digit.
+     *
+     * @param ch a character
+     * @return the digit or a value &lt; 0 if the character is not a digit.
+     */
+    private static int lookupDigit(char ch) {
+        // The branchy code is faster than the branchless code, because we
+        // will almost always have a character that is in the table.
+        // Branchless code:  return INDEXES[ch & 127] | (127 - ch) >> 31;
+        return ch < 128 ? INVERSE_ALPHABET[ch] : -1;
+    }
+
+    /**
      * Decodes the given base58 string into 4 chunks of 30 bits.
      *
      * @param input the base58-encoded string to decode
@@ -256,7 +269,7 @@ public class FastBase58 {
         int index = (21 - inputLength);
         for (int i = from; i < to; i++) {
             char c0 = input.charAt(i);
-            int digit0 = c0 < 128 ? INDEXES[c0] : -1;
+            int digit0 = lookupDigit(c0);
             if ((digit0) < 0) {
                 throw new IllegalArgumentException("InvalidCharacter in base 58");
             }
