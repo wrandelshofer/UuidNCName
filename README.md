@@ -67,6 +67,44 @@ The supported formats are:
 | 8, Custom    | `i6863qjec01qr7cicmluq8o3gs` | `I2QDDTZysWZ3t2b7UGbWyDS` | `IBVkxIRk-SQDmIAKxd50kS` |
 | 15, Max      | `pvvvvvvvvvvvvvvvvvvvvvvvvz` | `P8AQGAut7N92awznwCnjuQZ` | `PzzzzzzzzzzzzzzzzzzzzZ` |
 
+## Usage
+
+```java
+module MyModule {
+    require ch.randelshofer.uuidncname;
+}
+```
+
+```java
+import ch.randelshofer.uuidncname.UuidFormat;
+import ch.randelshofer.uuidncname.UuidNCName;
+
+import java.util.UUID;
+
+public class MyMain {
+   public void main(String... args) {
+      UUID uu = UUID.randomUUID();
+      // => df521e0a-9d57-4f04-9a95-fc2888decc5a
+
+      String nc64 = UuidNCName.toString(uu, UuidFormat.BASE64);
+      // => "E31IeCp1X8EqV_CiI3sxaJ"
+
+      String nc32Lex = UuidNCName.toString(uu, UuidFormat.BASE32_LEX);
+      // => "evxd3w4oxezs6p7jw746hxn4ut"
+
+      UUID orig = UuidNCName.fromString(nc64);
+      // => df521e0a-9d57-4f04-9a95-fc2888decc5a
+
+      boolean b = orig.equals(UuidNCName.fromString(nc32Lex));
+      // => true
+
+      b = orig.equals(uu);
+      // => true
+   }
+}
+
+```
+
 ## Syntax
 
 Here is the ABNF grammar of the supported formats:
