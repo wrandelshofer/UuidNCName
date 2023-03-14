@@ -451,6 +451,22 @@ The alphabet is not case sensitive.
 |  6  | 'Q'  | 14  | 'Y'  |
 |  7  | 'R'  | 15  | 'Z'  |
 
+## Other Implementations
+
+<dl>
+<dt>Perl</dt>
+<dd>
+
+[doriantaylor/p5-data-uuid-ncname](https://github.com/doriantaylor/p5-data-uuid-ncname)
+</dd>
+
+<dt>Ruby</dt>
+<dd>
+
+[doriantaylor/rb-uuid-ncname](https://github.com/doriantaylor/rb-uuid-ncname)
+</dd>
+</dl>
+
 
 [UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
 
