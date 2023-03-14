@@ -1,3 +1,8 @@
+/*
+ * @(#)FastBase58.java
+ * Copyright © 2023 Werner Randelshofer, Switzerland. MIT License.
+ */
+
 package ch.randelshofer.uuidncname;
 
 import java.lang.invoke.MethodHandles;
@@ -12,6 +17,9 @@ import static ch.randelshofer.uuidncname.ConstantDivision.fastdiv_u32L;
 import static ch.randelshofer.uuidncname.ConstantDivision.fastmod_u32;
 import static ch.randelshofer.uuidncname.ConstantDivision.fastmod_u32L;
 
+/**
+ * Encodes and decodes 120-bit integers to/from the 'base58' alphabet.
+ */
 public class FastBase58 {
     public static final byte[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".getBytes(StandardCharsets.ISO_8859_1);
     private static final int[] INVERSE_ALPHABET = new int[128];

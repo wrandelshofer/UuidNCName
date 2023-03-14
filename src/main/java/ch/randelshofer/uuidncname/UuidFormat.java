@@ -1,5 +1,15 @@
+/*
+ * @(#)UuidFormat.java
+ * Copyright © 2023 Werner Randelshofer, Switzerland. MIT License.
+ */
+
 package ch.randelshofer.uuidncname;
 
+import java.util.UUID;
+
+/**
+ * Specifies a formatting option for an {@link UUID}.
+ */
 public enum UuidFormat {
     CANONICAL,
     BASE32,

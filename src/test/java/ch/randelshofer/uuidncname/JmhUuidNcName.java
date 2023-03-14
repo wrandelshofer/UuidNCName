@@ -1,3 +1,8 @@
+/*
+ * @(#)JmhUuidNcName.java
+ * Copyright © 2023 Werner Randelshofer, Switzerland. MIT License.
+ */
+
 package ch.randelshofer.uuidncname;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -131,6 +136,7 @@ public class JmhUuidNcName {
     public String wBase58Lex() {
         return UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
     }
+
     @Benchmark
     public String wBase64() {
         return UuidNCName.toString(uuid, UuidFormat.BASE64);

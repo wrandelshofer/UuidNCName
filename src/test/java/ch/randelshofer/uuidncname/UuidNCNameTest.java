@@ -1,3 +1,8 @@
+/*
+ * @(#)UuidNCNameTest.java
+ * Copyright © 2023 Werner Randelshofer, Switzerland. MIT License.
+ */
+
 package ch.randelshofer.uuidncname;
 
 import org.junit.jupiter.api.DynamicTest;

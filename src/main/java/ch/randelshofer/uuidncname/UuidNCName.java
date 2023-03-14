@@ -1,3 +1,8 @@
+/*
+ * @(#)UuidNCName.java
+ * Copyright © 2023 Werner Randelshofer, Switzerland. MIT License.
+ */
+
 package ch.randelshofer.uuidncname;
 
 import java.lang.invoke.MethodHandles;
@@ -7,6 +12,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
+/**
+ * Converts {@link UUID}s to/from valid NCName productions for use in (X|HT)ML.
+ */
 public class UuidNCName {
     private static final byte[] BASE_32_INVERSE_ALPHABET = new byte[128];
     private static final byte[] BASE_32_HEX_INVERSE_ALPHABET = new byte[128];
