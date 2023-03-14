@@ -26,6 +26,47 @@ The supported formats are:
 * `uuid-ncname-58-lex`
 * `uuid-ncname-64-lex`
 
+## Examples
+
+| Version      | uuid-canonical                         |
+|--------------|----------------------------------------|
+| 0, Nil       | `00000000-0000-0000-0000-000000000000` |
+| 1, Timestamp | `ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1` |
+| 2, DCE       | `000003e8-cbb9-21ea-b201-00045a86c8a1` |
+| 3, MD5       | `3d813cbb-47fb-32ba-91df-831e1593ac29` |
+| 4, Random    | `01867b2c-a0dd-459c-98d7-89e545538d6c` |
+| 5, SHA-1     | `21f7f8de-8051-5b89-8680-0195ef798b6a` |
+| 6, Timestamp | `1EC9414C-232A-6B00-B3C8-9E6BDECED846` |
+| 7, Timestamp | `017F22E2-79B0-7CC3-98C4-DC0C0C07398F` |
+| 8, Custom    | `320C3D4D-CC00-875B-8EC9-32D5F69181C0` |
+| 15, Max      | `ffffffff-ffff-ffff-ffff-ffffffffffff` |
+
+| Version      | uuid-ncname-32               | uuid-ncname-58            | uuid-ncname-64           |
+|--------------|------------------------------|---------------------------|--------------------------|
+| 0, Nil       | `aaaaaaaaaaaaaaaaaaaaaaaaaa` | `A111111111111111______A` | `AAAAAAAAAAAAAAAAAAAAAA` |
+| 1, Timestamp | `bzjv6jsglv4pkfkyaarninsfbl` | `B6fTkmTD22KpWbDq1LuiszL` | `BymvkyMuvHqKrAARahsihL` |
+| 2, DCE       | `caaaah2glxepkeaiaarninsfbl` | `C11KtP6Y9P3rRkvh2N1e__L` | `CAAAD6Mu5HqIBAARahsihL` |
+| 3, MD5       | `dhwatzo2h7mv2dx4ddykzhlbjj` | `D2ioV6oTr9yq6dMojd469nJ` | `DPYE8u0f7K6Hfgx4Vk6wpJ` |
+| 4, Random    | `eagdhwlfa3vm4rv4j4vcvhdlmj` | `E3UZ99RxxUJC1v4dWsYtb_J` | `EAYZ7LKDdWcjXieVFU41sJ` |
+| 5, SHA-1     | `feh37rxuakg4jnaabsxxxtc3ki` | `Fx7wEJfz9eb1TYzsrT7Zs_I` | `FIff43oBRuJaAAZXveYtqI` |
+| 6, Timestamp | `gd3euctbdfkyahse6nppm5wcgl` | `GrxRCnDiX4mxSpdi5LEvR_L` | `GHslBTCMqsAPInmvezthGL` |
+| 7, Timestamp | `haf7sfytzwdgdrrg4bqgaoompj` | `H3RrXaX7uTM6qdwrXwpC6_J` | `HAX8i4nmwzDjE3AwMBzmPJ` |
+| 8, Custom    | `igigd2tomab235sjs2x3jdaoai` | `I2QDDTZysWZ5jcKS6HJDmHI` | `IMgw9TcwAdb7JMtX2kYHAI` |
+| 15, Max      | `p777777777777777777777777p` | `P8AQGAut7N92awznwCnjuQP` | `P____________________P` |
+
+| Version      | uuid-ncname-32-lex           | uuid-ncname-58-lex        | uuid-ncname-64-lex       |
+|--------------|------------------------------|---------------------------|--------------------------|
+| 0, Nil       | `a0000000000000000000000002` | `A1111111111111111111112` | `A--------------------2` |
+| 1, Timestamp | `bp9lu9i6blsfapam004ba3ch8t` | `B6fTkmTD22KrBbQ6F3diU7T` | `BmajZmBij6emek-3LcQ7cT` |
+| 2, DCE       | `c00007q6bn4fap02004ba3ch8t` | `C1111KtP6Y9QogqndZahf5T` | `C---2uBit6em-F-3LcQ7cT` |
+| 3, MD5       | `d7m0jpeq7vclq8tv0ou2m9qoat` | `D2ioV6oTr9yqXobWp5RXvqT` | `DEN3wioUv9uGrsBT4ODg9T` |
+| 4, Random    | `e0637mb50rlcscdf2f58l9oqrs` | `E13UZ99RxxUHkVGJNDLJV8S` | `E-NOvA92SLRNpsb_GKDCQS` |
+| 5, SHA-1     | `f47rvhnk0a6s93800clttsomqu` | `F1x7wEJfz9eaCAWiLtSNd7U` | `F7UUsrc0Gi85V-5KvraAPU` |
+| 6, Timestamp | `g3r4k2j135ao0psh7jbrr7dghu` | `G1rxRCnDiX4oVLAmr79G6LU` | `G6g_0I1Beg-nm8tfrgvNGU` |
+| 7, Timestamp | `h05vi5ojpm363cc9n0c1g3jj3v` | `H13RrXaX7uTLfqn6haaYcaV` | `H-MwXsbakn2NlCkB2-RtYV` |
+| 8, Custom    | `i6863qjec01qr7cicmluq8o3gs` | `I2QDDTZysWZ3t2b7UGbWyDS` | `IBVkxIRk-SQDmIAKxd50kS` |
+| 15, Max      | `pvvvvvvvvvvvvvvvvvvvvvvvvz` | `P8AQGAut7N92awznwCnjuQZ` | `PzzzzzzzzzzzzzzzzzzzzZ` |
+
 ## Syntax
 
 Here is the ABNF grammar of the supported formats:
@@ -48,7 +89,7 @@ Here is the ABNF grammar of the supported formats:
     padding        = "_" ;
     
     <a id="base32"/>base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
-    <a id="base32hex"/>base32hex     = %x32-37 / %x41-5a / %x61-7a ; [2-7A-Za-z]
+    <a id="base32hex"/>base32hex     = %x32-37 / %x41-5a / %x61-7a ; [0-9A-Va-v]
 
     <a id="base58"/>base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
 
@@ -224,10 +265,12 @@ in the lexical representation, because we do not reorder data bits of the UUID.
 
 ## Encoding Alphabets
 
-### The Upper-Case `base32` Alphabet
+### The `base32` Alphabet
 
-This is an exact replica of the alphabet specified in
+This is the alphabet specified in
 [RFC-4648, Table 3: The Base 32 Alphabet][base32-encoding-table].
+
+The alphabet is not case sensitive.
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
@@ -240,26 +283,12 @@ This is an exact replica of the alphabet specified in
 |  6  | 'G'  | 14  | 'O'  | 22  | 'W'  | 30  | '6'  |
 |  7  | 'H'  | 15  | 'P'  | 23  | 'X'  | 31  | '7'  |
 
-### The Lower-Case `base32` Alphabet
+### The `base32hex` Alphabet
 
-This is a lower-case variant of the alphabet specified in
-[RFC-4648, Table 3: The Base 32 Alphabet][base32-encoding-table].
-
-| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
-|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
-|  0  | 'a'  |  8  | 'i'  | 16  | 'q'  | 24  | 'y'  |
-|  1  | 'b'  |  9  | 'j'  | 17  | 'r'  | 25  | 'z'  |
-|  2  | 'c'  | 10  | 'k'  | 18  | 's'  | 26  | '2'  |
-|  3  | 'd'  | 11  | 'l'  | 19  | 't'  | 27  | '3'  |
-|  4  | 'e'  | 12  | 'm'  | 20  | 'u'  | 28  | '4'  |
-|  5  | 'f'  | 13  | 'n'  | 21  | 'v'  | 29  | '5'  |
-|  6  | 'g'  | 14  | 'o'  | 22  | 'w'  | 30  | '6'  |
-|  7  | 'h'  | 15  | 'p'  | 23  | 'x'  | 31  | '7'  |
-
-### The Upper-Case `base32hex` Alphabet
-
-This is an exact replica of the alphabet specified in
+This is the alphabet specified in
 [RFC-4648, Table 4: The "Extended Hex" Base 32 Alphabet][base32hex-encoding-table].
+
+The alphabet is not case sensitive.
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
@@ -272,26 +301,12 @@ This is an exact replica of the alphabet specified in
 |  6  | '6'  | 14  | 'E'  | 22  | 'M'  | 30  | 'U'  |
 |  7  | '7'  | 15  | 'F'  | 23  | 'N'  | 31  | 'V'  |
 
-### The Lower-Case `base32hex` Alphabet
-
-This is a lower-case variant of the alphabet specified in
-[RFC-4648, Table 4: The "Extended Hex" Base 32 Alphabet][base32hex-encoding-table].
-
-| Dec | Char | Dec | Char | Dec | Char | Dec | Char |
-|:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
-|  0  | '2'  |  8  | 'c'  | 16  | 'k'  | 24  | 's'  |
-|  1  | '3'  |  9  | 'd'  | 17  | 'l'  | 25  | 't'  |
-|  2  | '4'  | 10  | 'e'  | 18  | 'm'  | 26  | 'u'  |
-|  3  | '5'  | 11  | 'f'  | 19  | 'n'  | 27  | 'v'  |
-|  4  | '6'  | 12  | 'g'  | 20  | 'o'  | 28  | 'w'  |
-|  5  | '7'  | 13  | 'h'  | 21  | 'p'  | 29  | 'x'  |
-|  6  | 'a'  | 14  | 'i'  | 22  | 'q'  | 30  | 'y'  |
-|  7  | 'b'  | 15  | 'j'  | 23  | 'r'  | 31  | 'z'  |
-
 ### The `base58` Alphabet
 
 This is the alphabet specified in
 [draft-msporny-base58-02, Table 1: Base58 Mapping Table][base-58-encoding-table].
+
+The alphabet is case sensitive.
 
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
@@ -317,6 +332,8 @@ This is the alphabet specified in
 This is the alphabet specified in
 [RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-encoding-table].
 
+The alphabet is case sensitive.
+
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
 |  0  | 'A'  | 16  | 'Q'  | 32  | 'g'  | 48  | 'w'  |
@@ -341,6 +358,8 @@ This is the alphabet specified in
 This is a lexically reordered variant of the alphabet specified in
 [RFC-4648, Table 2: The "URL and Filename safe" Base 64 Alphabet][base-64-url-encoding-table].
 
+The alphabet is case sensitive.
+
 | Dec | Char | Dec | Char | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|:---:|:----:|:---:|:----:|
 |  0  | '-'  | 16  | 'F'  | 32  | 'V'  | 48  | 'k'  |
@@ -360,7 +379,9 @@ This is a lexically reordered variant of the alphabet specified in
 | 14  | 'D'  | 30  | 'T'  | 46  | 'i'  | 62  | 'y'  |
 | 15  | 'E'  | 31  | 'U'  | 47  | 'j'  | 63  | 'z'  |
 
-### The Upper-Case `bookend` Alphabet
+### The `bookend` Alphabet
+
+The alphabet is not case sensitive.
 
 | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|
@@ -373,20 +394,13 @@ This is a lexically reordered variant of the alphabet specified in
 |  6  | 'G'  | 14  | 'O'  |
 |  7  | 'H'  | 15  | 'P'  |
 
-### The Lower-Case `bookend` Alphabet
+### The `bookend-lex` Alphabet
 
-| Dec | Char | Dec | Char |
-|:---:|:----:|:---:|:----:|
-|  0  | 'a'  |  8  | 'i'  |
-|  1  | 'b'  |  9  | 'j'  |
-|  2  | 'c'  | 10  | 'k'  |
-|  3  | 'd'  | 11  | 'l'  |
-|  4  | 'e'  | 12  | 'm'  |
-|  5  | 'f'  | 13  | 'n'  |
-|  6  | 'g'  | 14  | 'o'  |
-|  7  | 'h'  | 15  | 'p'  |
+This alphabet is intentionally disjoint from the `bookend` alphabet.
+This means, that we can use it to distinguish UUID-NCNames that can
+be sorted lexicographically from UUID-NCNames that can not be sorted lexicographically.
 
-### The Upper-Case `bookend-lex` Alphabet
+The alphabet is not case sensitive.
 
 | Dec | Char | Dec | Char |
 |:---:|:----:|:---:|:----:|
@@ -399,59 +413,6 @@ This is a lexically reordered variant of the alphabet specified in
 |  6  | 'Q'  | 14  | 'Y'  |
 |  7  | 'R'  | 15  | 'Z'  |
 
-### The Lower-Case `bookend-lex` Alphabet
-
-| Dec | Char | Dec | Char |
-|:---:|:----:|:---:|:----:|
-|  0  | '2'  |  8  | 's'  |
-|  1  | '3'  |  9  | 't'  |
-|  2  | '4'  | 10  | 'u'  |
-|  3  | '5'  | 11  | 'v'  |
-|  4  | '6'  | 12  | 'w'  |
-|  5  | '7'  | 13  | 'x'  |
-|  6  | 'q'  | 14  | 'y'  |
-|  7  | 'r'  | 15  | 'z'  |
-
-## Examples
-
-| Version      | uuid-canonical                         |
-|--------------|----------------------------------------|
-| 0, Nil       | `00000000-0000-0000-0000-000000000000` |
-| 1, Timestamp | `ca6be4c8-cbaf-11ea-b2ab-00045a86c8a1` |
-| 2, DCE       | `000003e8-cbb9-21ea-b201-00045a86c8a1` |
-| 3, MD5       | `3d813cbb-47fb-32ba-91df-831e1593ac29` |
-| 4, Random    | `01867b2c-a0dd-459c-98d7-89e545538d6c` |
-| 5, SHA-1     | `21f7f8de-8051-5b89-8680-0195ef798b6a` |
-| 6, Timestamp | `1EC9414C-232A-6B00-B3C8-9E6BDECED846` |
-| 7, Timestamp | `017F22E2-79B0-7CC3-98C4-DC0C0C07398F` |
-| 8, Custom    | `320C3D4D-CC00-875B-8EC9-32D5F69181C0` |
-| 15, Max      | `ffffffff-ffff-ffff-ffff-ffffffffffff` |
-
-| Version      | uuid-ncname-32               | uuid-ncname-58            | uuid-ncname-64           |
-|--------------|------------------------------|---------------------------|--------------------------|
-| 0, Nil       | `aaaaaaaaaaaaaaaaaaaaaaaaaa` | `A111111111111111______A` | `AAAAAAAAAAAAAAAAAAAAAA` |
-| 1, Timestamp | `bzjv6jsglv4pkfkyaarninsfbl` | `B6fTkmTD22KpWbDq1LuiszL` | `BymvkyMuvHqKrAARahsihL` |
-| 2, DCE       | `caaaah2glxepkeaiaarninsfbl` | `C11KtP6Y9P3rRkvh2N1e__L` | `CAAAD6Mu5HqIBAARahsihL` |
-| 3, MD5       | `dhwatzo2h7mv2dx4ddykzhlbjj` | `D2ioV6oTr9yq6dMojd469nJ` | `DPYE8u0f7K6Hfgx4Vk6wpJ` |
-| 4, Random    | `eagdhwlfa3vm4rv4j4vcvhdlmj` | `E3UZ99RxxUJC1v4dWsYtb_J` | `EAYZ7LKDdWcjXieVFU41sJ` |
-| 5, SHA-1     | `feh37rxuakg4jnaabsxxxtc3ki` | `Fx7wEJfz9eb1TYzsrT7Zs_I` | `FIff43oBRuJaAAZXveYtqI` |
-| 6, Timestamp | `gd3euctbdfkyahse6nppm5wcgl` | `GrxRCnDiX4mxSpdi5LEvR_L` | `GHslBTCMqsAPInmvezthGL` |
-| 7, Timestamp | `haf7sfytzwdgdrrg4bqgaoompj` | `H3RrXaX7uTM6qdwrXwpC6_J` | `HAX8i4nmwzDjE3AwMBzmPJ` |
-| 8, Custom    | `igigd2tomab235sjs2x3jdaoai` | `I2QDDTZysWZ5jcKS6HJDmHI` | `IMgw9TcwAdb7JMtX2kYHAI` |
-| 15, Max      | `p777777777777777777777777p` | `P8AQGAut7N92awznwCnjuQP` | `P____________________P` |
-
-| Version      | uuid-ncname-32-lex           | uuid-ncname-58-lex        | uuid-ncname-64-lex       |
-|--------------|------------------------------|---------------------------|--------------------------|
-| 0, Nil       | `a0000000000000000000000002` | `A1111111111111111111112` | `A--------------------2` |
-| 1, Timestamp | `bp9lu9i6blsfapam004ba3ch8t` | `B6fTkmTD22KrBbQ6F3diU7T` | `BmajZmBij6emek-3LcQ7cT` |
-| 2, DCE       | `c00007q6bn4fap02004ba3ch8t` | `C1111KtP6Y9QogqndZahf5T` | `C---2uBit6em-F-3LcQ7cT` |
-| 3, MD5       | `d7m0jpeq7vclq8tv0ou2m9qoat` | `D2ioV6oTr9yqXobWp5RXvqT` | `DEN3wioUv9uGrsBT4ODg9T` |
-| 4, Random    | `e0637mb50rlcscdf2f58l9oqrs` | `E13UZ99RxxUHkVGJNDLJV8S` | `E-NOvA92SLRNpsb_GKDCQS` |
-| 5, SHA-1     | `f47rvhnk0a6s93800clttsomqu` | `F1x7wEJfz9eaCAWiLtSNd7U` | `F7UUsrc0Gi85V-5KvraAPU` |
-| 6, Timestamp | `g3r4k2j135ao0psh7jbrr7dghu` | `G1rxRCnDiX4oVLAmr79G6LU` | `G6g_0I1Beg-nm8tfrgvNGU` |
-| 7, Timestamp | `h05vi5ojpm363cc9n0c1g3jj3v` | `H13RrXaX7uTLfqn6haaYcaV` | `H-MwXsbakn2NlCkB2-RtYV` |
-| 8, Custom    | `i6863qjec01qr7cicmluq8o3gs` | `I2QDDTZysWZ3t2b7UGbWyDS` | `IBVkxIRk-SQDmIAKxd50kS` |
-| 15, Max      | `pvvvvvvvvvvvvvvvvvvvvvvvvz` | `P8AQGAut7N92awznwCnjuQZ` | `PzzzzzzzzzzzzzzzzzzzzZ` |
 
 [UUID-specification]: https://www.rfc-editor.org/rfc/rfc4122
 
