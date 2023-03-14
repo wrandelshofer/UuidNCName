@@ -76,7 +76,7 @@ public class JmhUuidNcName {
     private String base58Lex = UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
     private String base64 = UuidNCName.toString(uuid, UuidFormat.BASE64);
     private String base64Lex = UuidNCName.toString(uuid, UuidFormat.BASE64_LEX);
-/*
+
     @Benchmark
     public UUID rBase32() {
         return UuidNCName.fromString(base32);
@@ -135,7 +135,7 @@ public class JmhUuidNcName {
     public String wBase64() {
         return UuidNCName.toString(uuid, UuidFormat.BASE64);
     }
-*/
+
 
     @Benchmark
     public String wBase64Lex() {
