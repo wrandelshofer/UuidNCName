@@ -190,12 +190,12 @@ public class UuidNCName {
     public static String toString(UUID uuid, UuidFormat format) {
         return switch (format) {
             case CANONICAL -> toCanonical(uuid);
-            case BASE32 -> toBase32(uuid);
-            case BASE58 -> toBase58(uuid);
-            case BASE64 -> toBase64(uuid);
-            case BASE32_LEX -> toBase32Lex(uuid);
-            case BASE58_LEX -> toBase58Lex(uuid);
-            case BASE64_LEX -> toBase64Lex(uuid);
+            case NCNAME_32 -> toBase32(uuid);
+            case NCNAME_58 -> toBase58(uuid);
+            case NCNAME_64 -> toBase64(uuid);
+            case NCNAME_32_LEX -> toBase32Lex(uuid);
+            case NCNAME_58_LEX -> toBase58Lex(uuid);
+            case NCNAME_64_LEX -> toBase64Lex(uuid);
         };
     }
 

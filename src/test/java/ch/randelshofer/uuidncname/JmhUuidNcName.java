@@ -75,12 +75,12 @@ public class JmhUuidNcName {
 
     private UUID uuid = UUID.randomUUID();
     private String canonical = uuid.toString();
-    private String base32 = UuidNCName.toString(uuid, UuidFormat.BASE32);
-    private String base32Lex = UuidNCName.toString(uuid, UuidFormat.BASE32_LEX);
-    private String base58 = UuidNCName.toString(uuid, UuidFormat.BASE58);
-    private String base58Lex = UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
-    private String base64 = UuidNCName.toString(uuid, UuidFormat.BASE64);
-    private String base64Lex = UuidNCName.toString(uuid, UuidFormat.BASE64_LEX);
+    private String base32 = UuidNCName.toString(uuid, UuidFormat.NCNAME_32);
+    private String base32Lex = UuidNCName.toString(uuid, UuidFormat.NCNAME_32_LEX);
+    private String base58 = UuidNCName.toString(uuid, UuidFormat.NCNAME_58);
+    private String base58Lex = UuidNCName.toString(uuid, UuidFormat.NCNAME_58_LEX);
+    private String base64 = UuidNCName.toString(uuid, UuidFormat.NCNAME_64);
+    private String base64Lex = UuidNCName.toString(uuid, UuidFormat.NCNAME_64_LEX);
 
     @Benchmark
     public UUID rBase32() {
@@ -119,33 +119,33 @@ public class JmhUuidNcName {
 
     @Benchmark
     public String wBase32() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE32);
+        return UuidNCName.toString(uuid, UuidFormat.NCNAME_32);
     }
 
     @Benchmark
     public String wBase32Lex() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE32_LEX);
+        return UuidNCName.toString(uuid, UuidFormat.NCNAME_32_LEX);
     }
 
     @Benchmark
     public String wBase58() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE58);
+        return UuidNCName.toString(uuid, UuidFormat.NCNAME_58);
     }
 
     @Benchmark
     public String wBase58Lex() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE58_LEX);
+        return UuidNCName.toString(uuid, UuidFormat.NCNAME_58_LEX);
     }
 
     @Benchmark
     public String wBase64() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE64);
+        return UuidNCName.toString(uuid, UuidFormat.NCNAME_64);
     }
 
 
     @Benchmark
     public String wBase64Lex() {
-        return UuidNCName.toString(uuid, UuidFormat.BASE64_LEX);
+        return UuidNCName.toString(uuid, UuidFormat.NCNAME_64_LEX);
     }
 
     @Benchmark

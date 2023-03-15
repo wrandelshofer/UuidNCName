@@ -12,10 +12,10 @@ import java.util.UUID;
  */
 public enum UuidFormat {
     CANONICAL,
-    BASE32,
-    BASE58,
-    BASE64,
-    BASE32_LEX,
-    BASE58_LEX,
-    BASE64_LEX,
+    NCNAME_32,
+    NCNAME_58,
+    NCNAME_64,
+    NCNAME_32_LEX,
+    NCNAME_58_LEX,
+    NCNAME_64_LEX,
 }

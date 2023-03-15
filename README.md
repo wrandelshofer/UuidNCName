@@ -86,10 +86,10 @@ public class MyMain {
       UUID uu = UUID.randomUUID();
       // => df521e0a-9d57-4f04-9a95-fc2888decc5a
 
-      String nc64 = UuidNCName.toString(uu, UuidFormat.BASE64);
+      String nc64 = UuidNCName.toString(uu, UuidFormat.NCNAME_64);
       // => "E31IeCp1X8EqV_CiI3sxaJ"
 
-      String nc32Lex = UuidNCName.toString(uu, UuidFormat.BASE32_LEX);
+      String nc32Lex = UuidNCName.toString(uu, UuidFormat.NCNAME_32_LEX);
       // => "evxd3w4oxezs6p7jw746hxn4ut"
 
       UUID orig = UuidNCName.fromString(nc64);
