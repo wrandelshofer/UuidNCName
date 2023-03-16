@@ -5,9 +5,6 @@
 
 package ch.randelshofer.uuidncname;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.VarHandle;
-import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
@@ -16,94 +13,50 @@ import java.util.UUID;
  * Converts {@link UUID}s to/from valid NCName productions for use in (X|HT)ML.
  */
 public class UuidNCName {
-    private static final byte[] BASE_32_INVERSE_ALPHABET = new byte[128];
     private static final byte[] BASE_32_HEX_INVERSE_ALPHABET = new byte[128];
-
     /**
      * See RFC 4648, Section 7, Table 4: The "Extended Hex" Base 32 Alphabet.
      * <p>
      * <a href="https://www.rfc-editor.org/rfc/rfc4648#section-7">rfc4648, section 7</a>
      */
-    private static final byte[] BASE_32_HEX_LOWER_CASE_ALPHABET = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-            'u', 'v'
-    };
-
+    private static final byte[] BASE_32_HEX_LOWER_CASE_ALPHABET =
+            toLowerCase("0123456789ABCDEFGHIJKLMNOPQRSTUV".getBytes(StandardCharsets.ISO_8859_1));
     /**
      * See RFC 4648, Section 7, Table 4: The "Extended Hex" Base 32 Alphabet.
      * <p>
      * <a href="https://www.rfc-editor.org/rfc/rfc4648#section-7">rfc4648, section 7</a>
      */
-    private static final byte[] BASE_32_HEX_UPPER_CASE_ALPHABET = {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-            'U', 'V'
-    };
+    private static final byte[] BASE_32_HEX_UPPER_CASE_ALPHABET =
+            "0123456789ABCDEFGHIJKLMNOPQRSTUV".getBytes(StandardCharsets.ISO_8859_1);
+    private static final byte[] BASE_32_INVERSE_ALPHABET = new byte[128];
 
+    ;
     /**
      * See RFC 4648, Section 6, Table 3: The Base 32 Alphabet.
      * <p>
      * <a href="https://www.rfc-editor.org/rfc/rfc4648#section-6">rfc4648, section 6</a>
      */
-    private static final byte[] BASE_32_LOWER_CASE_ALPHABET = {
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-            'u', 'v', 'w', 'x', 'y', 'z',
-            '2', '3', '4', '5', '6', '7',
-    };
-
+    private static final byte[] BASE_32_LOWER_CASE_ALPHABET =
+            toLowerCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".getBytes(StandardCharsets.ISO_8859_1));
     /**
      * See RFC 4648, Section 6, Table 3: The Base 32 Alphabet.
      * <p>
      * <a href="https://www.rfc-editor.org/rfc/rfc4648#section-6">rfc4648, section 6</a>
      */
-    private static final byte[] BASE_32_UPPER_CASE_ALPHABET = {
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-            'U', 'V', 'W', 'X', 'Y', 'Z',
-            '2', '3', '4', '5', '6', '7',
-    };
+    private static final byte[] BASE_32_UPPER_CASE_ALPHABET =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".getBytes(StandardCharsets.ISO_8859_1);
     private static final byte[] BASE_64_INVERSE_ALPHABET = new byte[128];
-    private static final byte[] BASE_64_LEXICAL_ALPHABET = {
-            '-',
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-            'U', 'V', 'W', 'X', 'Y', 'Z',
-            '_',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-            'u', 'v', 'w', 'x', 'y', 'z',
-    };
+    private static final byte[] BASE_64_LEXICAL_ALPHABET =
+            "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz".getBytes(StandardCharsets.ISO_8859_1);
     private static final byte[] BASE_64_LEXICAL_INVERSE_ALPHABET = new byte[128];
-    private static final byte[] BASE_64_URL_SAFE_ALPHABET = {
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-            'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-            'U', 'V', 'W', 'X', 'Y', 'Z',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-            'u', 'v', 'w', 'x', 'y', 'z',
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            '-',
-            '_'
-    };
+    private static final byte[] BASE_64_URL_SAFE_ALPHABET =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".getBytes(StandardCharsets.ISO_8859_1);
     private static final byte OTHER_CLASS = -1;
     private static final byte[] VARIANT_LEXICAL_INVERSE_ALPHABET = new byte[128];
-    private static final byte[] VARIANT_LEXICAL_LOWER_CASE_ALPHABET = {
-            '2', '3', '4', '5', '6', '7',
-            'q', 'r', 's', 't',
-            'u', 'v', 'w', 'x', 'y', 'z'
-    };
-    private static final byte[] VARIANT_LEXICAL_UPPER_CASE_ALPHABET = {
-            '2', '3', '4', '5', '6', '7',
-            'Q', 'R', 'S', 'T',
-            'U', 'V', 'W', 'X', 'Y', 'Z'
-    };
-    private final static VarHandle readLongBE =
-            MethodHandles.byteArrayViewVarHandle(long[].class, ByteOrder.BIG_ENDIAN);
+    private static final byte[] VARIANT_LEXICAL_LOWER_CASE_ALPHABET =
+            toLowerCase("234567QRSTUVWXYZ".getBytes(StandardCharsets.ISO_8859_1));
+    private static final byte[] VARIANT_LEXICAL_UPPER_CASE_ALPHABET =
+            "234567QRSTUVWXYZ".getBytes(StandardCharsets.ISO_8859_1);
 
     static {
         computeInverseAlphabet(BASE_64_URL_SAFE_ALPHABET, BASE_64_INVERSE_ALPHABET, true);
@@ -115,6 +68,7 @@ public class UuidNCName {
         computeInverseAlphabet(VARIANT_LEXICAL_LOWER_CASE_ALPHABET, VARIANT_LEXICAL_INVERSE_ALPHABET, true);
         computeInverseAlphabet(VARIANT_LEXICAL_UPPER_CASE_ALPHABET, VARIANT_LEXICAL_INVERSE_ALPHABET, false);
     }
+
 
     /**
      * Don't let anyone instantiate this class.
@@ -187,18 +141,6 @@ public class UuidNCName {
         return new UUID(readMsb(msb, version), readLsbLex(lsb, variantLex));
     }
 
-    public static String toString(UUID uuid, UuidFormat format) {
-        return switch (format) {
-            case CANONICAL -> toCanonical(uuid);
-            case NCNAME_32 -> toBase32(uuid);
-            case NCNAME_58 -> toBase58(uuid);
-            case NCNAME_64 -> toBase64(uuid);
-            case NCNAME_32_LEX -> toBase32Lex(uuid);
-            case NCNAME_58_LEX -> toBase58Lex(uuid);
-            case NCNAME_64_LEX -> toBase64Lex(uuid);
-        };
-    }
-
     public static UUID fromString(String str) {
         char variantChar = str.charAt(str.length() - 1);
         int isLexical = (variantChar < 128) && VARIANT_LEXICAL_INVERSE_ALPHABET[variantChar] >= 0 ? -22 : 0;
@@ -234,31 +176,6 @@ public class UuidNCName {
         return (int) Long.compress(uuid.getLeastSignificantBits(), 0xc000_000000000003L);
     }
 
-    private static long readLsb(long bits, int variant) {
-        return ((long) variant << 60) | bits;
-    }
-
-    private static long readLsbLex(long bits, int variant) {
-        return Long.expand(variant, 0xc000_000000000003L)
-                | bits << 2;
-    }
-
-    private static long readMsb(long bits, int version) {
-        return ((long) version << 12) | Long.expand(bits, 0xffffffff_ffff_0fffL);
-    }
-
-
-    private static long readUInt60(String str, int offset, int len, byte[] inverseAlphabet, int baseShift) {
-        long bits = 0;
-        for (int i = 0; i < len; i++) {
-            char ch = str.charAt(offset + i);
-            int value = lookupDigit(inverseAlphabet, ch);
-            if (value < 0) throw new IllegalArgumentException("Illegal character " + (char) ch);
-            bits = (bits << baseShift) | value;
-        }
-        return bits;
-    }
-
     /**
      * Looks the specified character up in the provided inverse alphabet table,
      * otherwise returns a value &lt; 0.
@@ -272,6 +189,30 @@ public class UuidNCName {
         // will almost always have a character that is in the table.
         // Branchless code:  return inverseAlphabet[ch & 127] | (127 - ch) >> 31;
         return ch > 127 ? -1 : inverseAlphabet[ch];
+    }
+
+    private static long readLsb(long bits, int variant) {
+        return ((long) variant << 60) | bits;
+    }
+
+    private static long readLsbLex(long bits, int variant) {
+        return Long.expand(variant, 0xc000_000000000003L)
+                | bits << 2;
+    }
+
+    private static long readMsb(long bits, int version) {
+        return ((long) version << 12) | Long.expand(bits, 0xffffffff_ffff_0fffL);
+    }
+
+    private static long readUInt60(String str, int offset, int len, byte[] inverseAlphabet, int baseShift) {
+        long bits = 0;
+        for (int i = 0; i < len; i++) {
+            char ch = str.charAt(offset + i);
+            int value = lookupDigit(inverseAlphabet, ch);
+            if (value < 0) throw new IllegalArgumentException("Illegal character " + (char) ch);
+            bits = (bits << baseShift) | value;
+        }
+        return bits;
     }
 
     private static int readVariant(String str, byte[] charToBaseMap) {
@@ -346,6 +287,25 @@ public class UuidNCName {
 
     private static String toCanonical(UUID uuid) {
         return uuid.toString();
+    }
+
+    private static byte[] toLowerCase(byte[] bytes) {
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] |= 0x20;
+        }
+        return bytes;
+    }
+
+    public static String toString(UUID uuid, UuidFormat format) {
+        return switch (format) {
+            case CANONICAL -> toCanonical(uuid);
+            case NCNAME_32 -> toBase32(uuid);
+            case NCNAME_58 -> toBase58(uuid);
+            case NCNAME_64 -> toBase64(uuid);
+            case NCNAME_32_LEX -> toBase32Lex(uuid);
+            case NCNAME_58_LEX -> toBase58Lex(uuid);
+            case NCNAME_64_LEX -> toBase64Lex(uuid);
+        };
     }
 
     private static void writeUInt60(byte[] str, int offset, int len, long val, byte[] alphabet, int baseShift, int mask) {
