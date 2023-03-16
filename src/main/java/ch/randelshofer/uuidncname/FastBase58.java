@@ -219,31 +219,19 @@ public class FastBase58 {
         // Convert the base58-encoded ASCII chars to a base 58^3 byte sequence.
         int[] input58 = new int[21 / 3];
         int index = 0;
+        int containsInvalidChar = 0;
         for (int i = from; i < to; i += 3) {
-            char c0 = input.charAt(i);
-            char c1 = input.charAt(i + 1);
-            char c2 = input.charAt(i + 2);
-            int digit0 = lookupDigit(c0);
-            int digit1 = lookupDigit(c1);
-            int digit2 = lookupDigit(c2);
-            if ((digit0 | digit1 | digit2) < 0) {
-                throw new IllegalArgumentException("InvalidCharacter in base 58");
-            }
-            input58[index++] = digit0 * 58 * 58 + digit1 * 58 + digit2;
+            int digit0 = lookupDigit(input.charAt(i)) * 58 * 58;
+            int digit1 = lookupDigit(input.charAt(i + 1)) * 58;
+            int digit2 = lookupDigit(input.charAt(i + 2));
+            containsInvalidChar = digit0 | digit1 | digit2;
+            input58[index++] = digit0 + digit1 + digit2;
         }
-        // Convert base-58^3 digits to base-2^30 digits.
-        int[] decoded = new int[4];
-        int outputStart = decoded.length;
-        for (int inputStart = 0; inputStart < input58.length && outputStart > 0; ) {
-            decoded[--outputStart] = divmod(input58, input58.length, inputStart, 58 * 58 * 58, 30, (1 << 30) - 1);
-            if (input58[inputStart] == 0) {
-                ++inputStart; // optimization - skip leading zeros
-            }
+        if (containsInvalidChar < 0) {
+            throw new IllegalArgumentException("InvalidCharacter in base 58");
         }
-        if (input58[input58.length - 1] != 0) {
-            throw new IllegalArgumentException("Input has more than 120 data bits.");
-        }
-        return decoded;
+
+        return convertBase58p3DigitsToBase2p30Digits(input58);
     }
 
     /**
@@ -289,7 +277,11 @@ public class FastBase58 {
             input58[index++] = input58[i] * 58 * 58 + input58[i + 1] * 58 + input58[i + 2];
         }
 
-        // Convert base-58^3 digits to base-2^30 digits.
+        return convertBase58p3DigitsToBase2p30Digits(input58);
+    }
+
+    private static int[] convertBase58p3DigitsToBase2p30Digits(int[] input58) {
+        // Convert seven base-58^3 digits to four base-2^30 digits.
         int[] decoded = new int[4];
         int outputStart = decoded.length;
         for (int inputStart = 0; inputStart < 7 && outputStart > 0; ) {
