@@ -25,51 +25,51 @@ import java.util.concurrent.TimeUnit;
  * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20+36-2344
  * # Intel(R) Core(TM) i7-8700B CPU @ 3.20GHz
  *
- * Benchmark                 Mode  Cnt   Score   Error  Units
- * JmhUuidNcName.rBase32     avgt    2  25.467          ns/op
- * JmhUuidNcName.rBase32Lex  avgt    2  24.088          ns/op
- * JmhUuidNcName.rBase58     avgt    2  43.057          ns/op
- * JmhUuidNcName.rBase58Lex  avgt    2  44.967          ns/op
- * JmhUuidNcName.rBase64     avgt    2  20.480          ns/op
- * JmhUuidNcName.rBase64Lex  avgt    2  20.413          ns/op
- * JmhUuidNcName.rCanonical  avgt    2  15.889          ns/op
- * JmhUuidNcName.wBase32     avgt    2  28.370          ns/op
- * JmhUuidNcName.wBase32Lex  avgt    2  26.557          ns/op
- * JmhUuidNcName.wBase58     avgt    2  86.124          ns/op
- * JmhUuidNcName.wBase58Lex  avgt    2  74.942          ns/op
- * JmhUuidNcName.wBase64     avgt    2  27.435          ns/op
- * JmhUuidNcName.wBase64Lex  avgt    2  24.601          ns/op
- * JmhUuidNcName.wCanonical  avgt    2  18.486          ns/op
+ * Benchmark   Mode  Cnt   Score   Error  Units
+ * rBase32     avgt   16  24.631 ± 0.323  ns/op
+ * rBase32Lex  avgt   16  23.828 ± 0.273  ns/op
+ * rBase58     avgt   16  49.164 ± 0.304  ns/op
+ * rBase58Lex  avgt   16  41.630 ± 0.227  ns/op
+ * rBase64     avgt   16  20.150 ± 0.080  ns/op
+ * rBase64Lex  avgt   16  20.062 ± 0.083  ns/op
+ * rCanonical  avgt   16  15.616 ± 0.043  ns/op
+ * wBase32     avgt   16  26.896 ± 0.582  ns/op
+ * wBase32Lex  avgt   16  27.758 ± 0.678  ns/op
+ * wBase58     avgt   16  81.483 ± 4.661  ns/op
+ * wBase58Lex  avgt   16  72.292 ± 0.518  ns/op
+ * wBase64     avgt   16  25.976 ± 0.911  ns/op
+ * wBase64Lex  avgt   16  24.841 ± 0.443  ns/op
+ * wCanonical  avgt   16  18.074 ± 0.165  ns/op
  * </pre>
  *
  * <pre>
- * # JMH version: 1.35
- * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20-ea+33
- * # Intel(R) Xeon(R) Platinum 8171M CPU @ 2.60GHz
+ * # JMH version: 1.36
+ * # VM version: JDK 20-ea, OpenJDK 64-Bit Server VM, 20-ea+36
+ * # Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
  *
  * Benchmark                 Mode  Cnt    Score   Error  Units
- * JmhUuidNcName.rBase32     avgt    2   39.365          ns/op
- * JmhUuidNcName.rBase32Lex  avgt    2   34.948          ns/op
- * JmhUuidNcName.rBase58     avgt    2   74.794          ns/op
- * JmhUuidNcName.rBase58Lex  avgt    2   63.257          ns/op
- * JmhUuidNcName.rBase64     avgt    2   29.843          ns/op
- * JmhUuidNcName.rBase64Lex  avgt    2   32.332          ns/op
- * JmhUuidNcName.rCanonical  avgt    2   25.653          ns/op
- * JmhUuidNcName.wBase32     avgt    2   39.858          ns/op
- * JmhUuidNcName.wBase32Lex  avgt    2   41.743          ns/op
- * JmhUuidNcName.wBase58     avgt    2  155.298          ns/op
- * JmhUuidNcName.wBase58Lex  avgt    2  120.013          ns/op
- * JmhUuidNcName.wBase64     avgt    2   42.994          ns/op
- * JmhUuidNcName.wBase64Lex  avgt    2   39.419          ns/op
- * JmhUuidNcName.wCanonical  avgt    2   27.839          ns/op
+ * JmhUuidNcName.rBase32     avgt        33.748          ns/op
+ * JmhUuidNcName.rBase32Lex  avgt        33.758          ns/op
+ * JmhUuidNcName.rBase58     avgt        67.572          ns/op
+ * JmhUuidNcName.rBase58Lex  avgt        54.718          ns/op
+ * JmhUuidNcName.rBase64     avgt        27.180          ns/op
+ * JmhUuidNcName.rBase64Lex  avgt        27.761          ns/op
+ * JmhUuidNcName.rCanonical  avgt        25.018          ns/op
+ * JmhUuidNcName.wBase32     avgt        31.318          ns/op
+ * JmhUuidNcName.wBase32Lex  avgt        31.853          ns/op
+ * JmhUuidNcName.wBase58     avgt       113.022          ns/op
+ * JmhUuidNcName.wBase58Lex  avgt       101.783          ns/op
+ * JmhUuidNcName.wBase64     avgt        28.605          ns/op
+ * JmhUuidNcName.wBase64Lex  avgt        27.785          ns/op
+ * JmhUuidNcName.wCanonical  avgt        26.324          ns/op
  * [
  * </pre>
  */
 @Fork(value = 1, jvmArgsAppend = {
         "-Xmx4g"
 })
-@Measurement(iterations = 1)
 @Warmup(iterations = 2)
+@Measurement(iterations = 2)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
@@ -95,7 +95,6 @@ public class JmhUuidNcName {
     public UUID rBase32Lex() {
         return UuidNCName.fromString(base32Lex);
     }
-
     @Benchmark
     public UUID rBase58() {
         return UuidNCName.fromString(base58);
@@ -130,7 +129,7 @@ public class JmhUuidNcName {
     public String wBase32Lex() {
         return UuidNCName.toString(uuid, UuidFormat.NCNAME_32_LEX);
     }
-
+*/
     @Benchmark
     public String wBase58() {
         return UuidNCName.toString(uuid, UuidFormat.NCNAME_58);

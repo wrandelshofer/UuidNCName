@@ -29,6 +29,6 @@ jobs:
         run: cat /proc/cpuinfo | grep 'model name' | uniq
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots --errors package
-      - name: Run JMH Benchmarks
-        run: mvn jmh:benchmark
+//      - name: Run JMH Benchmarks
+//        run: mvn jmh:benchmark
 ...
