@@ -160,8 +160,7 @@ public class UuidNCName {
     }
 
     private static long getLsbLex(UUID uuid) {
-        // return Long.compress(uuid.getLeastSignificantBits(), 0x3fff_fffffffffffcL);
-        return (uuid.getLeastSignificantBits() >>> 2) & 0x0fff_ffff_ffffffffL;
+         return Long.compress(uuid.getLeastSignificantBits(), 0x3fff_fffffffffffcL);
     }
 
     private static long getMsb(UUID uuid) {

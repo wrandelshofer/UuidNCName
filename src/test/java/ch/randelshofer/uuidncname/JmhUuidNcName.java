@@ -33,13 +33,13 @@ import java.util.concurrent.TimeUnit;
  * rBase64     avgt   16  20.150 ± 0.080  ns/op
  * rBase64Lex  avgt   16  20.062 ± 0.083  ns/op
  * rCanonical  avgt   16  15.616 ± 0.043  ns/op
- * wBase32     avgt   16  26.896 ± 0.582  ns/op
- * wBase32Lex  avgt   16  27.758 ± 0.678  ns/op
- * wBase58     avgt   16  81.483 ± 4.661  ns/op
- * wBase58Lex  avgt   16  72.292 ± 0.518  ns/op
- * wBase64     avgt   16  25.976 ± 0.911  ns/op
- * wBase64Lex  avgt   16  24.841 ± 0.443  ns/op
- * wCanonical  avgt   16  18.074 ± 0.165  ns/op
+ * wBase32     avgt    2  27.503          ns/op
+ * wBase32Lex  avgt    2  26.990          ns/op
+ * wBase58     avgt    2  80.155          ns/op
+ * wBase58Lex  avgt    2  71.166          ns/op
+ * wBase64     avgt    2  24.716          ns/op
+ * wBase64Lex  avgt    2  24.088          ns/op
+ * wCanonical  avgt    2  18.256          ns/op
  * </pre>
  *
  * <pre>
@@ -68,8 +68,8 @@ import java.util.concurrent.TimeUnit;
 @Fork(value = 1, jvmArgsAppend = {
         "-Xmx4g"
 })
-@Warmup(iterations = 2)
-@Measurement(iterations = 2)
+@Warmup(iterations = 4)
+@Measurement(iterations = 4)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
@@ -85,7 +85,7 @@ public class JmhUuidNcName {
     private String base64 = UuidNCName.toString(uuid, UuidFormat.NCNAME_64);
     private String base64Lex = UuidNCName.toString(uuid, UuidFormat.NCNAME_64_LEX);
 
-
+    /*
     @Benchmark
     public UUID rBase32() {
         return UuidNCName.fromString(base32);
@@ -120,6 +120,7 @@ public class JmhUuidNcName {
         return UUID.fromString(canonical);
     }
 
+     */
     @Benchmark
     public String wBase32() {
         return UuidNCName.toString(uuid, UuidFormat.NCNAME_32);
@@ -129,7 +130,7 @@ public class JmhUuidNcName {
     public String wBase32Lex() {
         return UuidNCName.toString(uuid, UuidFormat.NCNAME_32_LEX);
     }
-*/
+
     @Benchmark
     public String wBase58() {
         return UuidNCName.toString(uuid, UuidFormat.NCNAME_58);
