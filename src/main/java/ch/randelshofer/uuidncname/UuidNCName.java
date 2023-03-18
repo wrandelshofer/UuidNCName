@@ -248,23 +248,25 @@ public class UuidNCName {
     }
 
     private static String toBase58(UUID uuid) {
-        byte[] b = new byte[24];
+        int offset = 2;
+        byte[] b = new byte[23 + offset];
         long msb = getMsb(uuid);
         long lsb = getLsb(uuid);
-        FastBase58.encode58(msb, lsb, b, 2);
-        b[23] = BASE_32_UPPER_CASE_ALPHABET[getVariant(uuid)];
-        b[1] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
-        return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
+        FastBase58.encode58(msb, lsb, b, offset + 1);
+        b[offset + 22] = BASE_32_UPPER_CASE_ALPHABET[getVariant(uuid)];
+        b[offset] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
+        return new String(b, offset, 23, StandardCharsets.ISO_8859_1);
     }
 
     private static String toBase58Lex(UUID uuid) {
-        byte[] b = new byte[24];
+        int offset = 2;
+        byte[] b = new byte[23 + offset];
         long msb = getMsb(uuid);
         long lsb = getLsbLex(uuid);
-        FastBase58.encode58Lex(msb, lsb, b, 2);
-        b[23] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariantLex(uuid)];
-        b[1] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
-        return new String(b, 1, 23, StandardCharsets.ISO_8859_1);
+        FastBase58.encode58Lex(msb, lsb, b, offset + 1);
+        b[offset + 22] = VARIANT_LEXICAL_UPPER_CASE_ALPHABET[getVariantLex(uuid)];
+        b[offset] = BASE_32_UPPER_CASE_ALPHABET[uuid.version()];
+        return new String(b, offset, 23, StandardCharsets.ISO_8859_1);
     }
 
     private static String toBase64(UUID uuid) {

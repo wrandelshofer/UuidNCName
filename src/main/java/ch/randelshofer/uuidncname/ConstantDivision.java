@@ -35,12 +35,35 @@ public class ConstantDivision {
 
     /**
      * Computes (a % d) given precomputed M.
+     * <p>
+     * This method computes the correct result if {@code a} is less or
+     * equal {@link Integer#MAX_VALUE}.
+     *
+     * @param a an unsigned value
+     * @param M the precomputed M
+     * @param d a strictly positive divisor
+     * @return the modulo
      */
     public static int fastmod_u32(int a, long M, int d) {
         long lowbits = M * a;
         return (int) Math.unsignedMultiplyHigh(lowbits, d);
     }
 
+    /**
+     * Computes (a % d) given precomputed M.
+     * <p>
+     * This method computes the correct result if {@code a} is less or
+     * equal {@link Integer#MAX_VALUE}.
+     * <p>
+     * It is possible to get the correct result for {@code a} that
+     * are larger than that with some divisors. If {@code a} is too
+     * large, you will get rounding errors.
+     *
+     * @param a an unsigned value
+     * @param M the precomputed M
+     * @param d a strictly positive divisor
+     * @return the modulo
+     */
     public static int fastmod_u32L(long a, long M, int d) {
         long lowbits = M * a;
         return (int) Math.unsignedMultiplyHigh(lowbits, d);

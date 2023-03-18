@@ -7,6 +7,7 @@ package ch.randelshofer.uuidncname;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
+import java.math.BigInteger;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -33,9 +34,16 @@ public class FastBase58 {
         }
     }
 
-    private static long M58 = computeM_u32(58);
-    private static long M58p2 = computeM_u32(58 * 58);
-    private static long M58p3 = computeM_u32(58 * 58 * 58);
+    private static int D58 = 58;
+    private static int D58p2 = 58 * 58;
+    private static long M58 = computeM_u32(D58);
+    private static long M58p2 = computeM_u32(D58p2);
+    private static int D58p3 = 58 * 58 * 58;
+    private static long M58p3 = computeM_u32(D58p3);
+    private static int D58p4 = 58 * 58 * 58 * 58;
+    private static int D58p5 = 58 * 58 * 58 * 58 * 58;
+    private static long M58p4 = computeM_u32(D58p4);
+    private static long M58p5 = computeM_u32(D58p5);
 
     /**
      * Encodes an unsigned 120 bit number into 21 characters in base-58
@@ -63,7 +71,9 @@ public class FastBase58 {
      * @param offset the offset in the output array
      */
     public static void encode58(long high, long low, byte[] out, int offset) {
-        // Encode with lexical format.
+        // We convert 4 digits in base 2^30 into 21 digits in base 58.
+        // In each iteration, we produce 3 digits in base 58.
+
         // Store the number in little-endian order in the first 16 bytes of the output array.
         // We distribute the 120 bits into 4 int values - storing 30 bits in each.
         int mask30 = (1 << 30) - 1;
@@ -81,12 +91,10 @@ public class FastBase58 {
         int index = offset + 20;
         int leadingZeros = 0;
         while (index > offset) {
-            int remainder = divmod(out, firstBitTimes2 >>> 6, 30, 58 * 58 * 58, M58p3);
-            int remainderHigh = fastdiv_u32(remainder, M58p2);
-            int remainderLow = fastmod_u32(remainder, M58p2, 58 * 58);
-            int d0 = fastmod_u32(remainder, M58, 58);
-            int d1 = fastdiv_u32(remainderLow, M58);
-            int d2 = remainderHigh;
+            int remainder = divmod(out, firstBitTimes2 >>> 6, 30, D58p3, M58p3);
+            int d0 = fastmod_u32(remainder, M58, D58);
+            int d1 = fastdiv_u32(fastmod_u32(remainder, M58p2, D58p2), M58);
+            int d2 = fastdiv_u32(remainder, M58p2);
             if (d0 == 0) leadingZeros++;
             else leadingZeros = 0;
             if (d1 == 0) leadingZeros++;
@@ -143,6 +151,9 @@ public class FastBase58 {
      * @param offset the offset in the output array
      */
     public static void encode58Lex(long high, long low, byte[] out, int offset) {
+        // We convert 4 digits in base 2^30 into 21 digits in base 58.
+        // In each iteration, we produce 3 digits in base 58.
+
         // Store the number in little-endian order in the first 16 bytes of the output array.
         // We distribute the 120 bits into 4 int values - storing 30 bits in each.
         int mask30 = (1 << 30) - 1;
@@ -156,18 +167,20 @@ public class FastBase58 {
         // This means, that we can skip 17.5739/30=0.5857 'digits' in each iteration.
         // We approximate this with 37/64=37>>>6=0.5781.
         int firstBitTimes2 = 0;
-
         int index = offset + 20;
-        while (index > offset) {
-            int remainder = divmod(out, firstBitTimes2 >>> 6, 30, 58 * 58 * 58, M58p3);
-            int remainderHigh = fastdiv_u32(remainder, M58p2);
-            int remainderLow = fastmod_u32(remainder, M58p2, 58 * 58);
-            out[index--] = ALPHABET[fastmod_u32(remainder, M58, 58)];
-            out[index--] = ALPHABET[fastdiv_u32(remainderLow, M58)];
-            out[index--] = ALPHABET[remainderHigh];
+        for (int i = 6; i > 0; i--) {
+            int remainder = divmod(out, firstBitTimes2 >>> 6, 30, D58p3, M58p3);
+            out[index--] = ALPHABET[fastmod_u32(remainder, M58, D58)];
+            out[index--] = ALPHABET[fastdiv_u32(fastmod_u32(remainder, M58p2, D58p2), M58)];
+            out[index--] = ALPHABET[fastdiv_u32(remainder, M58p2)];
             firstBitTimes2 += 37;
         }
+        int remainder = (int) readIntLE.get(out, 0);
+        out[offset + 2] = ALPHABET[fastmod_u32(remainder, M58, D58)];
+        out[offset + 1] = ALPHABET[fastdiv_u32(fastmod_u32(remainder, M58p2, D58p2), M58)];
+        out[offset] = ALPHABET[fastdiv_u32(remainder, M58p2)];
     }
+
 
     /**
      * Divides a number that is represented by an array of bytes.
@@ -176,8 +189,8 @@ public class FastBase58 {
      * The 'digits' are ordered in little endian order. That is, the least significant
      * digit is stored in the block 0, and the most significant digit is stored
      * in block 3.
-     *  A 'digit' is treated as an unsigned integer of 32 bits in little-endian order
-     *  (uint32le).
+     * A 'digit' is treated as an unsigned integer of 32 bits in little-endian order
+     * (uint32le).
      * <p>
      * The given number is modified in-place
      * to contain the quotient, and the return value is the remainder.
@@ -192,15 +205,27 @@ public class FastBase58 {
      * @return the remainder of the division operation
      */
     private static int divmod(byte[] number, int firstDigit, int baseShift, int divisor, long M) {
-        // this is just long division which accounts for the base of the input digits
+        // This is just long division which accounts for the base of the input digits
         long remainder = 0;
         for (int index = (3 - firstDigit) << 2; index >= 0; index -= 4) {
             int digit = (int) readIntLE.get(number, index);
+
             long temp = (remainder << baseShift) + digit;
             readIntLE.set(number, index, (int) fastdiv_u32L(temp, M));
+
+            // fastmod will only produce accurate results if temp is < 2^49.
+            // Use this line if you suspect a rounding error:  remainder = temp % divisor;
             remainder = fastmod_u32L(temp, M, divisor);
         }
         return (int) remainder;
+    }
+
+    private static BigInteger asBigInteger(byte[] number, int baseShift) {
+        BigInteger b = BigInteger.ZERO;
+        for (int i = 12; i >= 0; i -= 4) {
+            b = b.shiftLeft(baseShift).add(BigInteger.valueOf((int) readIntLE.get(number, i)));
+        }
+        return b;
     }
 
     /**
@@ -284,7 +309,7 @@ public class FastBase58 {
         // Convert seven base-58^3 digits to four base-2^30 digits.
         int[] decoded = new int[4];
         int outputStart = decoded.length;
-        for (int inputStart = 0; inputStart < 7 && outputStart > 0; ) {
+        for (int inputStart = 0; inputStart < 4 && outputStart > 0; ) {
             decoded[--outputStart] = divmod(input58, 7, inputStart, 58 * 58 * 58, 30, (1 << 30) - 1);
             if (input58[inputStart] == 0) {
                 ++inputStart; // optimization - skip leading zeros
