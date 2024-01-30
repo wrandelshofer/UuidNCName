@@ -71,7 +71,7 @@ The supported formats are:
 
 ```java
 module MyModule {
-    require ch.randelshofer.uuidncname;
+   requires ch.randelshofer.uuidncname;
 }
 ```
 
@@ -109,31 +109,29 @@ public class MyMain {
 
 Here is the ABNF grammar of the supported formats:
 
-<pre>
-    <a id="uuid-canonical"/>uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit ;
+    uuid-canonical     = 8hexDigit "-" 4hexDigit "-" 4hexDigit "-" 4hexDigit "-" 12hexDigit ;
     
-    <a id="uuid-ncname-32"/>uuid-ncname-32     = bookend 24base32              bookend ;
-    <a id="uuid-ncname-58"/>uuid-ncname-58     = bookend 15*21base58 *6padding bookend ;
-    <a id="uuid-ncname-64"/>uuid-ncname-64     = bookend 20base64-url          bookend ;
+    uuid-ncname-32     = bookend 24base32              bookend ;
+    uuid-ncname-58     = bookend 15*21base58 *6padding bookend ;
+    uuid-ncname-64     = bookend 20base64-url          bookend ;
 
-    <a id="uuid-ncname-32-lex"/>uuid-ncname-32-lex = bookend 24base32hex bookend-lex ;
-    <a id="uuid-ncname-58-lex"/>uuid-ncname-58-lex = bookend 21base58     bookend-lex ;
-    <a id="uuid-ncname-64-lex"/>uuid-ncname-64-lex = bookend 20base64-lex bookend-lex ;
+    uuid-ncname-32-lex = bookend 24base32hex bookend-lex ;
+    uuid-ncname-58-lex = bookend 21base58     bookend-lex ;
+    uuid-ncname-64-lex = bookend 20base64-lex bookend-lex ;
 
-    <a id="hexDigit"/>hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
+    hexDigit       = %x30-39 / %x41-46 / %x61-66 ; [0-9A-Fa-f]
 
-    <a id="bookend"/>bookend        = %x41-50 / %x61-70 ; [A-Pa-p]
-    <a id="bookend-lex"/>bookend-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
+    bookend        = %x41-50 / %x61-70 ; [A-Pa-p]
+    bookend-lex    = %x32-37 / %x51-5A / %x71-7A ; [2-7Q-Zq-z]
     padding        = "_" ;
     
-    <a id="base32"/>base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
-    <a id="base32hex"/>base32hex     = %x32-37 / %x41-5a / %x61-7a ; [0-9A-Va-v]
+    base32         = %x41-5a / %x61-7a / %x32-37 ; [A-Za-z2-7]
+    base32hex      = %x32-37 / %x41-5a / %x61-7a ; [0-9A-Va-v]
 
-    <a id="base58"/>base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
+    base58         = %x31-39 / %x41-48 / %x4a-4e / %x50-5a / %x61-6c / %x6d-7a ; [1-9A-HJ-NP-Za-km-z]
 
-    <a id="base64-url"/>base64-url     = %x30-39 / %x41-5a / %x61-7a / %x2d / %x5f ; [A-Z_a-z0-9\-_]
-    <a id="base64-lex"/>base64-lex     = %x2d / %x30-39 / %x41-5a / %x5f / %x61-7a ; [-0-9A-Z_a-z]
-</pre>
+    base64-url     = %x30-39 / %x41-5a / %x61-7a / %x2d / %x5f ; [A-Z_a-z0-9\-_]
+    base64-lex     = %x2d / %x30-39 / %x41-5a / %x5f / %x61-7a ; [-0-9A-Z_a-z]
 
 ## Detection Heuristic
 
