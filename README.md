@@ -115,7 +115,7 @@ Here is the ABNF grammar of the supported formats:
     uuid-ncname-58     = bookend 15*21base58 *6padding bookend ;
     uuid-ncname-64     = bookend 20base64-url          bookend ;
 
-    uuid-ncname-32-lex = bookend 24base32hex bookend-lex ;
+    uuid-ncname-32-lex = bookend 24base32hex  bookend-lex ;
     uuid-ncname-58-lex = bookend 21base58     bookend-lex ;
     uuid-ncname-64-lex = bookend 20base64-lex bookend-lex ;
 
@@ -154,11 +154,11 @@ All formats are fixed length:
 
 ### extractNonLexicalFields(UUID):(version,variant,data)
 
-An <a id="UUID"/>`UUID` is a 128-bit unsigned integer in big-endian order.
+An `UUID` is a 128-bit unsigned integer in big-endian order.
 It contains variable-length fields. The field layout depends on the
 version and variant of a `UUID`.
 
-For the purpose of formatting, we overlay an `UUID` with the following fields:
+For the purpose of extraction, we overlay an `UUID` with the following fields:
 
        0                   1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -192,7 +192,7 @@ representation.
 
 ### extractLexicalFields(UUID):(version,variant-lex,data-lex)
 
-For the purpose of formatting, we overlay an `UUID` with the following fields:
+For the purpose of extraction, we overlay an `UUID` with the following fields:
 
        0                   1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
