@@ -472,7 +472,7 @@ The alphabet is not case sensitive.
 
 [UUIDv7-specification]: https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html#name-uuid-version-7
 
-[UUID-NCName-specification]: https://www.ietf.org/id/draft-taylor-uuid-ncname-03.html
+[UUID-NCName-specification]: https://datatracker.ietf.org/doc/html/draft-taylor-uuid-ncname
 
 [base32-encoding-table]: https://www.rfc-editor.org/rfc/rfc4648.html#section-6
 
